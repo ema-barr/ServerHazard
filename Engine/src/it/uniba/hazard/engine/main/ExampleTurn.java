@@ -22,7 +22,7 @@ public class ExampleTurn implements Turn {
     public void executeTurn(GameState state) {
         System.out.println("Turn executed by group " + groupNumber);
         Set<Location> locations;
-        if (!state.mapContainsPiece(examplePiece)) {
+        if (!state.mapContainsPawn(examplePiece)) {
             //Put the piece in any of the map locations
             locations = state.getMapLocations();
         } else {
@@ -39,7 +39,7 @@ public class ExampleTurn implements Turn {
         Location selectedLocation = locArray[randomIndex];
 
         //Put the piece in that location
-        state.placePiece(examplePiece, selectedLocation);
+        state.placePawn(examplePiece, selectedLocation);
         System.out.println("Put the pawn in location " + selectedLocation);
     }
 }
