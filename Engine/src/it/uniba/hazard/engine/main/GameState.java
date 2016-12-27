@@ -52,15 +52,15 @@ public class GameState {
         return gameMap.getLocation(p);
     }
 
-    public void placePiece(GamePawn p, Location l) {
-        gameMap.placePiece(p, l);
+    public void placePawn(GamePawn p, Location l) {
+        gameMap.placePawn(p, l);
     }
 
     public Set<Location> getMapLocations() {
         return gameMap.getAllLocations();
     }
 
-    public boolean mapContainsPiece(GamePawn p) {
-        return gameMap.containsPiece(p);
+    public boolean mapContainsPawn(GamePawn p) {
+        return gameMap.containsPawn(p);
     }
 }
