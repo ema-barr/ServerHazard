@@ -6,9 +6,7 @@ import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
-import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graph;
-import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 

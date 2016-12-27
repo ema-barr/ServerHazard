@@ -1,7 +1,13 @@
 package it.uniba.hazard.engine.main;
 
-/**
- * Created by andrea_iovine on 24/12/2016.
- */
 public class Emergency {
+    private String nameEmergency;
+
+    public Emergency(String nameEmergency){
+        this.nameEmergency = nameEmergency;
+    }
+
+    public String getNameEmergency() {
+        return nameEmergency;
+    }
 }

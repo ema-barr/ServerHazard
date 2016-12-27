@@ -1,8 +1,9 @@
 package it.uniba.hazard.engine.main;
 
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.pawns.ActionPawn;
+import it.uniba.hazard.engine.pawns.GamePawn;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -11,11 +12,11 @@ import java.util.Set;
  */
 public class ExampleTurn implements Turn {
     private int groupNumber;
-    private GamePiece examplePiece;
+    private GamePawn examplePiece;
 
     public ExampleTurn(int groupNumber) {
         this.groupNumber = groupNumber;
-        examplePiece = new GamePiece();
+        examplePiece = new ActionPawn();
     }
 
     public void executeTurn(GameState state) {
@@ -39,6 +40,6 @@ public class ExampleTurn implements Turn {
 
         //Put the piece in that location
         state.placePiece(examplePiece, selectedLocation);
-        System.out.println("Put the piece in location " + selectedLocation);
+        System.out.println("Put the pawn in location " + selectedLocation);
     }
 }

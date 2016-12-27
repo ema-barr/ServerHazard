@@ -6,8 +6,8 @@ import it.uniba.hazard.engine.cards.EventCard;
 import it.uniba.hazard.engine.cards.ProductionCard;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.pawns.GamePawn;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,15 +44,15 @@ public class GameState {
         this.currentState = EndState.GAME_ACTIVE;
     }
 
-    public Set<Location> getAdjacentLocations(GamePiece p) {
+    public Set<Location> getAdjacentLocations(GamePawn p) {
         return gameMap.getAdjacentLocations(p);
     }
 
-    public Location getLocationInMap(GamePiece p) {
+    public Location getLocationInMap(GamePawn p) {
         return gameMap.getLocation(p);
     }
 
-    public void placePiece(GamePiece p, Location l) {
+    public void placePiece(GamePawn p, Location l) {
         gameMap.placePiece(p, l);
     }
 
@@ -60,7 +60,7 @@ public class GameState {
         return gameMap.getAllLocations();
     }
 
-    public boolean mapContainsPiece(GamePiece p) {
+    public boolean mapContainsPiece(GamePawn p) {
         return gameMap.containsPiece(p);
     }
 }
