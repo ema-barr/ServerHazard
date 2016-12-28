@@ -18,7 +18,7 @@ public class CardManager<C> {
 
 
 
-
+    //restituisce una numero di carte random
     public List<Card> getCards(int numberCards){
 
         List<Card> extractCards = new ArrayList();
