@@ -24,8 +24,5 @@ public class ProductionCard implements Card {
 
     }
 
-    @Override
-    public void showCard() {
 
-    }
 }

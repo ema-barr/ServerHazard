@@ -5,5 +5,6 @@ package it.uniba.hazard.engine.cards;
  */
 public interface Card {
     public void executeAction();
-    public void showCard();
+
+
 }

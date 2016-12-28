@@ -15,11 +15,12 @@ public class EventCard implements Card {
 
     @Override
     public void executeAction() {
+        if(eventType.contains("event 1")) {
 
+        }else if(eventType.contains("event 2")) {
+
+        }
     }
 
-    @Override
-    public void showCard() {
 
-    }
 }

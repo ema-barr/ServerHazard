@@ -13,17 +13,16 @@ public class BonusCard implements Card {
         this.descriptionBonus = descriptionBonus;
     }
 
+
+
     @Override
     public void executeAction() {
+        if(bonusType.contains("bonus 1")) {
 
+        }else if(bonusType.contains("bonus 2")) {
+
+        }
     }
-
-    @Override
-    public void showCard() {
-
-    }
-
-
 
 
 
