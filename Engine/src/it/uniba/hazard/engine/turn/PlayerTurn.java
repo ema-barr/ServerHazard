@@ -5,5 +5,5 @@ package it.uniba.hazard.engine.turn;
  */
 public interface PlayerTurn extends Turn {
 
-    public void runCommand ();
+    public void runCommand (String param);
 }
