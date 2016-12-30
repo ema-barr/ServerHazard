@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.map;
 
+import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.pawns.GamePawn;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
@@ -23,14 +24,18 @@ public class GameMap {
     public Set<Location> getAdjacentLocations(GamePawn p) {
         //Get the location of the selected pawn
         Location currentPawnLocation = pawnLocations.get(p);
+        return getAdjacentLocations(currentPawnLocation);
+    }
+
+    public Set<Location> getAdjacentLocations(Location loc) {
         //Get all the edges of the graph connected to the previous location
-        Set<DefaultEdge> edges = mapGraph.edgesOf(currentPawnLocation);
+        Set<DefaultEdge> edges = mapGraph.edgesOf(loc);
         //List of adjacent locations
         Set<Location> possibleLocations = new HashSet<Location>();
 
         for (DefaultEdge edge : edges) {
             Location l = mapGraph.getEdgeTarget(edge);
-            if (!possibleLocations.contains(l) && l != currentPawnLocation) {
+            if (!possibleLocations.contains(l) && l != l) {
                 possibleLocations.add(l);
             }
         }
@@ -45,6 +50,12 @@ public class GameMap {
         pawnLocations.put(p, l);
     }
 
+    public void removePawn(GamePawn p) {
+        if (pawnLocations.containsKey(p)) {
+            pawnLocations.remove(p);
+        }
+    }
+
     public Location getLocation(GamePawn p) {
         return pawnLocations.get(p);
     }
@@ -55,5 +66,15 @@ public class GameMap {
 
     public boolean containsPawn(GamePawn p) {
         return pawnLocations.containsKey(p);
+    }
+
+    public Set<GamePawn> getPawnsOnLocation(Location l) {
+        Set<GamePawn> result = new HashSet<GamePawn>();
+        for (Map.Entry<GamePawn, Location> entry : pawnLocations.entrySet()) {
+            if (entry.getValue().equals(l)) {
+                result.add(entry.getKey());
+            }
+        }
+        return result;
     }
 }
