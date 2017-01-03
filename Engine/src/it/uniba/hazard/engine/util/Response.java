@@ -1,4 +1,4 @@
-package src.com.serverhazard.turn;
+package  it.uniba.hazard.engine.util;
 
 import java.util.HashMap;
 
