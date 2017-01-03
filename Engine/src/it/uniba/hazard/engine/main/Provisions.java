@@ -5,9 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Provisions {
+    private static int id = -1;
+    private String objectID;
     private Map<Resource, Integer> resources;
 
     public Provisions(Map<Resource, Integer> resources){
+        id++;
+        objectID = this.getClass().getName() + "_" + id;
         this.resources = resources;
     }
 
@@ -31,5 +35,10 @@ public class Provisions {
 
     public Map<Resource, Integer> getResources() {
         return resources;
+    }
+
+    @Override
+    public String toString() {
+        return objectID;
     }
 }

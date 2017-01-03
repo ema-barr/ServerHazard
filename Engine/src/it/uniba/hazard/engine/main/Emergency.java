@@ -10,4 +10,9 @@ public class Emergency {
     public String getNameEmergency() {
         return nameEmergency;
     }
+
+    @Override
+    public String toString() {
+        return nameEmergency;
+    }
 }

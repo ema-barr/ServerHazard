@@ -4,18 +4,20 @@ import it.uniba.hazard.engine.groups.ProductionGroup;
 import it.uniba.hazard.engine.main.Provisions;
 
 public class TransportPawn implements PlayerPawn{
-    private int id = -1;
+    private String objectID;
+    private static int id = -1;
     private ProductionGroup productionGroup;
     private Provisions payload;
 
     public TransportPawn(ProductionGroup productionGroup, Provisions payload){
-        id = getNextId();
+        id++;
+        objectID = this.getClass().getName() + "_" + productionGroup.toString() + "_" + id;
         this.productionGroup = productionGroup;
         this.payload = payload;
     }
 
-    private int getNextId(){
-        return id++;
+    public String getObjectID() {
+        return objectID;
     }
 
     public int getId() {
@@ -28,5 +30,18 @@ public class TransportPawn implements PlayerPawn{
 
     public Provisions getPayload() {
         return payload;
+    }
+
+    public boolean equals(TransportPawn tp){
+        if (objectID.equals(tp.getObjectID())){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return productionGroup.toString() + "_" + id;
     }
 }
