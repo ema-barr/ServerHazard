@@ -22,10 +22,7 @@ public class ActionTurn implements PlayerTurn {
 
     }
 
-    @Override
-    public void runCommand() {
 
-    }
 
 
     private void movePawn () {
@@ -49,6 +46,11 @@ public class ActionTurn implements PlayerTurn {
     }
 
     private void useBonusCard () {
+
+    }
+
+    @Override
+    public void runCommand(String param) {
 
     }
 }
