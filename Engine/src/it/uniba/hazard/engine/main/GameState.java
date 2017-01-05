@@ -1,7 +1,10 @@
 package it.uniba.hazard.engine.main;
 
 import it.uniba.hazard.engine.cards.*;
+import it.uniba.hazard.engine.exception.CannotCreateBlockadeException;
 import it.uniba.hazard.engine.exception.CannotMovePawnException;
+import it.uniba.hazard.engine.exception.NoSuchBlockadeException;
+import it.uniba.hazard.engine.map.Blockade;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.GamePawn;
@@ -27,6 +30,7 @@ public class GameState {
     private CardManager<BonusCard> bonusCardManager;
     private CardManager<ProductionCard> prodCardManager;
     private CardManager<EventCard> eventCardManager;
+    private List<Blockade> blockades;
     private EndState currentState;
 
     //TODO: Replace with configurable emergency limit for each emergency
@@ -43,7 +47,7 @@ public class GameState {
         this.bonusCardManager = bonusCardManager;
         this.prodCardManager = prodCardManager;
         this.eventCardManager = eventCardManager;
-
+        blockades = new ArrayList<Blockade>();
         //Set the state of the game as active
         this.currentState = EndState.GAME_ACTIVE;
     }
@@ -199,9 +203,62 @@ public class GameState {
         return prodCardManager.getCards(n);
     }
 
+    /**
+     * Reduces the specified emergency in the specified locations. If there is a stronghold in the same
+     * area as the location, then the level of the emergency is set to 0. Otherwise, it will be reduced by 1.
+     * @param e
+     * @param l
+     */
     public void solveEmergency(Emergency e, Location l) {
         //TODO: Check if there's a stronghold in the same area
         int currentLevel = l.getEmergencyLevel(e);
         l.setEmergencyLevel(e, currentLevel - 1);
+    }
+
+    /**
+     * Blocks one path in the map by putting a blockade between the specified locations.
+     * @param l1
+     * @param l2
+     */
+    public void block(Location l1, Location l2) {
+        //Check if locations are adjacent
+        Set<Location> locations = gameMap.getAdjacentLocations(l1);
+        if (locations.contains(l2)) {
+            //If so, create the blockade
+            Blockade b = new Blockade(l1, l2);
+            gameMap.removePath(l1, l2);
+            blockades.add(b);
+        } else {
+            throw new CannotCreateBlockadeException("Locations must be adjacent");
+        }
+    }
+
+    /**
+     * Removes a previously placed blockade between two locations. Throws an exception if there is no
+     * blockade between them.
+     * @param l1
+     * @param l2
+     */
+    public void unblock(Location l1, Location l2) {
+        Blockade b = findBlockade(l1, l2);
+        gameMap.addPath(l1, l2);
+        blockades.remove(b);
+    }
+
+    private Blockade findBlockade(Location l1, Location l2) {
+        int i = 0;
+        boolean found = false;
+        while (i < blockades.size() && !found) {
+            if (blockades.get(i).contains(l1, l2)) {
+                return blockades.get(i);
+            } else {
+                i++;
+            }
+        }
+
+        if (!found) {
+            throw new NoSuchBlockadeException("There is no blockade between the two locations.");
+        }
+        return null;
     }
 }

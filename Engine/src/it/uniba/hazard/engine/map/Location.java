@@ -17,6 +17,7 @@ public class Location implements Comparable<Location>{
         emergencyLevels = new HashMap<Emergency, Integer>();
     }
 
+    //WARNING: Do not call this outside of the GameState class
     public void setEmergencyLevel(Emergency e, int level) {
         if (emergencyLevels.containsKey(e)) {
             emergencyLevels.remove(e);

@@ -77,4 +77,12 @@ public class GameMap {
         }
         return result;
     }
+
+    public void removePath(Location l1, Location l2) {
+        mapGraph.removeAllEdges(l1, l2);
+    }
+
+    public void addPath(Location l1, Location l2) {
+        mapGraph.addEdge(l1, l2);
+    }
 }
