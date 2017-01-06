@@ -1,8 +1,8 @@
 package it.uniba.hazard.engine.cards;
 
-/**
- * Created by andrea_iovine on 24/12/2016.
- */
+import it.uniba.hazard.engine.main.GameState;
+
+//Superclasse delle carte Evento
 public class EventCard implements Card {
 
     public String eventType;
@@ -14,12 +14,8 @@ public class EventCard implements Card {
     }
 
     @Override
-    public void executeAction() {
-        if(eventType.contains("event 1")) {
+    public void executeAction(GameState gameState) {
 
-        }else if(eventType.contains("event 2")) {
-
-        }
     }
 
 

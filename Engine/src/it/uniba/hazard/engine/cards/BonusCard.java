@@ -1,14 +1,16 @@
 package it.uniba.hazard.engine.cards;
 
-/**
- * Created by andrea_iovine on 24/12/2016.
- */
+import it.uniba.hazard.engine.main.Game;
+import it.uniba.hazard.engine.main.GameState;
+
+//Super classe delle carte bonus
 public class BonusCard implements Card {
 
     public String bonusType;
     public String descriptionBonus;
 
     public BonusCard(String bonusType, String descriptionBonus) {
+
         this.bonusType = bonusType;
         this.descriptionBonus = descriptionBonus;
     }
@@ -16,12 +18,8 @@ public class BonusCard implements Card {
 
 
     @Override
-    public void executeAction() {
-        if(bonusType.contains("bonus 1")) {
+    public void executeAction(GameState gameState) {
 
-        }else if(bonusType.contains("bonus 2")) {
-
-        }
     }
 
 
