@@ -1,6 +1,10 @@
 package it.uniba.hazard.engine.turn;
 
+import it.uniba.hazard.engine.cards.Card;
 import it.uniba.hazard.engine.cards.EventCard;
+import it.uniba.hazard.engine.main.GameState;
+
+import java.util.List;
 
 /**
  * Created by maccn on 25/12/2016.
@@ -8,15 +12,44 @@ import it.uniba.hazard.engine.cards.EventCard;
 
 public class EventTurn implements Turn {
 
-    private EventCard event;
+    // Lista di carte evento
+    private List<Card> eventCards;
 
-    public EventTurn (EventCard e) {
-        event = e;
+    // numero di carte evento da richiedere
+    private int numberOfCards = 1;
+
+    // numero di carte evento da attivare
+    private int numberOfExecutions = 1;
+
+    // cotruttore, richiede un numero di carte pari a numberOfCards
+    public EventTurn (GameState gameState) {
+        eventCards = gameState.getEventCards(numberOfCards);
     }
 
+    // costruttore per modificare il numero di carte da richiedere
+    // e il numero di carte da attivare
+    public EventTurn (GameState gameState, int nc, int ne) {
+
+        numberOfCards = nc;
+
+        // controllo se il numero di carte da attivare è <= di quelle richieste
+        if (ne <= numberOfCards)
+            numberOfExecutions = ne;
+        else
+            numberOfExecutions = numberOfCards;
+
+        eventCards = gameState.getEventCards(numberOfCards);
+    }
+
+    // metodo da chiamare per eseguire le azioni di inizio turno
     @Override
-    public void startTurn() {
-        event.executeAction();  // attiva gli effetti della carta evento
+    public void startTurn(GameState gameState) {
+        if (numberOfExecutions <= numberOfCards) {
+            for (Card e : eventCards) {
+                // attiva gli effetti della carta evento
+                e.executeAction(gameState);
+            }
+        }
     }
 
 
