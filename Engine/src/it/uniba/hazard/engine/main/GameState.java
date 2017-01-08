@@ -142,26 +142,32 @@ public class GameState {
 
         while (!toDiffuse.isEmpty()) {
             Location l = toDiffuse.get(0);
-            int emergencyLevel = l.getEmergencyLevel(e);
-            if (emergencyLevel >= MAX_EMERGENCY_LEVEL ) {
-                //If emergency level is maximum, diffuse to all adjacent locations
-                Set<Location> adjacentLocations = gameMap.getAdjacentLocations(l);
-                for (Location l2 : adjacentLocations) {
-                    if (!diffused.contains(l2)) {
-                        //Add to the diffusion queue if not present in the diffused list
-                        toDiffuse.add(l2);
+            //Check if the location is not quarantined
+            if (!l.isQuarantined()) {
+                int emergencyLevel = l.getEmergencyLevel(e);
+                if (emergencyLevel >= MAX_EMERGENCY_LEVEL) {
+                    //If emergency level is maximum, diffuse to all adjacent locations
+                    Set<Location> adjacentLocations = gameMap.getAdjacentLocations(l);
+                    for (Location l2 : adjacentLocations) {
+                        if (!diffused.contains(l2)) {
+                            //Add to the diffusion queue if not present in the diffused list
+                            toDiffuse.add(l2);
+                        }
                     }
+                } else {
+                    //If not, increase the emergency level
+                    l.setEmergencyLevel(e, emergencyLevel + 1);
                 }
-            } else {
-                //If not, increase the emergency level
-                l.setEmergencyLevel(e, emergencyLevel + 1);
+                //The emergency has been diffused in the location
+                diffused.add(l);
             }
-            //The emergency has been diffused in the location
-            diffused.add(l);
             toDiffuse.remove(l);
-            //Add to the list of locations where the emergency has been diffused
-            lastDiffusedLocations.add(l);
         }
+        lastDiffusedLocations = diffused;
+    }
+
+    private void diffuseEmergency(Emergency e, Location l) {
+
     }
 
     /**
