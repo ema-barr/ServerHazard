@@ -31,6 +31,7 @@ public class GameState {
     private CardManager<ProductionCard> prodCardManager;
     private CardManager<EventCard> eventCardManager;
     private List<Blockade> blockades;
+    private List<Location> lastDiffusedLocations;
     private EndState currentState;
 
     //TODO: Replace with configurable emergency limit for each emergency
@@ -128,6 +129,8 @@ public class GameState {
      * @param startLocations
      */
     public void diffuseEmergency(Emergency e, List<Location> startLocations) {
+        //Reset the list of diffused locations
+        lastDiffusedLocations = new ArrayList<Location>();
         List<Location> toDiffuse = new ArrayList<Location>();
         //Contains the locations where the emergency has already been diffused
         List<Location> diffused = new ArrayList<Location>();
@@ -156,7 +159,17 @@ public class GameState {
             //The emergency has been diffused in the location
             diffused.add(l);
             toDiffuse.remove(l);
+            //Add to the list of locations where the emergency has been diffused
+            lastDiffusedLocations.add(l);
         }
+    }
+
+    /**
+     * Returns the list of locations where the last emergency has been diffused.
+     * @return
+     */
+    public List<Location> getLastDiffusedLocations() {
+        return lastDiffusedLocations;
     }
 
     /**
