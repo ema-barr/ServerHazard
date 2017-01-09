@@ -15,4 +15,8 @@ public class Emergency {
     public String toString() {
         return nameEmergency;
     }
+
+    public boolean equals(Object o) {
+        return ((Emergency) o).nameEmergency.equals(nameEmergency);
+    }
 }

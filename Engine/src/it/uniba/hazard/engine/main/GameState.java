@@ -1,13 +1,17 @@
 package it.uniba.hazard.engine.main;
 
 import it.uniba.hazard.engine.cards.*;
+import it.uniba.hazard.engine.endgame.LossCondition;
+import it.uniba.hazard.engine.endgame.VictoryCondition;
 import it.uniba.hazard.engine.exception.CannotCreateBlockadeException;
 import it.uniba.hazard.engine.exception.CannotMovePawnException;
 import it.uniba.hazard.engine.exception.NoSuchBlockadeException;
+import it.uniba.hazard.engine.map.Area;
 import it.uniba.hazard.engine.map.Blockade;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.GamePawn;
+import it.uniba.hazard.engine.pawns.StrongholdPawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
 import java.util.*;
@@ -28,7 +32,10 @@ public class GameState {
     private CardManager<ProductionCard> prodCardManager;
     private CardManager<EventCard> eventCardManager;
     private List<Blockade> blockades;
+    private List<Emergency> emergencies;
     private List<Location> lastDiffusedLocations;
+    private List<VictoryCondition> victoryConditions;
+    private List<LossCondition> lossConditions;
     private int numberOfProductionCards;
     private EndState currentState;
 
@@ -43,12 +50,18 @@ public class GameState {
                      Map<Emergency, GeneralHazardIndicator> indicators,
                      CardManager<BonusCard> bonusCardManager,
                      CardManager<ProductionCard> prodCardManager,
-                     CardManager<EventCard> eventCardManager) {
+                     CardManager<EventCard> eventCardManager,
+                     List<Emergency> emergencies,
+                     List<VictoryCondition> victoryConditions,
+                     List<LossCondition> lossConditions) {
         this.gameMap = gameMap;
         this.indicators = indicators;
         this.bonusCardManager = bonusCardManager;
         this.prodCardManager = prodCardManager;
         this.eventCardManager = eventCardManager;
+        this.emergencies = emergencies;
+        this.victoryConditions = victoryConditions;
+        this.lossConditions = lossConditions;
         blockades = new ArrayList<Blockade>();
         numberOfProductionCards = DEFAULT_NUMBER_OF_PRODUCTION_CARDS;
         //Set the state of the game as active
@@ -89,6 +102,21 @@ public class GameState {
             }
         }
         gameMap.placePawn(p, l);
+    }
+
+    public void placeStronghold(Stronghold s) {
+        Area strongholdArea = null;
+        for(Area a : gameMap.getAreas()) {
+            if (a.contains(s.getLocation())) {
+                strongholdArea = a;
+            }
+        }
+        //Add the stronghold to the area
+        strongholdArea.addStrongHold(s);
+        //Create the stronghold pawn
+        StrongholdPawn sp = new StrongholdPawn(s);
+        //Place the stronghold pawn in the location
+        placePawn(sp, s.getLocation());
     }
 
     /**
@@ -282,6 +310,44 @@ public class GameState {
         return numberOfProductionCards;
     }
 
+    /**
+     * Returns all the areas in the game map.
+     * @return
+     */
+    public List<Area> getAreas() {
+        return gameMap.getAreas();
+    }
+
+    /**
+     * Returns all the emergencies in the game
+     * @return
+     */
+    public List<Emergency> getEmergencies() {
+        return emergencies;
+    }
+
+    /**
+     * Evaluates all the end conditions, and sets the end state of the game accorindgly to them.
+     * This method is to be called after each turn.
+     */
+    public void evaluateEndConditions() {
+        //Check the victory conditions
+        for (VictoryCondition v : victoryConditions) {
+            if (v.evaluateEndCondition(this)) {
+                currentState = EndState.GAME_VICTORY;
+                return;
+            }
+        }
+
+        //Check the loss conditions
+        for (LossCondition l : lossConditions) {
+            if (l.evaluateEndCondition(this)) {
+                currentState = EndState.GAME_LOSS;
+                return;
+            }
+        }
+    }
+
     private Blockade findBlockade(Location l1, Location l2) {
         int i = 0;
         boolean found = false;
@@ -298,6 +364,5 @@ public class GameState {
         }
         return null;
     }
-
 
 }

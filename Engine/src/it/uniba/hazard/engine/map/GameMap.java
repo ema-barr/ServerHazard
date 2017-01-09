@@ -21,6 +21,10 @@ public class GameMap {
         pawnLocations = new HashMap<GamePawn, Location>();
     }
 
+    public List<Area> getAreas() {
+        return areas;
+    }
+
     public Set<Location> getAdjacentLocations(GamePawn p) {
         //Get the location of the selected pawn
         Location currentPawnLocation = pawnLocations.get(p);
