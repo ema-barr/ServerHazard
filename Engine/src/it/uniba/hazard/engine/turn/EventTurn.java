@@ -1,7 +1,6 @@
 package it.uniba.hazard.engine.turn;
 
 import it.uniba.hazard.engine.cards.Card;
-import it.uniba.hazard.engine.cards.EventCard;
 import it.uniba.hazard.engine.main.GameState;
 
 import java.util.List;
@@ -11,6 +10,9 @@ import java.util.List;
  */
 
 public class EventTurn implements Turn {
+
+    // identificatore
+    private String objectId;
 
     // Lista di carte evento
     private List<Card> eventCards;
@@ -23,12 +25,19 @@ public class EventTurn implements Turn {
 
     // cotruttore, richiede un numero di carte pari a numberOfCards
     public EventTurn (GameState gameState) {
+
+        // TODO: rivedere la creazione dell'objectId
+        objectId = this.getClass().getName() + "_";
+
         eventCards = gameState.getEventCards(numberOfCards);
     }
 
     // costruttore per modificare il numero di carte da richiedere
     // e il numero di carte da attivare
     public EventTurn (GameState gameState, int nc, int ne) {
+
+        // TODO: rivedere la creazione dell'objectId
+        objectId = this.getClass().getName() + "_";
 
         numberOfCards = nc;
 
@@ -52,5 +61,21 @@ public class EventTurn implements Turn {
         }
     }
 
+    // metodi getter e setter per l'identificatore
+    public String getId() {
+        return objectId;
+    }
+    public void setId(String objectId) {
+        this.objectId = objectId;
+    }
 
+    @Override
+    public String toString() {
+        return "EventTurn{" +
+                "objectId='" + objectId + '\'' +
+                ", eventCards=" + eventCards +
+                ", numberOfCards=" + numberOfCards +
+                ", numberOfExecutions=" + numberOfExecutions +
+                '}';
+    }
 }
