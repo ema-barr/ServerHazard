@@ -1,11 +1,9 @@
 package it.uniba.hazard.engine.cards;
 
-import it.uniba.hazard.engine.main.Game;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Resource;
 import it.uniba.hazard.engine.map.Location;
 
-import java.util.Dictionary;
 import java.util.Map;
 
 //Superclasse delle carte produzione
