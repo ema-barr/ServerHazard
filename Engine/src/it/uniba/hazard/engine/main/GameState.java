@@ -29,10 +29,14 @@ public class GameState {
     private CardManager<EventCard> eventCardManager;
     private List<Blockade> blockades;
     private List<Location> lastDiffusedLocations;
+    private int numberOfProductionCards;
     private EndState currentState;
 
     //TODO: Replace with configurable emergency limit for each emergency
     public static final int MAX_EMERGENCY_LEVEL = 3;
+
+    //TODO: Replace with configurable number
+    public static final int DEFAULT_NUMBER_OF_PRODUCTION_CARDS = 1;
 
 
     public GameState(GameMap gameMap,
@@ -46,6 +50,7 @@ public class GameState {
         this.prodCardManager = prodCardManager;
         this.eventCardManager = eventCardManager;
         blockades = new ArrayList<Blockade>();
+        numberOfProductionCards = DEFAULT_NUMBER_OF_PRODUCTION_CARDS;
         //Set the state of the game as active
         this.currentState = EndState.GAME_ACTIVE;
     }
@@ -267,6 +272,14 @@ public class GameState {
      */
     public Map<GamePawn, Location> getAllPawns() {
         return gameMap.getAllPawns();
+    }
+
+    public void setNumberOfProductionCards(int number) {
+        numberOfProductionCards = number;
+    }
+
+    public int getNumberOfProductionCards() {
+        return numberOfProductionCards;
     }
 
     private Blockade findBlockade(Location l1, Location l2) {
