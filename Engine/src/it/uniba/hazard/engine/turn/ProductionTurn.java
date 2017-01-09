@@ -11,6 +11,7 @@ import it.uniba.hazard.engine.pawns.TransportPawn;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by maccn on 25/12/2016.
@@ -78,7 +79,7 @@ public class ProductionTurn implements PlayerTurn {
                 this.chooseCard(gameState, Integer.getInteger(param[1]));
                 break;
             case "movePawn":
-                this.movePawn(gameState);
+                this.movePawn(gameState, param[1], param[2], param[3]);
                 break;
         }
     }
@@ -86,7 +87,6 @@ public class ProductionTurn implements PlayerTurn {
 
     // metodo per scegliere la carta prudzione
     private void chooseCard (GameState gameState, int i) {
-        // TODO: aggiungre la possibilità di selezionare 2 (o più) carte
         if (i >= 0 & i < productionCards.size() - 1) {
             ProductionCard prodCard = (ProductionCard) productionCards.get(i);
             prodCard.executeAction(gameState);
@@ -94,8 +94,42 @@ public class ProductionTurn implements PlayerTurn {
         }
     }
 
-    private void movePawn (GameState gameState) {
+    private void movePawn (GameState gameState, String pawnStr, String currentLocationStr, String newLocationStr) {
         // metodo per muovere le pedine
+        Set<Location> ls = gameState.getMapLocations();
+        Location currentLocation = null;
+
+        for (Location l : ls) {
+            if (l.toString().equals(currentLocationStr)) {
+                currentLocation = l;
+            }
+        }
+
+        if (currentLocation != null) {
+            TransportPawn pawn = null;
+            Set<GamePawn> ps = gameState.getPawnsOnLocation(currentLocation);
+            for (GamePawn p : ps) {
+                TransportPawn temp = (TransportPawn) p;
+                if (temp.getObjectID().equals(pawnStr)) {
+                    pawn = temp;
+                }
+            }
+
+            if (pawn != null) {
+                ls = gameState.getAdjacentLocations(pawn);
+                Location newLocation = null;
+                for (Location l : ls) {
+                    if (l.toString().equals(newLocationStr)) {
+                        newLocation = l;
+                    }
+                }
+
+                if (newLocation != null) {
+                    gameState.removePawn(pawn);
+                    gameState.placePawn(pawn, newLocation);
+                }
+            }
+        }
     }
 
 
