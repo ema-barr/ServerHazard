@@ -10,10 +10,7 @@ import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.GamePawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by andrea_iovine on 24/12/2016.
@@ -264,6 +261,14 @@ public class GameState {
         blockades.remove(b);
     }
 
+    /**
+     * Returns a map of all the pawns currently in the map, each with the relative location
+     * @return
+     */
+    public Map<GamePawn, Location> getAllPawns() {
+        return gameMap.getAllPawns();
+    }
+
     private Blockade findBlockade(Location l1, Location l2) {
         int i = 0;
         boolean found = false;
@@ -280,4 +285,6 @@ public class GameState {
         }
         return null;
     }
+
+
 }

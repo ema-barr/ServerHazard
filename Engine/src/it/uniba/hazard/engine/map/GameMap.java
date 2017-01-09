@@ -85,4 +85,13 @@ public class GameMap {
     public void addPath(Location l1, Location l2) {
         mapGraph.addEdge(l1, l2);
     }
+
+    public Map<GamePawn, Location> getAllPawns() {
+        //Create a copy of the object
+        Map<GamePawn, Location> result = new HashMap<GamePawn, Location>();
+        for (Map.Entry<GamePawn, Location> e : pawnLocations.entrySet()) {
+            result.put(e.getKey(), e.getValue());
+        }
+        return result;
+    }
 }
