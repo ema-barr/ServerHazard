@@ -3,6 +3,7 @@ package it.uniba.hazard.engine.map;
 import it.uniba.hazard.engine.main.Emergency;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,10 +14,14 @@ public class Location implements Comparable<Location>{
     private Map<Emergency, Integer> emergencyLevels;
     private boolean isQuarantined;
 
-    public Location(String name) {
+    public Location(String name, List<Emergency> emergencies) {
         this.name = name;
         emergencyLevels = new HashMap<Emergency, Integer>();
         isQuarantined = false;
+
+        for(Emergency e : emergencies) {
+            emergencyLevels.put(e, 0);
+        }
     }
 
     //WARNING: Do not call this outside of the GameState class

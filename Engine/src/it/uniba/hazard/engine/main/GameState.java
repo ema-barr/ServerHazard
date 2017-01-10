@@ -348,6 +348,10 @@ public class GameState {
         }
     }
 
+    public EndState getCurrentState() {
+        return currentState;
+    }
+
     private Blockade findBlockade(Location l1, Location l2) {
         int i = 0;
         boolean found = false;
