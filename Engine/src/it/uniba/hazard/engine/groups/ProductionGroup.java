@@ -1,5 +1,7 @@
 package it.uniba.hazard.engine.groups;
 
+import it.uniba.hazard.engine.exception.TransportPawnNotFoundException;
+import it.uniba.hazard.engine.main.Provisions;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
 import java.util.List;
@@ -17,8 +19,21 @@ public class ProductionGroup {
     }
 
     public void insertNewTransportPawn(){
-        TransportPawn pawn = new TransportPawn();
+        TransportPawn pawn = new TransportPawn(this);
+
         pawns.add(pawn);
+    }
+
+    public void insertNewTransportPawn(Provisions payload){
+        TransportPawn pawn = new TransportPawn(this, payload);
+        pawns.add(pawn);
+    }
+
+    public void removeTransportPawn(TransportPawn transportPawn){
+        boolean remove = pawns.remove(transportPawn);
+        if (!remove){
+            throw new TransportPawnNotFoundException("Transport pawn " + transportPawn.getObjectID() + " does not exist");
+        }
     }
 
     public String getObjectID() {
