@@ -33,7 +33,7 @@ public class AddBlockade extends EventCard{
         //preso primo nodo
         Location l1 = l[index];
 
-        //prese locazioni adiacenti
+        //prese locazioni adiacenti al primo nodo
         Set<Location> l2 = gameState.getAdjacentLocations(l1);
 
         for(Location l3: l2) {
