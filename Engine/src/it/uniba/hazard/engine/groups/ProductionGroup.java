@@ -16,6 +16,11 @@ public class ProductionGroup {
         this.pawns = pawns;
     }
 
+    public void insertNewTransportPawn(){
+        TransportPawn pawn = new TransportPawn();
+        pawns.add(pawn);
+    }
+
     public String getObjectID() {
         return objectID;
     }
