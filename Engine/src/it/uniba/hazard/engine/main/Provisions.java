@@ -42,24 +42,24 @@ public class Provisions {
         return quantity;
     }
 
-    public void insertRes(Resource res, Integer quantity){
-        if (resources.containsKey(res)){
-            int oldQuant = resources.get(res);
-            resources.replace(res, oldQuant + quantity);
-        } else {
-            resources.put(res, quantity);
-        }
+    public int withdrawResource(Resource res) {
+        int quantity = getQuantity(res);
+        resources.remove(res);
+        return quantity;
     }
 
-    public void removeRes(Resource res){
-        if(resources.containsKey(res)){
+    public void addResource(Resource res, int quantity) {
+        int prevQuantity = 0;
+        if (resources.containsKey(res)) {
+            prevQuantity = resources.get(res);
             resources.remove(res);
-        } else {
-            throw new ResourceNotFoundException("Resource " + res.getNameResource() + " not in provisions");
         }
+        resources.put(res, prevQuantity + quantity);
     }
 
-
+    public boolean isEmpty() {
+        return resources.isEmpty();
+    }
 
     public Map<Resource, Integer> getResources() {
         return resources;

@@ -91,6 +91,7 @@ public class LossGameTest {
         state.evaluateEndConditions();
 
         System.out.println(state.getCurrentState());
+        System.out.println(state.getContagionRatio(e));
 
     }
 }
