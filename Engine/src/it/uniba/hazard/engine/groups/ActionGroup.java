@@ -5,6 +5,7 @@ import it.uniba.hazard.engine.main.Provisions;
 import it.uniba.hazard.engine.main.Resource;
 import it.uniba.hazard.engine.pawns.ActionPawn;
 
+import java.rmi.activation.ActivationID;
 import java.util.List;
 
 public class ActionGroup {
@@ -21,8 +22,13 @@ public class ActionGroup {
         this.emergencyToBeSolved = emergencyToBeSolved;
         this.usedRes = usedRes;
         this.provisions = provisions;
-        this.actionPawn = actionPawn;
+        this.actionPawn = assignActionPawn();
         this.nameActionGroup = nameActionGroup;
+    }
+
+    private ActionPawn assignActionPawn() {
+        ActionPawn actionPawn = new ActionPawn(this);
+        return actionPawn;
     }
 
     public String getObjectID() {

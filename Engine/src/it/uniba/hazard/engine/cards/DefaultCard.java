@@ -20,4 +20,8 @@ public class DefaultCard extends EventCard{
     public void executeAction(GameState gameState) {
 
     }
+
+    public void revertAction(GameState gameState){
+
+    }
 }

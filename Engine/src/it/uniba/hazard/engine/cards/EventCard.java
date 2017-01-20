@@ -18,5 +18,10 @@ public class EventCard implements Card {
 
     }
 
+    @Override
+    public void revertAction(GameState gameState) {
+
+    }
+
 
 }

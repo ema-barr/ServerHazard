@@ -10,6 +10,7 @@ import java.util.Dictionary;
 public class MalusProductionCard extends EventCard{
 
     private String objectID;
+    private int numberProductionCards;
 
     public MalusProductionCard(String eventType, String descriptionEvent) {
         super(eventType, descriptionEvent);
@@ -23,7 +24,14 @@ public class MalusProductionCard extends EventCard{
 
     @Override
     public void executeAction(GameState gameState) {
+        numberProductionCards = gameState.getNumberOfProductionCards();
 
+        //diminuisce di uno il numero di carte produzione
+        gameState.setNumberOfProductionCards(numberProductionCards - 1);
+    }
+
+    public void revertAction(GameState gameState){
+        gameState.setNumberOfProductionCards(numberProductionCards);
     }
 
 

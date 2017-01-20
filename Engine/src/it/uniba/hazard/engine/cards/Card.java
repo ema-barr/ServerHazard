@@ -7,6 +7,6 @@ import it.uniba.hazard.engine.main.GameState;
  */
 public interface Card {
     public void executeAction(GameState gameState);
-
+    public void revertAction(GameState gameState);
 
 }
