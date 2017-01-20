@@ -5,7 +5,9 @@ import it.uniba.hazard.engine.endgame.LossCondition;
 import it.uniba.hazard.engine.endgame.VictoryCondition;
 import it.uniba.hazard.engine.exception.CannotCreateBlockadeException;
 import it.uniba.hazard.engine.exception.CannotMovePawnException;
+import it.uniba.hazard.engine.exception.MaxNumberOfTransportPawnsReachedException;
 import it.uniba.hazard.engine.exception.NoSuchBlockadeException;
+import it.uniba.hazard.engine.groups.ProductionGroup;
 import it.uniba.hazard.engine.map.Area;
 import it.uniba.hazard.engine.map.Blockade;
 import it.uniba.hazard.engine.map.GameMap;
@@ -45,6 +47,8 @@ public class GameState {
     //TODO: Replace with configurable number
     public static final int DEFAULT_NUMBER_OF_PRODUCTION_CARDS = 1;
 
+    //TODO: Replace with configurable number
+    public static final int MAX_NUMBER_OF_TRANSPORT_PAWNS_PER_GROUP = 5;
 
     public GameState(GameMap gameMap,
                      Map<Emergency, GeneralHazardIndicator> indicators,
@@ -101,7 +105,40 @@ public class GameState {
                 }
             }
         }
+        //Place the pawn
         gameMap.placePawn(p, l);
+
+        //Check the transport pawn limit
+        if (p instanceof  TransportPawn) {
+            int numTransportPawns = getTransportPawnsCount(((TransportPawn) p).getProductionGroup());
+
+            if (numTransportPawns > MAX_NUMBER_OF_TRANSPORT_PAWNS_PER_GROUP) {
+                //Max number reached. The pawn cannot be placed.
+                gameMap.removePawn(p);
+                throw new MaxNumberOfTransportPawnsReachedException("Cannot place any more transport pawns.");
+            }
+        }
+    }
+
+    /**
+     * Returns the number of transport pawns belonging to the specified production group
+     * @param pg
+     * @return
+     */
+    public int getTransportPawnsCount(ProductionGroup pg) {
+        Set<GamePawn> pawns = gameMap.getAllPawns().keySet();
+        int counter = 0;
+        //For each pawn check if it is a transport pawn.
+        //The counter is increased for each transport pawn belonging to the current production group.
+        for(GamePawn pawn : pawns) {
+            if (pawn instanceof TransportPawn) {
+                ProductionGroup pg2 = ((TransportPawn) pawn).getProductionGroup();
+                if (pg.equals(pg)) {
+                    counter++;
+                }
+            }
+        }
+        return counter;
     }
 
     public void placeStronghold(Stronghold s) {

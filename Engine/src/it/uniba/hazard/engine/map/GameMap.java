@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.map;
 
+import it.uniba.hazard.engine.exception.NoSuchPawnException;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.pawns.GamePawn;
 import org.jgrapht.Graph;
@@ -61,7 +62,11 @@ public class GameMap {
     }
 
     public Location getLocation(GamePawn p) {
-        return pawnLocations.get(p);
+        try {
+            return pawnLocations.get(p);
+        } catch (NullPointerException e) {
+            throw new NoSuchPawnException("The requested pawn is not present");
+        }
     }
 
     public Set<Location> getAllLocations() {
