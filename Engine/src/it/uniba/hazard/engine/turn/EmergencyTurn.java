@@ -1,5 +1,7 @@
 package it.uniba.hazard.engine.turn;
 
+import it.uniba.hazard.engine.main.GameState;
+
 /**
  * Created by maccn on 25/12/2016.
  */
@@ -11,12 +13,12 @@ public class EmergencyTurn implements Turn {
         emergency = e;
     }
 
-    @Override
-    public void startTurn() {
-        // esegue le azioni di diffusione della malattia ad ogni turno
-    }
-
     public void firstTurn () {
         // esegue le azioni di settaggio iniziale della malattia
+    }
+
+    @Override
+    public void startTurn(GameState gameState) {
+
     }
 }
