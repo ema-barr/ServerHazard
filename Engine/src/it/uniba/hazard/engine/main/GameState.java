@@ -81,6 +81,10 @@ public class GameState {
         return gameMap.getAdjacentLocations(p);
     }
 
+    public Set<Location> getAdjacentLocations(Location l) {
+        return gameMap.getAdjacentLocations(l);
+    }
+
     /**
      * Returns the location in which the specified pawn is located
      * @param p
