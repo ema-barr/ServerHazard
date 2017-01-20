@@ -11,11 +11,12 @@ import java.util.List;
 
 public class EventTurn implements Turn {
 
-    // identificatore
-    private String objectId;
 
     // Lista di carte evento
     private List<Card> eventCards;
+
+    // Lista di carte attivate
+    private List<Card> activatedCards;
 
     // numero di carte evento da richiedere
     private int numberOfCards = 1;
@@ -26,18 +27,12 @@ public class EventTurn implements Turn {
     // cotruttore, richiede un numero di carte pari a numberOfCards
     public EventTurn (GameState gameState) {
 
-        // TODO: rivedere la creazione dell'objectId
-        objectId = this.getClass().getName() + "_";
-
         eventCards = gameState.getEventCards(numberOfCards);
     }
 
     // costruttore per modificare il numero di carte da richiedere
     // e il numero di carte da attivare
     public EventTurn (GameState gameState, int nc, int ne) {
-
-        // TODO: rivedere la creazione dell'objectId
-        objectId = this.getClass().getName() + "_";
 
         numberOfCards = nc;
 
@@ -53,27 +48,29 @@ public class EventTurn implements Turn {
     // metodo da chiamare per eseguire le azioni di inizio turno
     @Override
     public void startTurn(GameState gameState) {
+        revertEventCards(gameState);
         if (numberOfExecutions <= numberOfCards) {
             for (Card e : eventCards) {
                 // attiva gli effetti della carta evento
                 e.executeAction(gameState);
+                activatedCards.add(e);
             }
         }
     }
 
-    // metodi getter e setter per l'identificatore
-    public String getId() {
-        return objectId;
-    }
-    public void setId(String objectId) {
-        this.objectId = objectId;
+    // annulla l'effetto degli eventi del turno precedente
+    private void revertEventCards (GameState gameState) {
+        if (!activatedCards.isEmpty()) {
+            for (Card e : eventCards) {
+                e.revertAction(gameState);
+            }
+        }
     }
 
     @Override
     public String toString() {
         return "EventTurn{" +
-                "objectId='" + objectId + '\'' +
-                ", eventCards=" + eventCards +
+                "eventCards=" + eventCards +
                 ", numberOfCards=" + numberOfCards +
                 ", numberOfExecutions=" + numberOfExecutions +
                 '}';
