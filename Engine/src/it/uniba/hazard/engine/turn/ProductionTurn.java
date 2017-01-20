@@ -18,8 +18,6 @@ import java.util.Set;
  */
 public class ProductionTurn implements PlayerTurn {
 
-    // identificatore
-    private String objectId;
 
     // attributo rappresentante il gruppo produzione
     private ProductionGroup player;
@@ -35,9 +33,6 @@ public class ProductionTurn implements PlayerTurn {
 
     public ProductionTurn (ProductionGroup pl, int pa, int ra) {
 
-        // TODO: rivedere la creazione dell'objectId
-        objectId = this.getClass().getName() + "_";
-
         player = pl;
         pawns = pa;
         remainingActions = ra;
@@ -45,8 +40,6 @@ public class ProductionTurn implements PlayerTurn {
 
     public ProductionTurn (ProductionGroup pl, int pa, int ra, int nc) {
 
-        // TODO: rivedere la creazione dell'objectId
-        objectId = this.getClass().getName() + "_";
 
         player = pl;
         pawns = pa;
@@ -133,23 +126,15 @@ public class ProductionTurn implements PlayerTurn {
     }
 
 
-    // metodi getter e setter per l'identificatore
-    public String getObjectId() {
-        return objectId;
-    }
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
-    }
-
     @Override
     public String toString() {
         return "ProductionTurn{" +
-                "objectId='" + objectId + '\'' +
-                ", player=" + player +
+                "player=" + player +
                 ", pawns=" + pawns +
                 ", remainingActions=" + remainingActions +
                 ", productionCards=" + productionCards +
                 ", numberOfCards=" + numberOfCards +
+                ", maxPawns=" + maxPawns +
                 '}';
     }
 }
