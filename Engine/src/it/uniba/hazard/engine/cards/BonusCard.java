@@ -22,7 +22,10 @@ public class BonusCard implements Card {
 
     }
 
+    @Override
+    public void revertAction(GameState gameState) {
 
+    }
 
 
 }

@@ -2,6 +2,7 @@ package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.map.Location;
+import  it.uniba.hazard.engine.exception.NoSuchBlockadeException;
 
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import java.util.Set;
 public class AddBlockade extends EventCard{
 
     private String objectID;
+    private Location l1;
 
     public AddBlockade(String eventType, String descriptionEvent) {
         super(eventType, descriptionEvent);
@@ -31,7 +33,7 @@ public class AddBlockade extends EventCard{
         allLocations.toArray(l);
 
         //preso primo nodo
-        Location l1 = l[index];
+        l1 = l[index];
 
         //prese locazioni adiacenti al primo nodo
         Set<Location> l2 = gameState.getAdjacentLocations(l1);
@@ -42,6 +44,14 @@ public class AddBlockade extends EventCard{
     }
 
     public void revertAction(GameState gameState) {
+        Set<Location> l2 = gameState.getAdjacentLocations(l1);
+        for(Location l3 : l2) {
+            try {
+                gameState.unblock(l1, l3);
+            }catch(Exception e) {
+                throw new NoSuchBlockadeException("The blockade is not present");
+            }
+        }
 
     }
 }

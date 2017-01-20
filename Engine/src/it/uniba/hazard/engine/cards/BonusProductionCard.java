@@ -11,6 +11,7 @@ import java.util.Dictionary;
 public class BonusProductionCard extends EventCard{
 
     private String objectID;
+    private int numberProductionCards;
 
     public BonusProductionCard(String eventType, String descriptionEvent) {
         super(eventType, descriptionEvent);
@@ -22,7 +23,15 @@ public class BonusProductionCard extends EventCard{
 
     @Override
     public void executeAction(GameState gameState) {
+        numberProductionCards = gameState.getNumberOfProductionCards();
 
+        //aumenta di uno il numero di carte produzione
+        gameState.setNumberOfProductionCards(numberProductionCards + 1);
+
+    }
+
+    public void revertAction(GameState gameState) {
+        gameState.setNumberOfProductionCards(numberProductionCards);
     }
 
     public String getObjectID(){
