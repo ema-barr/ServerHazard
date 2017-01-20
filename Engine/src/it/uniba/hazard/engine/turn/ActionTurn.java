@@ -1,5 +1,7 @@
 package it.uniba.hazard.engine.turn;
 
+import it.uniba.hazard.engine.main.GameState;
+
 /**
  * Created by maccn on 25/12/2016.
  */
@@ -17,10 +19,6 @@ public class ActionTurn implements PlayerTurn {
         pawns = pa;
     }
 
-    @Override
-    public void startTurn() {
-
-    }
 
 
 
@@ -50,7 +48,12 @@ public class ActionTurn implements PlayerTurn {
     }
 
     @Override
-    public void runCommand(String param) {
+    public void startTurn(GameState gameState) {
+
+    }
+
+    @Override
+    public void runCommand(GameState gameState, String[] param) {
 
     }
 }
