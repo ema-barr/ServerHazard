@@ -3,15 +3,14 @@ package it.uniba.hazard.engine.main;
 import it.uniba.hazard.engine.cards.*;
 import it.uniba.hazard.engine.endgame.LossCondition;
 import it.uniba.hazard.engine.endgame.VictoryCondition;
-import it.uniba.hazard.engine.exception.CannotCreateBlockadeException;
-import it.uniba.hazard.engine.exception.CannotMovePawnException;
-import it.uniba.hazard.engine.exception.MaxNumberOfTransportPawnsReachedException;
-import it.uniba.hazard.engine.exception.NoSuchBlockadeException;
+import it.uniba.hazard.engine.exception.*;
+import it.uniba.hazard.engine.groups.ActionGroup;
 import it.uniba.hazard.engine.groups.ProductionGroup;
 import it.uniba.hazard.engine.map.Area;
 import it.uniba.hazard.engine.map.Blockade;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.pawns.ActionPawn;
 import it.uniba.hazard.engine.pawns.GamePawn;
 import it.uniba.hazard.engine.pawns.StrongholdPawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
@@ -84,7 +83,6 @@ public class GameState {
     public Set<Location> getAdjacentLocations(Location l) {
         return gameMap.getAdjacentLocations(l);
     }
-
 
     /**
      * Returns the location in which the specified pawn is located
@@ -392,6 +390,57 @@ public class GameState {
 
     public EndState getCurrentState() {
         return currentState;
+    }
+
+    /**
+     * Withdraws the resources from the specified transport pawn, and assigns them to the specified action group
+     * Only the resources used by the action group will be withdrawn. The transport pawn will be removed from
+     * the map if all the resources have been removed.
+     * This method will throw an exception if the action group's pawn is not in the same location as the transport pawn.
+     * @param ag
+     * @param tp
+     */
+    public void takeResources(ActionGroup ag, TransportPawn tp) {
+        ActionPawn ap = ag.getActionPawn();
+        Location actionLoc = gameMap.getLocation(ap);
+        Location trLoc = gameMap.getLocation(tp);
+
+        if (!actionLoc.equals(trLoc)) {
+            throw new CannotTakeResourcesException("The action pawn is not in the same location as the transport pawn.");
+        }
+        //Withdraw the resources
+        Provisions p = tp.getPayload();
+        for (Resource r : p.getListResources()) {
+            if (ag.getUsedRes().contains(r)) {
+                int quantity = p.withdrawResource(r);
+                ag.getProvisions().addResource(r, quantity);
+            }
+        }
+        //Check if the transport pawn is empty
+        if (tp.getPayload().isEmpty()) {
+            //Remove from the map
+            gameMap.removePawn(tp);
+            //TODO: remove from the production group
+        }
+    }
+
+    /**
+     * Returns the contagion ratio of the specified emergency, i.e. the percentage of locations with maximum level of
+     * emergency.
+     * @param e
+     * @return
+     */
+    public double getContagionRatio(Emergency e) {
+        int counter = 0;
+        Set<Location> locations = gameMap.getAllLocations();
+
+        for(Location l : locations) {
+            if (l.getEmergencyLevel(e) >= MAX_EMERGENCY_LEVEL) {
+                counter++;
+            }
+        }
+
+        return ((double) counter) / locations.size();
     }
 
     private Blockade findBlockade(Location l1, Location l2) {

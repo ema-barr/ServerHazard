@@ -33,6 +33,25 @@ public class Provisions {
         return quantity;
     }
 
+    public int withdrawResource(Resource res) {
+        int quantity = getQuantity(res);
+        resources.remove(res);
+        return quantity;
+    }
+
+    public void addResource(Resource res, int quantity) {
+        int prevQuantity = 0;
+        if (resources.containsKey(res)) {
+            prevQuantity = resources.get(res);
+            resources.remove(res);
+        }
+        resources.put(res, prevQuantity + quantity);
+    }
+
+    public boolean isEmpty() {
+        return resources.isEmpty();
+    }
+
     public Map<Resource, Integer> getResources() {
         return resources;
     }
