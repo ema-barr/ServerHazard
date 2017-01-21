@@ -75,7 +75,8 @@ public class DiffusionTest {
                 null,
                 emergencies,
                 vcond,
-                lcond
+                lcond,
+                null
         );
 
         System.out.println(state.getCurrentState());

@@ -39,6 +39,7 @@ public class GameState {
     private List<LossCondition> lossConditions;
     private int numberOfProductionCards;
     private EndState currentState;
+    private Repository repository;
 
     //TODO: Replace with configurable emergency limit for each emergency
     public static final int MAX_EMERGENCY_LEVEL = 3;
@@ -56,7 +57,8 @@ public class GameState {
                      CardManager<EventCard> eventCardManager,
                      List<Emergency> emergencies,
                      List<VictoryCondition> victoryConditions,
-                     List<LossCondition> lossConditions) {
+                     List<LossCondition> lossConditions,
+                     Repository repository) {
         this.gameMap = gameMap;
         this.indicators = indicators;
         this.bonusCardManager = bonusCardManager;
@@ -67,6 +69,7 @@ public class GameState {
         this.lossConditions = lossConditions;
         blockades = new ArrayList<Blockade>();
         numberOfProductionCards = DEFAULT_NUMBER_OF_PRODUCTION_CARDS;
+        this.repository = repository;
         //Set the state of the game as active
         this.currentState = EndState.GAME_ACTIVE;
     }
@@ -109,7 +112,7 @@ public class GameState {
             }
         }
         //Place the pawn
-        gameMap.placePawn(p, l);
+        addPawn(p, l);
 
         //Check the transport pawn limit
         if (p instanceof  TransportPawn) {
@@ -117,10 +120,16 @@ public class GameState {
 
             if (numTransportPawns > MAX_NUMBER_OF_TRANSPORT_PAWNS_PER_GROUP) {
                 //Max number reached. The pawn cannot be placed.
-                gameMap.removePawn(p);
+                removePawn(p);
                 throw new MaxNumberOfTransportPawnsReachedException("Cannot place any more transport pawns.");
             }
         }
+        repository.insertInRepository(p.getObjectID(), p);
+    }
+
+    private void addPawn(GamePawn p, Location l) {
+        gameMap.placePawn(p,l);
+        repository.insertInRepository(p.getObjectID(), p);
     }
 
     /**
@@ -168,6 +177,7 @@ public class GameState {
             ((TransportPawn) p).getProductionGroup().removeTransportPawn((TransportPawn) p);
         }
         gameMap.removePawn(p);
+        repository.deleteFromRepository(p.getObjectID());
     }
 
     /**
@@ -441,6 +451,14 @@ public class GameState {
         }
 
         return ((double) counter) / locations.size();
+    }
+
+    /**
+     * Returns the object repository
+     * @return
+     */
+    public Repository getRepository() {
+        return repository;
     }
 
     private Blockade findBlockade(Location l1, Location l2) {
