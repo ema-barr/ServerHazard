@@ -164,6 +164,9 @@ public class GameState {
      * @param p
      */
     public void removePawn(GamePawn p) {
+        if (p instanceof TransportPawn) {
+            ((TransportPawn) p).getProductionGroup().removeTransportPawn((TransportPawn) p);
+        }
         gameMap.removePawn(p);
     }
 
@@ -194,11 +197,12 @@ public class GameState {
     }
 
     /**
-     * Activates the diffusion procedure for the selected emergency, with the specified starting locations.
+     * Activates the diffusion procedure for the selected emergency, with the specified starting locations and the
+     * specified level increase for each location.
      * @param e
      * @param startLocations
      */
-    public void diffuseEmergency(Emergency e, List<Location> startLocations) {
+    public void diffuseEmergency(Emergency e, Map<Location, Integer> startLocations) {
         //Reset the list of diffused locations
         lastDiffusedLocations = new ArrayList<Location>();
         List<Location> toDiffuse = new ArrayList<Location>();
@@ -206,38 +210,35 @@ public class GameState {
         List<Location> diffused = new ArrayList<Location>();
 
         //Copy the content of the startLocations list
-        for(Location l : startLocations) {
+        for(Location l : startLocations.keySet()) {
             toDiffuse.add(l);
         }
 
         while (!toDiffuse.isEmpty()) {
             Location l = toDiffuse.get(0);
-            //Check if the location is not quarantined
-            if (!l.isQuarantined()) {
+            //Check if the location is not quarantined and has not been diffused yet
+            if (!l.isQuarantined() && !diffused.contains(l)) {
                 int emergencyLevel = l.getEmergencyLevel(e);
-                if (emergencyLevel >= MAX_EMERGENCY_LEVEL) {
-                    //If emergency level is maximum, diffuse to all adjacent locations
+                //Increase the emergency level by the specified amount (or 1 if not a starting location
+                int increase = 1;
+                if (startLocations.containsKey(l)) {
+                    increase = startLocations.get(l);
+                }
+                l.setEmergencyLevel(e, emergencyLevel + increase);
+                if (l.getEmergencyLevel(e) > MAX_EMERGENCY_LEVEL) {
+                    //Set to the maximum level, in case it is greater than that
+                    l.setEmergencyLevel(e, MAX_EMERGENCY_LEVEL);
                     Set<Location> adjacentLocations = gameMap.getAdjacentLocations(l);
                     for (Location l2 : adjacentLocations) {
-                        if (!diffused.contains(l2)) {
-                            //Add to the diffusion queue if not present in the diffused list
-                            toDiffuse.add(l2);
-                        }
+                        //Add to the diffusion queue if not present in the diffused list
+                        toDiffuse.add(l2);
                     }
-                } else {
-                    //If not, increase the emergency level
-                    l.setEmergencyLevel(e, emergencyLevel + 1);
                 }
-                //The emergency has been diffused in the location
                 diffused.add(l);
             }
             toDiffuse.remove(l);
         }
         lastDiffusedLocations = diffused;
-    }
-
-    private void diffuseEmergency(Emergency e, Location l) {
-
     }
 
     /**
@@ -419,8 +420,7 @@ public class GameState {
         //Check if the transport pawn is empty
         if (tp.getPayload().isEmpty()) {
             //Remove from the map
-            gameMap.removePawn(tp);
-            //TODO: remove from the production group
+            removePawn(tp);
         }
     }
 
@@ -459,5 +459,4 @@ public class GameState {
         }
         return null;
     }
-
 }

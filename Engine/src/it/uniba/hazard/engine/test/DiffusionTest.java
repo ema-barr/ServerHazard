@@ -7,7 +7,6 @@ import it.uniba.hazard.engine.endgame.VictoryCondition;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.GeneralHazardIndicator;
-import it.uniba.hazard.engine.main.Stronghold;
 import it.uniba.hazard.engine.map.Area;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
@@ -15,15 +14,12 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * Created by isz_d on 10/01/2017.
+ * Created by isz_d on 21/01/2017.
  */
-public class LossGameTest {
+public class DiffusionTest {
     public static void main(String[] args) {
         Emergency e = new Emergency("malattia");
         List<Emergency> emergencies = new ArrayList<>();
@@ -87,14 +83,13 @@ public class LossGameTest {
         locations.remove(l4);
 
         Map<Location, Integer> locem = new HashMap<>();
-        locem.put(l1, 3);
-        locem.put(l2, 3);
-        locem.put(l3, 3);
+        locem.put(l1, 4);
+        locem.put(l2, 2);
         state.diffuseEmergency(e, locem);
-        state.evaluateEndConditions();
+        Set<Location> locs = state.getMapLocations();
 
-        System.out.println(state.getCurrentState());
-        System.out.println(state.getContagionRatio(e));
-
+        for(Location l : locations) {
+            System.out.println(l.toString() + " " + l.getEmergencyLevel(e));
+        }
     }
 }
