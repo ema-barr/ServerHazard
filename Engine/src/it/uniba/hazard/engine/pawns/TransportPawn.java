@@ -40,18 +40,6 @@ public class TransportPawn implements PlayerPawn{
         return productionGroup;
     }
 
-    public void takeResourcesFromPayload(List<Resource> resourcesToTake){
-        ArrayList<Resource> payloadRes = (ArrayList<Resource>) payload.getListResources();
-        for (Resource res: resourcesToTake){
-            boolean checkRes;
-            if (payloadRes.contains(res)){
-                payload.removeRes(res);
-            } else {
-                throw new ResourceNotInPayloadException("The resource " + res.getNameResource() + " is not in the payload");
-            }
-        }
-    }
-
     public Provisions getPayload() {
         return payload;
     }
