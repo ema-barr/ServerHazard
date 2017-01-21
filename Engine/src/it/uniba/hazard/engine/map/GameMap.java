@@ -40,7 +40,7 @@ public class GameMap {
 
         for (DefaultEdge edge : edges) {
             Location l = mapGraph.getEdgeTarget(edge);
-            if (!possibleLocations.contains(l) && l != l) {
+            if (!possibleLocations.contains(l) && l != loc) {
                 possibleLocations.add(l);
             }
         }
