@@ -49,7 +49,7 @@ public class GameInitialization {
                 gs.diffuseEmergency(emergency, locationsStart);
             }
 
-            System.out.println("Setup iniziale di " + emergency.getNameEmergency() +" completato");
+            System.out.println(emergency.getNameEmergency() +" initialization: complete.");
         } else {
             throw new InsufficientNumOfLocationsError("The number of location where emergency " +
                     emergency.getNameEmergency() + " starts is greater than the number of possible locations");
