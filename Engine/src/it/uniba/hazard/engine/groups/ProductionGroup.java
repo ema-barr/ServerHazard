@@ -34,9 +34,16 @@ public class ProductionGroup {
 
     }
 
-    public void insertNewTransportPawn(Provisions payload){
-        TransportPawn pawn = new TransportPawn(this, payload);
-        pawns.add(pawn);
+    public TransportPawn insertNewTransportPawn(Provisions payload){
+        int numTransportPawns = pawns.size();
+        if (numTransportPawns < maxTransportPawns){
+            TransportPawn pawn = new TransportPawn(this, payload);
+            pawns.add(pawn);
+            return pawn;
+        }else {
+            throw new MaxNumberOfTransportPawnsReachedException("Max number of transport pawns reached");
+        }
+
     }
 
     public void removeTransportPawn(TransportPawn transportPawn){
