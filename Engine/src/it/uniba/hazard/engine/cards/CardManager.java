@@ -32,6 +32,8 @@ public class CardManager<C> {
         return  extractCards;
     }
 
+    //TODO getProductionCards(List<Location> locationTransportPawns, int numberCards)
+
     private int numRandom(){
         Random random = new Random();
         int number = random.nextInt(cards.size()-1);

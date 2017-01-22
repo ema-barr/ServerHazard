@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.groups;
 
+import it.uniba.hazard.engine.exception.MaxNumberOfTransportPawnsReachedException;
 import it.uniba.hazard.engine.exception.TransportPawnNotFoundException;
 import it.uniba.hazard.engine.main.Provisions;
 import it.uniba.hazard.engine.pawns.TransportPawn;
@@ -10,18 +11,27 @@ public class ProductionGroup {
     private String objectID;
     private List<TransportPawn> pawns;
     private String nameProductionGroup;
+    private int maxTransportPawns;
 
 
-    public ProductionGroup(List<TransportPawn> pawns, String nameProductionGroup) {
+    public ProductionGroup(List<TransportPawn> pawns, String nameProductionGroup, int maxTransportPawns) {
         this.objectID = this.getClass().getName() + "_" + nameProductionGroup;
         this.nameProductionGroup = nameProductionGroup;
         this.pawns = pawns;
+        this.maxTransportPawns = maxTransportPawns;
     }
 
-    public void insertNewTransportPawn(){
-        TransportPawn pawn = new TransportPawn(this);
+    public TransportPawn insertNewTransportPawn(){
+        int numTransportPawns = pawns.size();
+        if (numTransportPawns < maxTransportPawns){
+            TransportPawn pawn = new TransportPawn(this);
 
-        pawns.add(pawn);
+            pawns.add(pawn);
+            return pawn;
+        } else {
+            throw new MaxNumberOfTransportPawnsReachedException("Max number of transport pawns reached");
+        }
+
     }
 
     public void insertNewTransportPawn(Provisions payload){
@@ -34,6 +44,10 @@ public class ProductionGroup {
         if (!remove){
             throw new TransportPawnNotFoundException("Transport pawn " + transportPawn.getObjectID() + " does not exist");
         }
+    }
+
+    public List<TransportPawn> getTransportPawns() {
+        return pawns;
     }
 
     public String getObjectID() {
