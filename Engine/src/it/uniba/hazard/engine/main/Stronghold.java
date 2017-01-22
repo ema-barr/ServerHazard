@@ -7,11 +7,15 @@ public class Stronghold {
     private String objectID;
     private Location location;
     private Emergency emergency;
+    private Resource resourceNeeded;
+    private int quantityNeeded;
 
-    public Stronghold(Location location, Emergency emergency){
+    public Stronghold(Location location, Emergency emergency, Resource resourceNeeded, int quantityNeeded){
         this.objectID = this.getClass().getName() + "_" + location.toString() + "_" + emergency.toString();
         this.location = location;
         this.emergency = emergency;
+        this.resourceNeeded = resourceNeeded;
+        this.quantityNeeded = quantityNeeded;
     }
 
     public String getObjectID() {
@@ -25,6 +29,12 @@ public class Stronghold {
     public Emergency getEmergency() {
         return emergency;
     }
+
+    public Resource getResourceNeeded() {return resourceNeeded;}
+
+    public int getQuantityNeeded(){return quantityNeeded;}
+
+    public void setQuantityNeeded(int quantity) {quantityNeeded = quantity;}
 
     @Override
     public String toString() {

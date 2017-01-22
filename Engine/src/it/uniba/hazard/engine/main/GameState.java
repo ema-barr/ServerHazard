@@ -414,27 +414,24 @@ public class GameState {
     }
 
     /**
-     * Withdraws the resources from the specified transport pawn, and assigns them to the specified action group
-     * Only the resources used by the action group will be withdrawn. The transport pawn will be removed from
-     * the map if all the resources have been removed.
-     * This method will throw an exception if the action group's pawn is not in the same location as the transport pawn.
-     * @param ag
+     * Withdraws the resources contained in the specified transport pawn. Only the resources whose type is specified in
+     * the reqResources list will be withdrawn. The action group pawn is requested to check if the resources can be
+     * withdrawn
+     * @param reqResources
+     * @param ap
      * @param tp
+     * @return
      */
-    public void takeResources(ActionGroup ag, TransportPawn tp) {
-        ActionPawn ap = ag.getActionPawn();
-        Location actionLoc = gameMap.getLocation(ap);
-        Location trLoc = gameMap.getLocation(tp);
-
-        if (!actionLoc.equals(trLoc)) {
+    public Provisions takeResources(List<Resource> reqResources, ActionPawn ap, TransportPawn tp) {
+        if (!gameMap.getLocation(ap).equals(gameMap.getLocation(tp))) {
             throw new CannotTakeResourcesException("The action pawn is not in the same location as the transport pawn.");
         }
-        //Withdraw the resources
+        Provisions result = new Provisions();
         Provisions p = tp.getPayload();
         for (Resource r : p.getListResources()) {
-            if (ag.getUsedRes().contains(r)) {
+            if (reqResources.contains(r)) {
                 int quantity = p.withdrawResource(r);
-                ag.getProvisions().addResource(r, quantity);
+                result.addResource(r, quantity);
             }
         }
         //Check if the transport pawn is empty
@@ -442,6 +439,7 @@ public class GameState {
             //Remove from the map
             removePawn(tp);
         }
+        return result;
     }
 
     /**
