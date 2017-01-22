@@ -281,7 +281,7 @@ public class GameState {
      * @param n
      * @return
      */
-    public List<Card> getBonusCards(int n) {
+    public List<BonusCard> getBonusCards(int n) {
         return bonusCardManager.getCards(n);
     }
 
@@ -290,17 +290,25 @@ public class GameState {
      * @param n
      * @return
      */
-    public List<Card> getEventCards(int n) {
+    public List<EventCard> getEventCards(int n) {
         return eventCardManager.getCards(n);
     }
 
     /**
-     * Returns a list of randomly selected production cards
+     * Returns a list of randomly selected production cards. Only locations without a transport pawn will be selected
      * @param n
      * @return
      */
-    public List<Card> getProductionCards(int n) {
-        return prodCardManager.getCards(n);
+    public List<ProductionCard> getProductionCards(int n) {
+        List<Location> occupiedLocations = new ArrayList<>();
+        Map<GamePawn, Location> pawns = gameMap.getAllPawns();
+        //Add to the list all the locations that are occupied by a transport pawn
+        for (Map.Entry<GamePawn, Location> entry : pawns.entrySet()) {
+            if (entry.getKey() instanceof TransportPawn) {
+                occupiedLocations.add(entry.getValue());
+            }
+        }
+        return prodCardManager.getProductionCards(occupiedLocations, n);
     }
 
     /**
