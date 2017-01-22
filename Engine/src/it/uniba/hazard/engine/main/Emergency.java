@@ -2,13 +2,19 @@ package it.uniba.hazard.engine.main;
 
 public class Emergency {
     private String nameEmergency;
+    private Resource resourceNeeded;
 
-    public Emergency(String nameEmergency){
+    public Emergency(String nameEmergency, Resource resourceNeeded){
+        this.resourceNeeded = resourceNeeded;
         this.nameEmergency = nameEmergency;
     }
 
     public String getNameEmergency() {
         return nameEmergency;
+    }
+
+    public Resource getResourceNeeded() {
+        return resourceNeeded;
     }
 
     @Override
