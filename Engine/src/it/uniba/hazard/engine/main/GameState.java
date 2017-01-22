@@ -97,39 +97,40 @@ public class GameState {
     }
 
     /**
-     * Places the pawn in the specified location
+     * Adds a new transport pawn in the game. The pawn must have been added to the production group beforehand.
+     * @param tp
+     * @param l
+     */
+    public void addTransportPawn(TransportPawn tp, Location l) {
+        if (gameMap.containsPawn(tp)) {
+            //Check if we're trying to add a pawn that already exists
+            throw new CannotMovePawnException("The pawn already exists");
+        }
+        //Check if we're trying to place a transport pawn into a location where another transport pawn resides
+        if (isOccupiedByTransportPawn(l)) {
+            throw new CannotMovePawnException("The pawn cannot be moved in this location.");
+        }
+        addPawn(tp, l);
+    }
+
+    /**
+     * Moves a pawn to the specified location, if such pawn exists. For Transport Pawns checks if the location is
+     * not already occupied by another transport pawn.
      * @param p
      * @param l
      */
-    public void placePawn(GamePawn p, Location l) {
-        //Check if we're trying to place a transport pawn into a location where another transport pawn resides
+    public void movePawn(GamePawn p, Location l) {
         if (p instanceof TransportPawn) {
-            Set<GamePawn> pawnsOnLocation = gameMap.getPawnsOnLocation(l);
-            for(GamePawn pl : pawnsOnLocation) {
-                if (pl instanceof TransportPawn) {
-                    throw new CannotMovePawnException("The pawn cannot be moved in this location.");
-                }
+            //Check if the location is not occupied by another transport pawn
+            if (isOccupiedByTransportPawn(l)) {
+                throw new CannotMovePawnException("The pawn cannot be moved in this location.");
             }
         }
-        //Place the pawn
-        addPawn(p, l);
-
-        //Check the transport pawn limit
-        if (p instanceof  TransportPawn) {
-            int numTransportPawns = getTransportPawnsCount(((TransportPawn) p).getProductionGroup());
-
-            if (numTransportPawns > MAX_NUMBER_OF_TRANSPORT_PAWNS_PER_GROUP) {
-                //Max number reached. The pawn cannot be placed.
-                removePawn(p);
-                throw new MaxNumberOfTransportPawnsReachedException("Cannot place any more transport pawns.");
-            }
+        //Check if the pawn exists in the map
+        if (!gameMap.containsPawn(p)) {
+            throw new NoSuchPawnException("The pawn is not in the game");
         }
-        repository.insertInRepository(p.getObjectID(), p);
-    }
-
-    private void addPawn(GamePawn p, Location l) {
-        gameMap.placePawn(p,l);
-        repository.insertInRepository(p.getObjectID(), p);
+        gameMap.placePawn(p, l);
     }
 
     /**
@@ -165,7 +166,7 @@ public class GameState {
         //Create the stronghold pawn
         StrongholdPawn sp = new StrongholdPawn(s);
         //Place the stronghold pawn in the location
-        placePawn(sp, s.getLocation());
+        addPawn(sp, s.getLocation());
     }
 
     /**
@@ -318,6 +319,7 @@ public class GameState {
      * @param l
      */
     public void solveEmergency(Emergency e, Location l) {
+
         //TODO: Check if there's a stronghold in the same area
         int currentLevel = l.getEmergencyLevel(e);
         l.setEmergencyLevel(e, currentLevel - 1);
@@ -469,6 +471,8 @@ public class GameState {
         return repository;
     }
 
+    /*Private Methods*/
+
     private Blockade findBlockade(Location l1, Location l2) {
         int i = 0;
         boolean found = false;
@@ -484,5 +488,20 @@ public class GameState {
             throw new NoSuchBlockadeException("There is no blockade between the two locations.");
         }
         return null;
+    }
+
+    private void addPawn(GamePawn p, Location l) {
+        gameMap.placePawn(p,l);
+        repository.insertInRepository(p.getObjectID(), p);
+    }
+
+    private boolean isOccupiedByTransportPawn(Location l) {
+        Set<GamePawn> pawnsOnLocation = gameMap.getPawnsOnLocation(l);
+        for (GamePawn p : pawnsOnLocation) {
+            if (p instanceof TransportPawn) {
+                return true;
+            }
+        }
+        return false;
     }
 }
