@@ -103,4 +103,14 @@ public class GameMap {
         }
         return result;
     }
+
+    public Area getAreaByLocation(Location l) {
+        Area strongholdArea = null;
+        for(Area a : areas) {
+            if (a.contains(l)) {
+                strongholdArea = a;
+            }
+        }
+        return strongholdArea;
+    }
 }
