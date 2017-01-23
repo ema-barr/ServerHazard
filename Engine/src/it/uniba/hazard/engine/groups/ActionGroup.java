@@ -18,14 +18,19 @@ public class ActionGroup {
     private Provisions provisions;
     private ActionPawn actionPawn;
     private String nameActionGroup;
+    private List<Location> HQs;
+    private Location startingPoint;
 
-    public ActionGroup(List<Emergency> emergencyToBeSolved, List<Resource> usedRes, Provisions provisions, ActionPawn actionPawn, String nameActionGroup) {
+    public ActionGroup(List<Emergency> emergencyToBeSolved, List<Resource> usedRes, Provisions provisions,
+                       ActionPawn actionPawn, String nameActionGroup, List<Location> HQs, Location startingPoint) {
         this.objectID = this.getClass().getName() + "_" + nameActionGroup;
         this.emergencyToBeSolved = emergencyToBeSolved;
         this.usedRes = usedRes;
         this.provisions = provisions;
         this.actionPawn = assignActionPawn();
         this.nameActionGroup = nameActionGroup;
+        this.HQs = HQs;
+        this.startingPoint = startingPoint;
     }
 
     private ActionPawn assignActionPawn() {
@@ -66,6 +71,14 @@ public class ActionGroup {
         for (Resource r : prov.getListResources()) {
             provisions.addResource(r, prov.getQuantity(r));
         }
+    }
+
+    public List<Location> getHQs() {
+        return HQs;
+    }
+
+    public Location getStartingPoint() {
+        return startingPoint;
     }
 
     public void solveEmergency(GameState state, Emergency toSolve) {
