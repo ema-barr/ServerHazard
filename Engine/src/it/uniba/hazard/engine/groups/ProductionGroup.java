@@ -2,7 +2,9 @@ package it.uniba.hazard.engine.groups;
 
 import it.uniba.hazard.engine.exception.MaxNumberOfTransportPawnsReachedException;
 import it.uniba.hazard.engine.exception.TransportPawnNotFoundException;
+import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Provisions;
+import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
 import java.util.List;
@@ -21,25 +23,24 @@ public class ProductionGroup {
         this.maxTransportPawns = maxTransportPawns;
     }
 
-    public TransportPawn insertNewTransportPawn(){
+    public void insertNewTransportPawn(GameState state, Location location){
         int numTransportPawns = pawns.size();
         if (numTransportPawns < maxTransportPawns){
-            TransportPawn pawn = new TransportPawn(this);
-
+            TransportPawn pawn = new TransportPawn(this, location);
             pawns.add(pawn);
-            return pawn;
+            state.addTransportPawn(pawn, location);
         } else {
             throw new MaxNumberOfTransportPawnsReachedException("Max number of transport pawns reached");
         }
 
     }
 
-    public TransportPawn insertNewTransportPawn(Provisions payload){
+    public void insertNewTransportPawn(GameState state, Provisions payload, Location location){
         int numTransportPawns = pawns.size();
         if (numTransportPawns < maxTransportPawns){
-            TransportPawn pawn = new TransportPawn(this, payload);
+            TransportPawn pawn = new TransportPawn(this, payload, location);
+            state.addTransportPawn(pawn, location);
             pawns.add(pawn);
-            return pawn;
         }else {
             throw new MaxNumberOfTransportPawnsReachedException("Max number of transport pawns reached");
         }
@@ -59,6 +60,10 @@ public class ProductionGroup {
 
     public String getObjectID() {
         return objectID;
+    }
+
+    public void moveTransportPawn(GameState state, TransportPawn transportPawn, Location location){
+        state.movePawn(transportPawn, location);
     }
 
     @Override
