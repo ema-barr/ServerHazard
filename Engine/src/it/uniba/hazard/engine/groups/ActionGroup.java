@@ -99,20 +99,22 @@ public class ActionGroup {
         state.solveEmergency(toSolve, state.getLocationInMap(actionPawn));
     }
 
-    public void buildStronghold(GameState state, Stronghold s) {
+    public void buildStronghold(GameState state, Emergency e, Location l) {
+        StrongholdInfo si = (StrongholdInfo) state.getRepository().getFromRepository("StrongholdInfo_" + e.getNameEmergency());
         //Check if the emergency can be solved by this group
-        if (!emergencyToBeSolved.contains(s.getEmergency())) {
+        if (!emergencyToBeSolved.contains(e)) {
             throw new EmergencyMismatchException("This emergency cannot be solved by this group.");
         }
         //Check if there is sufficient resources to solve the emergency
-        Resource res = s.getResourceNeeded();
+        Resource res = si.getResourceNeeded();
         int resQuantity = provisions.getQuantity(res);
-        if (resQuantity - s.getQuantityNeeded() <= 0) {
+        if (resQuantity - state.getCurrentStrongholdCost() <= 0) {
             throw new InsufficientResourcesException("Not enough resources to execute the requested action.");
         } else {
             //If there is, withdraw the resources from the group's deposit
             provisions.withdrawResource(res);
-            provisions.addResource(res, resQuantity - s.getQuantityNeeded());
+            provisions.addResource(res, resQuantity - state.getCurrentStrongholdCost());
+            Stronghold s = new Stronghold(l, si);
             state.placeStronghold(s);
         }
     }
