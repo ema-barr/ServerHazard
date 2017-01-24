@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.map;
 
+import it.uniba.hazard.engine.exception.InvalidEmergencyLevelException;
 import it.uniba.hazard.engine.main.Emergency;
 
 import java.util.HashMap;
@@ -26,6 +27,9 @@ public class Location implements Comparable<Location>{
 
     //WARNING: Do not call this outside of the GameState class
     public void setEmergencyLevel(Emergency e, int level) {
+        if (level < 0) {
+            throw new InvalidEmergencyLevelException("The value is not allowed.");
+        }
         if (emergencyLevels.containsKey(e)) {
             emergencyLevels.remove(e);
         }
