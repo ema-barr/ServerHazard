@@ -4,7 +4,6 @@ import it.uniba.hazard.engine.cards.*;
 import it.uniba.hazard.engine.endgame.LossCondition;
 import it.uniba.hazard.engine.endgame.VictoryCondition;
 import it.uniba.hazard.engine.exception.*;
-import it.uniba.hazard.engine.groups.ActionGroup;
 import it.uniba.hazard.engine.groups.ProductionGroup;
 import it.uniba.hazard.engine.map.Area;
 import it.uniba.hazard.engine.map.Blockade;
@@ -41,6 +40,7 @@ public class GameState {
     private EndState currentState;
     private Repository repository;
     private int currentStrongholdCost;
+    private TurnSequence turns;
 
     private int defaultStrongholdCost;
     private int maxEmergencyLevel;
@@ -57,7 +57,8 @@ public class GameState {
                      Repository repository,
                      int maxEmergencyLevel,
                      int defaultStrongholdCost,
-                     int defaultNumOfProductionCards) {
+                     int defaultNumOfProductionCards,
+                     TurnSequence turns) {
         this.gameMap = gameMap;
         this.indicators = indicators;
         this.bonusCardManager = bonusCardManager;
@@ -69,6 +70,7 @@ public class GameState {
         blockades = new ArrayList<Blockade>();
         numberOfProductionCards = defaultNumOfProductionCards;
         this.repository = repository;
+        this.turns = turns;
         this.defaultStrongholdCost = defaultStrongholdCost;
         this.defaultNumOfProductionCards = defaultNumOfProductionCards;
         this.maxEmergencyLevel = maxEmergencyLevel;
@@ -510,6 +512,14 @@ public class GameState {
      */
     public int getDefaultNumOfProductionCards() {
         return defaultNumOfProductionCards;
+    }
+
+    /**
+     * Returns an object that contains the turns in the game.
+     * @return
+     */
+    public TurnSequence getTurns() {
+        return turns;
     }
 
 
