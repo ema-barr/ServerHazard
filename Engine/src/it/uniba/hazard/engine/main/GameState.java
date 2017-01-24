@@ -323,10 +323,17 @@ public class GameState {
      * @param l
      */
     public void solveEmergency(Emergency e, Location l) {
-
-        //TODO: Check if there's a stronghold in the same area
+        int decrease = 1;
+        Area a = gameMap.getAreaByLocation(l);
+        List<Stronghold> strongholds = a.getStrongholds();
+        for (Stronghold s : strongholds) {
+            if (s.getEmergency().equals(e)) {
+                //If the stronghold for the emergency exists in the area, decrease the emergency level to 0
+                decrease = l.getEmergencyLevel(e);
+            }
+        }
         int currentLevel = l.getEmergencyLevel(e);
-        l.setEmergencyLevel(e, currentLevel - 1);
+        l.setEmergencyLevel(e, currentLevel - decrease);
     }
 
     /**
