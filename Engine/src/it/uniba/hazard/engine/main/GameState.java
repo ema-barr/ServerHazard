@@ -40,15 +40,11 @@ public class GameState {
     private int numberOfProductionCards;
     private EndState currentState;
     private Repository repository;
+    private int currentStrongholdCost;
 
-    //TODO: Replace with configurable emergency limit for each emergency
-    public static final int MAX_EMERGENCY_LEVEL = 3;
-
-    //TODO: Replace with configurable number
-    public static final int DEFAULT_NUMBER_OF_PRODUCTION_CARDS = 1;
-
-    //TODO: Replace with configurable number
-    public static final int MAX_NUMBER_OF_TRANSPORT_PAWNS_PER_GROUP = 5;
+    private int defaultStrongholdCost;
+    private int maxEmergencyLevel;
+    private int defaultNumOfProductionCards;
 
     public GameState(GameMap gameMap,
                      Map<Emergency, GeneralHazardIndicator> indicators,
@@ -58,7 +54,10 @@ public class GameState {
                      List<Emergency> emergencies,
                      List<VictoryCondition> victoryConditions,
                      List<LossCondition> lossConditions,
-                     Repository repository) {
+                     Repository repository,
+                     int maxEmergencyLevel,
+                     int defaultStrongholdCost,
+                     int defaultNumOfProductionCards) {
         this.gameMap = gameMap;
         this.indicators = indicators;
         this.bonusCardManager = bonusCardManager;
@@ -68,10 +67,15 @@ public class GameState {
         this.victoryConditions = victoryConditions;
         this.lossConditions = lossConditions;
         blockades = new ArrayList<Blockade>();
-        numberOfProductionCards = DEFAULT_NUMBER_OF_PRODUCTION_CARDS;
+        numberOfProductionCards = defaultNumOfProductionCards;
         this.repository = repository;
+        this.defaultStrongholdCost = defaultStrongholdCost;
+        this.defaultNumOfProductionCards = defaultNumOfProductionCards;
+        this.maxEmergencyLevel = maxEmergencyLevel;
         //Set the state of the game as active
         this.currentState = EndState.GAME_ACTIVE;
+        //Set the stronghold cost to the default level
+        this.currentStrongholdCost = defaultStrongholdCost;
     }
 
     /**
@@ -236,9 +240,9 @@ public class GameState {
                     increase = startLocations.get(l);
                 }
                 l.setEmergencyLevel(e, emergencyLevel + increase);
-                if (l.getEmergencyLevel(e) > MAX_EMERGENCY_LEVEL) {
+                if (l.getEmergencyLevel(e) > maxEmergencyLevel) {
                     //Set to the maximum level, in case it is greater than that
-                    l.setEmergencyLevel(e, MAX_EMERGENCY_LEVEL);
+                    l.setEmergencyLevel(e, maxEmergencyLevel);
                     Set<Location> adjacentLocations = gameMap.getAdjacentLocations(l);
                     for (Location l2 : adjacentLocations) {
                         //Add to the diffusion queue if not present in the diffused list
@@ -453,7 +457,7 @@ public class GameState {
         Set<Location> locations = gameMap.getAllLocations();
 
         for(Location l : locations) {
-            if (l.getEmergencyLevel(e) >= MAX_EMERGENCY_LEVEL) {
+            if (l.getEmergencyLevel(e) >= maxEmergencyLevel) {
                 counter++;
             }
         }
@@ -468,6 +472,39 @@ public class GameState {
     public Repository getRepository() {
         return repository;
     }
+
+    /**
+     * Returns the current cost for building a stronghold
+     * @return
+     */
+    public int getCurrentStrongholdCost() {
+        return currentStrongholdCost;
+    }
+
+    /**
+     * Sets the cost for building a stronghold
+     * @param cost
+     */
+    public void setCurrentStrongholdCost(int cost) {
+        currentStrongholdCost = cost;
+    }
+
+    /**
+     * Returns the default cost for building a stronghold
+     * @return
+     */
+    public int getDefaultStrongholdCost() {
+        return defaultStrongholdCost;
+    }
+
+    /**
+     * Returns the default number of production cards that can be selected by Production Groups.
+     * @return
+     */
+    public int getDefaultNumOfProductionCards() {
+        return defaultNumOfProductionCards;
+    }
+
 
     /*Private Methods*/
 
