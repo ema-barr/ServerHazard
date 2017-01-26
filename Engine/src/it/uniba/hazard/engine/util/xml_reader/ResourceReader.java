@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.util.xml_reader;
 
 
+import it.uniba.hazard.engine.main.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -12,9 +13,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResourceReader {
-    public static void readResources(String path) {
+    public static List<Resource> readResources(String path) {
         try {
             File fXmlFile = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -22,14 +25,19 @@ public class ResourceReader {
             Document doc = dBuilder.parse(fXmlFile);
             doc.getDocumentElement().normalize();
 
-            Element gameElem = (Element) doc.getElementsByTagName("game").item(0);
-            Element groupElem = (Element) gameElem.getElementsByTagName("resources").item(0);
+            ArrayList<Resource> resources = new ArrayList<Resource>();
 
-            NodeList resourceList = groupElem.getElementsByTagName("name");
+            Element gameElem = (Element) doc.getElementsByTagName("game").item(0);
+            Element resElem = (Element) gameElem.getElementsByTagName("resources").item(0);
+
+            NodeList resourceList = resElem.getElementsByTagName("name");
             for (int i = 0; i < resourceList.getLength(); i++) {
                 Element element = (Element) resourceList.item(i);
                 System.out.println("name:" + element.getTextContent());
+                Resource res = new Resource(element.getTextContent());
+                resources.add(res);
             }
+            return resources;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -37,5 +45,6 @@ public class ResourceReader {
         } catch (SAXException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

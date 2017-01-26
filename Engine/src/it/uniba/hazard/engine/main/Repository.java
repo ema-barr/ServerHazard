@@ -12,17 +12,17 @@ import java.util.Map;
 
 public class Repository {
 
-    private Map<String, Object> repository;
+    private static Map<String, Object> repository;
 
     public Repository(Map<String, Object> repository) {
         this.repository = repository;
     }
 
-    public void insertInRepository(String objectID, Object object){
+    public static void insertInRepository(String objectID, Object object){
         repository.put(objectID, object);
     }
 
-    public void deleteFromRepository(String objectID){
+    public static void deleteFromRepository(String objectID){
         if (repository.containsKey(objectID)){
             repository.remove(objectID);
         }else{
@@ -30,7 +30,7 @@ public class Repository {
         }
     }
 
-    public Object getFromRepository(String objectID){
+    public static Object getFromRepository(String objectID){
         if (repository.containsKey(objectID)){
             return repository.get(objectID);
         }else{
@@ -39,7 +39,7 @@ public class Repository {
 
     }
 
-    public ActionGroup getActionGroupFromRepository(String objectID){
+    public static ActionGroup getActionGroupFromRepository(String objectID){
         boolean checkActionGroup;
         checkActionGroup = objectID.startsWith(ActionGroup.class.getName());
         if (checkActionGroup){
@@ -49,7 +49,7 @@ public class Repository {
         }
     }
 
-    public ProductionGroup getProductionGroupFromRepository(String objectID){
+    public static ProductionGroup getProductionGroupFromRepository(String objectID){
         boolean checkProdGroup;
         checkProdGroup = objectID.startsWith(ProductionGroup.class.getName());
         if (checkProdGroup){
@@ -59,7 +59,7 @@ public class Repository {
         }
     }
 
-    public Location getLocationFromRepository(String objectID){
+    public static Location getLocationFromRepository(String objectID){
         boolean checkLocation;
         checkLocation = objectID.startsWith(Location.class.getName());
         if (checkLocation){
@@ -69,7 +69,7 @@ public class Repository {
         }
     }
 
-    public ActionPawn getActionPawnFromRepository(String objectID){
+    public static ActionPawn getActionPawnFromRepository(String objectID){
         boolean checkActionPawn;
         checkActionPawn = objectID.startsWith(ActionPawn.class.getName());
         if (checkActionPawn){
@@ -79,7 +79,7 @@ public class Repository {
         }
     }
 
-    public TransportPawn getTransportPawnFromRepository(String objectID){
+    public static TransportPawn getTransportPawnFromRepository(String objectID){
         boolean checkTransportPawn;
         checkTransportPawn = objectID.startsWith(TransportPawn.class.getName());
         if (checkTransportPawn){
@@ -89,7 +89,7 @@ public class Repository {
         }
     }
 
-    public StrongholdPawn getStrongholdPawnFromRepository(String objectID){
+    public static StrongholdPawn getStrongholdPawnFromRepository(String objectID){
         boolean checkStrongholdPawn;
         checkStrongholdPawn = objectID.startsWith(StrongholdPawn.class.getName());
         if (checkStrongholdPawn){

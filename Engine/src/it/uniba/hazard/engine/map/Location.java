@@ -11,11 +11,13 @@ import java.util.Map;
  * Created by andrea_iovine on 24/12/2016.
  */
 public class Location implements Comparable<Location>{
+    private String objectID;
     private String name;
     private Map<Emergency, Integer> emergencyLevels;
     private boolean isQuarantined;
 
     public Location(String name, List<Emergency> emergencies) {
+        this.objectID = this.getClass().getName() + "_" + name;
         this.name = name;
         emergencyLevels = new HashMap<Emergency, Integer>();
         isQuarantined = false;
