@@ -25,7 +25,7 @@ public class ProductionTurn implements PlayerTurn {
 
     private int pawns;
     private int remainingActions; // numero di azioni rimanenti per il turno corrente
-    private List<Card> productionCards;
+    private List<ProductionCard> productionCards;
 
     private int numberOfCards = 4;
 
@@ -82,9 +82,9 @@ public class ProductionTurn implements PlayerTurn {
     // metodo per scegliere la carta prudzione
     private void chooseCard (GameState gameState, int i) {
         if (i >= 0 & i < productionCards.size() - 1) {
-            ProductionCard prodCard = (ProductionCard) productionCards.get(i);
+            ProductionCard prodCard = productionCards.get(i);
             prodCard.executeAction(gameState);
-            gameState.placePawn(new TransportPawn(player, new Provisions(prodCard.getResource())), prodCard.getLocation());
+            gameState.addTransportPawn(new TransportPawn(player, new Provisions(prodCard.getResource()),prodCard.getLocation()), prodCard.getLocation());
         }
     }
 
@@ -119,8 +119,8 @@ public class ProductionTurn implements PlayerTurn {
                 }
 
                 if (newLocation != null) {
-                    gameState.removePawn(pawn);
-                    gameState.placePawn(pawn, newLocation);
+                    //gameState.removePawn(pawn);
+                    gameState.movePawn(pawn, newLocation);
                 }
             }
         }
