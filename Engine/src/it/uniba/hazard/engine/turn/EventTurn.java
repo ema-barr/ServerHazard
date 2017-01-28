@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.turn;
 
 import it.uniba.hazard.engine.cards.Card;
+import it.uniba.hazard.engine.cards.EventCard;
 import it.uniba.hazard.engine.main.GameState;
 
 import java.util.List;
@@ -13,10 +14,10 @@ public class EventTurn implements Turn {
 
 
     // Lista di carte evento
-    private List<Card> eventCards;
+    private List<EventCard> eventCards;
 
     // Lista di carte attivate
-    private List<Card> activatedCards;
+    private List<EventCard> activatedCards;
 
     // numero di carte evento da richiedere
     private int numberOfCards = 1;
@@ -50,7 +51,7 @@ public class EventTurn implements Turn {
     public void startTurn(GameState gameState) {
         revertEventCards(gameState);
         if (numberOfExecutions <= numberOfCards) {
-            for (Card e : eventCards) {
+            for (EventCard e : eventCards) {
                 // attiva gli effetti della carta evento
                 e.executeAction(gameState);
                 activatedCards.add(e);
@@ -61,7 +62,7 @@ public class EventTurn implements Turn {
     // annulla l'effetto degli eventi del turno precedente
     private void revertEventCards (GameState gameState) {
         if (!activatedCards.isEmpty()) {
-            for (Card e : eventCards) {
+            for (EventCard e : eventCards) {
                 e.revertAction(gameState);
             }
         }
