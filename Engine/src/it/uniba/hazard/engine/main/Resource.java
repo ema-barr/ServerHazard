@@ -5,7 +5,7 @@ public class Resource {
     private String nameResource;
 
     public Resource(String nameResource){
-        this.objectID = this.getClass().getName();
+        this.objectID = this.getClass().getName() + "_" + nameResource;
         this.nameResource = nameResource;
     }
 

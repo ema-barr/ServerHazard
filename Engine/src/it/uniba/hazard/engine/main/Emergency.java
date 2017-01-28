@@ -1,12 +1,20 @@
 package it.uniba.hazard.engine.main;
 
 public class Emergency {
+    private String objectID;
     private String nameEmergency;
     private Resource resourceNeeded;
+    private GeneralHazardIndicator generalHazardIndicator;
 
-    public Emergency(String nameEmergency, Resource resourceNeeded){
+    public Emergency(String nameEmergency, Resource resourceNeeded, GeneralHazardIndicator generalHazardIndicator){
+        this.objectID = this.getClass().getName() + "_" + nameEmergency;
         this.resourceNeeded = resourceNeeded;
         this.nameEmergency = nameEmergency;
+        this.generalHazardIndicator = generalHazardIndicator;
+    }
+
+    public GeneralHazardIndicator getGeneralHazardIndicator(){
+        return generalHazardIndicator;
     }
 
     public String getNameEmergency() {

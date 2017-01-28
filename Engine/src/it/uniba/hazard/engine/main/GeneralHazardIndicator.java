@@ -13,6 +13,7 @@ public class GeneralHazardIndicator {
         this.steps = steps;
     }
 
+
     public void raiseHazardLevel() {
         if (currentStep < steps.size()) {
             currentStep++;

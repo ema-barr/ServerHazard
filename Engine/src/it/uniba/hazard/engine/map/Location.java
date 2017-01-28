@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.map;
 
+import it.uniba.hazard.engine.exception.InvalidEmergencyLevelException;
 import it.uniba.hazard.engine.main.Emergency;
 
 import java.util.HashMap;
@@ -10,11 +11,13 @@ import java.util.Map;
  * Created by andrea_iovine on 24/12/2016.
  */
 public class Location implements Comparable<Location>{
+    private String objectID;
     private String name;
     private Map<Emergency, Integer> emergencyLevels;
     private boolean isQuarantined;
 
     public Location(String name, List<Emergency> emergencies) {
+        this.objectID = this.getClass().getName() + "_" + name;
         this.name = name;
         emergencyLevels = new HashMap<Emergency, Integer>();
         isQuarantined = false;
@@ -26,6 +29,9 @@ public class Location implements Comparable<Location>{
 
     //WARNING: Do not call this outside of the GameState class
     public void setEmergencyLevel(Emergency e, int level) {
+        if (level < 0) {
+            throw new InvalidEmergencyLevelException("The value is not allowed.");
+        }
         if (emergencyLevels.containsKey(e)) {
             emergencyLevels.remove(e);
         }
