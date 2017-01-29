@@ -160,18 +160,14 @@
             </area>
         </map>
         <endGame>
-            <victoryConditions>
-                <victoryCondition>
-                    <victoryMessage>Vittoria</victoryMessage>
-                    <type>StrongholdInAllAreasVictoryCondition</type>
-                </victoryCondition>
-            </victoryConditions>
-            <lossConditions>
-                <lossCondition>
-                    <lossMessage>Sconfitta</lossMessage>
-                    <type>ContagionPercentageLossCondition</type>
-                </lossCondition>
-            </lossConditions>
+            <victoryCondition>
+                <victoryMessage>Vittoria</victoryMessage>
+                <type>StrongholdInAllAreasVictoryCondition</type>
+            </victoryCondition>
+            <lossCondition>
+                <lossMessage>Sconfitta</lossMessage>
+                <type>ContagionPercentageLossCondition</type>
+            </lossCondition>
         </endGame>
         <setup>
             <emergencySetup>
