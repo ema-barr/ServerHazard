@@ -149,12 +149,8 @@
                         </led>
                     </leds>
                     <neighborhood>
-                        <neighbor>
-                            <name>Location2</name>
-                        </neighbor>
-                        <neighbor>
-                            <name>Location3</name>
-                        </neighbor>
+                        <neighbor>Location2</neighbor>
+                        <neighbor>Location3</neighbor>
                     </neighborhood>
                 </location>
             </area>
