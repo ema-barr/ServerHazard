@@ -2,7 +2,9 @@ package it.uniba.hazard.engine.turn;
 
 import it.uniba.hazard.engine.cards.Card;
 import it.uniba.hazard.engine.groups.ActionGroup;
+import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.ActionPawn;
 import it.uniba.hazard.engine.pawns.GamePawn;
@@ -25,6 +27,7 @@ public class ActionTurn implements PlayerTurn {
     private List<Card> bonusCards;
 
     private int numActions = 4;
+    private int currentActions = 0;
 
     public ActionTurn (ActionGroup pl, int pa) {
         player = pl;
@@ -72,19 +75,10 @@ public class ActionTurn implements PlayerTurn {
         }
     }
 
-    private void heal (GameState gameState) {
-
-    }
-
     private void getResources (GameState gameState) {
 
     }
 
-    private void placeStronghold (GameState gameState) {
-        // TODO:
-        // Stronghold s = new Stronghold();
-        // gameState.placeStronghold(s);
-    }
 
     // metodo per settare le carte bonus
     private void setBonusCards (GameState gameState) {
@@ -102,26 +96,38 @@ public class ActionTurn implements PlayerTurn {
 
     @Override
     public void runCommand(GameState gameState, String[] param) {
-        switch (param[0]) {
-            case "movePawn":
-                this.movePawn(gameState, param[1], param[2], param[3]);
-                break;
-            case "heal":
-                this.heal(gameState, param[1], param[2], param[3]);
-                break;
+        if (currentActions < numActions) {
+            switch (param[0]) {
+                case "moveActionPawn":
+                    Location destination = Repository.getLocationFromRepository(param[1]);
+                    player.moveActionPawn(gameState, destination);
+                    break;
 
-            case "getResources":
-                this.getResources(gameState, param[1], param[2], param[3]);
-                break;
-            case "buildStronghold":
-                this.placeStronghold(gameState, param[1], param[2], param[3]);
-                break;
-            case "getBonusCards":
-                this.setBonusCards(gameState, param[1], param[2], param[3]);
-                break;
-            case "useBonusCard":
-                this.useBonusCard(gameState, param[1], param[2], param[3]);
-                break;
+                case "solveEmergency":
+                    Emergency e = (Emergency) Repository.getFromRepository(param[1]);
+                    player.solveEmergency(gameState, e);
+                    break;
+
+                case "getResources":
+                    this.getResources(gameState, param[1], param[2], param[3]);
+                    break;
+
+                case "buildStronghold":
+                    Emergency emergencyStronghold = (Emergency) Repository.getFromRepository(param[1]);
+                    Location locationStronghold = Repository.getLocationFromRepository(param[2]);
+                    player.buildStronghold(gameState, emergencyStronghold, locationStronghold);
+                    currentActions++;
+                    break;
+
+                case "getBonusCards":
+                    this.setBonusCards(gameState, param[1], param[2], param[3]);
+                    break;
+                case "useBonusCard":
+                    this.useBonusCard(gameState, param[1], param[2], param[3]);
+                    break;
+            }
+            currentActions++;
         }
+        // else throw exception
     }
 }
