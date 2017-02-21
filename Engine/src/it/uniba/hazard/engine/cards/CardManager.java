@@ -1,7 +1,10 @@
 package it.uniba.hazard.engine.cards;
 
+import it.uniba.hazard.engine.exception.NoClassExist;
 import it.uniba.hazard.engine.map.Location;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +12,8 @@ import java.util.Random;
 public class CardManager<C> {
 
     public List<C> cards;
+
+    public List<C> instanceCards = new ArrayList<C>();
 
     public CardManager(List<C> cards) {
         this.cards = cards;
@@ -49,6 +54,33 @@ public class CardManager<C> {
         Random random = new Random();
         int number = random.nextInt(cards.size()-1);
         return number;
+    }
+
+    //metodo per istanziare le carte dall'xml
+    private void instanceCard(String name, int quantity){
+        try {
+            try {
+                Constructor c = Class.forName(name).getConstructor(String.class, String.class);
+                try {
+                    c.newInstance(name);
+                    for(int i= 0; i < quantity; i++){
+                        instanceCards.add((C) c);
+                    }
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
+        } catch (ClassNotFoundException e) {
+            throw new NoClassExist("Classe non istanziata");
+        }
     }
 
 }

@@ -7,12 +7,11 @@ import it.uniba.hazard.engine.main.GameState;
 public class BonusCard implements Card {
 
     public String bonusType;
-    public String descriptionBonus;
 
-    public BonusCard(String bonusType, String descriptionBonus) {
+    public BonusCard(String bonusType) {
 
         this.bonusType = bonusType;
-        this.descriptionBonus = descriptionBonus;
+
     }
 
 

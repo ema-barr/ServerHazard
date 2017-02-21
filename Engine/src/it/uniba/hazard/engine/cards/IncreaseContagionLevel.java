@@ -8,8 +8,8 @@ public class IncreaseContagionLevel extends EventCard{
     private String objectID;
 
 
-    public IncreaseContagionLevel(String eventType, String descriptionEvent) {
-        super(eventType, descriptionEvent);
+    public IncreaseContagionLevel(String eventType) {
+        super(eventType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
@@ -17,8 +17,13 @@ public class IncreaseContagionLevel extends EventCard{
         return objectID;
     }
 
+    //TO DO: aumentare emergenza per un determinato posto
     @Override
     public void executeAction(GameState gameState) {
+
+    }
+
+    public void revertAction(GameState gameState){
 
     }
 }

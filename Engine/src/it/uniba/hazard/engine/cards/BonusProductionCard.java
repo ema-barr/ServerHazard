@@ -13,8 +13,8 @@ public class BonusProductionCard extends EventCard{
     private String objectID;
     private int numberProductionCards;
 
-    public BonusProductionCard(String eventType, String descriptionEvent) {
-        super(eventType, descriptionEvent);
+    public BonusProductionCard(String eventType) {
+        super(eventType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

@@ -7,8 +7,8 @@ public class IncreaseEmergencyPlace extends EventCard{
 
     private String objectID;
 
-    public IncreaseEmergencyPlace(String eventType, String descriptionEvent) {
-        super(eventType, descriptionEvent);
+    public IncreaseEmergencyPlace(String eventType) {
+        super(eventType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

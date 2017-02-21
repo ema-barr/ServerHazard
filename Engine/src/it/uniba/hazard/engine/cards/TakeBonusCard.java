@@ -8,8 +8,8 @@ public class TakeBonusCard extends EventCard{
     private String objectID;
 
 
-    public TakeBonusCard(String eventType, String descriptionEvent) {
-        super(eventType, descriptionEvent);
+    public TakeBonusCard(String eventType) {
+        super(eventType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

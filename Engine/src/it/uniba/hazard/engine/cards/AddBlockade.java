@@ -12,8 +12,8 @@ public class AddBlockade extends EventCard{
     private String objectID;
     private Location l1;
 
-    public AddBlockade(String eventType, String descriptionEvent) {
-        super(eventType, descriptionEvent);
+    public AddBlockade(String eventType) {
+        super(eventType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

@@ -23,6 +23,11 @@ public class ProductionCard implements Card {
 
     }
 
+    @Override
+    public void revertAction(GameState gameState) {
+
+    }
+
     public Location getLocation() {
         return location;
     }

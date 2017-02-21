@@ -8,8 +8,8 @@ public class MovePlace extends BonusCard{
     private String objectID;
 
 
-    public MovePlace(String bonusType, String descriptionBonus) {
-        super(bonusType, descriptionBonus);
+    public MovePlace(String bonusType) {
+        super(bonusType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
