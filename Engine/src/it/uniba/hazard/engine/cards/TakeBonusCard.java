@@ -19,6 +19,10 @@ public class TakeBonusCard extends EventCard{
 
     @Override
     public void executeAction(GameState gameState) {
+        gameState.getBonusCards(1);
+    }
+
+    public void revertAction(GameState gameState){
 
     }
 }
