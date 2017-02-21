@@ -18,6 +18,5 @@ public class RemoveTransportPawn extends EventCard{
 
     @Override
     public void executeAction(GameState gameState) {
-
     }
 }
