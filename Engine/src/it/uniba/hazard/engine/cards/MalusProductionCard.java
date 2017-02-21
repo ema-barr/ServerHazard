@@ -12,8 +12,8 @@ public class MalusProductionCard extends EventCard{
     private String objectID;
     private int numberProductionCards;
 
-    public MalusProductionCard(String eventType, String descriptionEvent) {
-        super(eventType, descriptionEvent);
+    public MalusProductionCard(String eventType) {
+        super(eventType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

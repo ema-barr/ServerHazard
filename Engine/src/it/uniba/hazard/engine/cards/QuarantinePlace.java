@@ -8,8 +8,8 @@ public class QuarantinePlace extends BonusCard{
     private String objectID;
 
 
-    public QuarantinePlace(String bonusType, String descriptionBonus) {
-        super(bonusType, descriptionBonus);
+    public QuarantinePlace(String bonusType) {
+        super(bonusType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

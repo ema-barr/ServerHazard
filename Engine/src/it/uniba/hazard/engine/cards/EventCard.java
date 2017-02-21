@@ -8,9 +8,8 @@ public class EventCard implements Card {
     public String eventType;
     public String descriptionEvent;
 
-    public EventCard(String eventType, String descriptionEvent) {
+    public EventCard(String eventType) {
         this.eventType = eventType;
-        this.descriptionEvent = descriptionEvent;
     }
 
     @Override

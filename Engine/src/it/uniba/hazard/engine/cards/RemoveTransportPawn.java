@@ -7,8 +7,8 @@ public class RemoveTransportPawn extends EventCard{
 
     private String objectID;
 
-    public RemoveTransportPawn(String eventType, String descriptionEvent) {
-        super(eventType, descriptionEvent);
+    public RemoveTransportPawn(String eventType) {
+        super(eventType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

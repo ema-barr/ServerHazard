@@ -7,8 +7,8 @@ public class DecreaseStrongholdPrice extends EventCard{
 
     private String objectID;
 
-    public DecreaseStrongholdPrice(String eventType, String descriptionEvent) {
-        super(eventType, descriptionEvent);
+    public DecreaseStrongholdPrice(String eventType) {
+        super(eventType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
@@ -18,6 +18,14 @@ public class DecreaseStrongholdPrice extends EventCard{
 
     @Override
     public void executeAction(GameState gameState) {
+        int DefaultCost = gameState.getDefaultStrongholdCost();
+        int DecreasePrice = DefaultCost * 75 /100;
+        gameState.setCurrentStrongholdCost(DecreasePrice);
+    }
 
+    @Override
+    public void revertAction(GameState gameState) {
+        int DefaultCost = gameState.getDefaultStrongholdCost();
+        gameState.setCurrentStrongholdCost(DefaultCost);
     }
 }

@@ -8,8 +8,8 @@ public class IncreaseNumberAction extends BonusCard{
     private String objectID;
 
 
-    public IncreaseNumberAction(String bonusType, String descriptionBonus) {
-        super(bonusType, descriptionBonus);
+    public IncreaseNumberAction(String bonusType) {
+        super(bonusType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
@@ -19,6 +19,8 @@ public class IncreaseNumberAction extends BonusCard{
 
     @Override
     public void executeAction(GameState gameState) {
+        //prendere dall' objectrepository prendere l'oggetto turni
+        //prende l'oggetto turni
 
     }
 
