@@ -107,7 +107,6 @@
             </eventCards>
             <productionCards>
                 <productionCard>
-                    <name>CartaProd1</name>
                     <quantity>10</quantity>
                     <location>Italia</location>
                     <resourcesProd>
