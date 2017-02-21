@@ -17,6 +17,10 @@ public class Emergency {
         return generalHazardIndicator;
     }
 
+    public String getObjectID() {
+        return objectID;
+    }
+
     public String getNameEmergency() {
         return nameEmergency;
     }

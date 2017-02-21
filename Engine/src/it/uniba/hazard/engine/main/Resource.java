@@ -9,6 +9,10 @@ public class Resource {
         this.nameResource = nameResource;
     }
 
+    public String getObjectID() {
+        return objectID;
+    }
+
     public String getNameResource() {
         return nameResource;
     }

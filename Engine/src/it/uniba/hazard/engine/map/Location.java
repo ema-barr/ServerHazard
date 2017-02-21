@@ -27,6 +27,10 @@ public class Location implements Comparable<Location>{
         }
     }
 
+    public String getObjectID() {
+        return objectID;
+    }
+
     //WARNING: Do not call this outside of the GameState class
     public void setEmergencyLevel(Emergency e, int level) {
         if (level < 0) {

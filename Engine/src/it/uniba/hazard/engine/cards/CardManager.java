@@ -15,6 +15,8 @@ public class CardManager<C> {
 
     public List<C> instanceCards = new ArrayList<C>();
 
+    public CardManager(){};
+
     public CardManager(List<C> cards) {
         this.cards = cards;
     }
@@ -57,7 +59,7 @@ public class CardManager<C> {
     }
 
     //metodo per istanziare le carte dall'xml
-    private void instanceCard(String name, int quantity){
+    public void instanceCard(String name, int quantity){
         try {
             try {
                 Constructor c = Class.forName(name).getConstructor(String.class, String.class);

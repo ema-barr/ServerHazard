@@ -99,7 +99,7 @@ public class ActionTurn implements PlayerTurn {
         if (currentActions < numActions) {
             switch (param[0]) {
                 case "moveActionPawn":
-                    Location destination = Repository.getLocationFromRepository(param[1]);
+                    Location destination = (Location) Repository.getFromRepository(param[1]);
                     player.moveActionPawn(gameState, destination);
                     break;
 
@@ -114,7 +114,7 @@ public class ActionTurn implements PlayerTurn {
 
                 case "buildStronghold":
                     Emergency emergencyStronghold = (Emergency) Repository.getFromRepository(param[1]);
-                    Location locationStronghold = Repository.getLocationFromRepository(param[2]);
+                    Location locationStronghold = (Location) Repository.getFromRepository(param[2]);
                     player.buildStronghold(gameState, emergencyStronghold, locationStronghold);
                     currentActions++;
                     break;
