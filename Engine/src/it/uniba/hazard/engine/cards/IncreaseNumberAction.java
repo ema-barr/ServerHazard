@@ -19,8 +19,7 @@ public class IncreaseNumberAction extends BonusCard{
 
     @Override
     public void executeAction(GameState gameState) {
-        //prendere dall' objectrepository prendere l'oggetto turni
-        //prende l'oggetto turni
+
 
     }
 

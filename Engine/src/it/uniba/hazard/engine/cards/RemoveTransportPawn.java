@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Repository;
 
 //Carta Evento: Rimozione pedina trasporto
 public class RemoveTransportPawn extends EventCard{
@@ -18,5 +19,11 @@ public class RemoveTransportPawn extends EventCard{
 
     @Override
     public void executeAction(GameState gameState) {
+
+    }
+
+    @Override
+    public void revertAction(GameState gameState) {
+
     }
 }
