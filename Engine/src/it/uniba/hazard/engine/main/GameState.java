@@ -547,7 +547,7 @@ public class GameState {
         repository.insertInRepository(p.getObjectID(), p);
     }
 
-    private boolean isOccupiedByTransportPawn(Location l) {
+    public boolean isOccupiedByTransportPawn(Location l) {
         Set<GamePawn> pawnsOnLocation = gameMap.getPawnsOnLocation(l);
         for (GamePawn p : pawnsOnLocation) {
             if (p instanceof TransportPawn) {
