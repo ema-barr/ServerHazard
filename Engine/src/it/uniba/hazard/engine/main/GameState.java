@@ -27,7 +27,6 @@ public class GameState {
     };
 
     private GameMap gameMap;
-    private Map<Emergency, GeneralHazardIndicator> indicators;
     private CardManager<BonusCard> bonusCardManager;
     private CardManager<ProductionCard> prodCardManager;
     private CardManager<EventCard> eventCardManager;
@@ -47,7 +46,6 @@ public class GameState {
     private int defaultNumOfProductionCards;
 
     public GameState(GameMap gameMap,
-                     Map<Emergency, GeneralHazardIndicator> indicators,
                      CardManager<BonusCard> bonusCardManager,
                      CardManager<ProductionCard> prodCardManager,
                      CardManager<EventCard> eventCardManager,
@@ -60,7 +58,6 @@ public class GameState {
                      int defaultNumOfProductionCards,
                      TurnSequence turns) {
         this.gameMap = gameMap;
-        this.indicators = indicators;
         this.bonusCardManager = bonusCardManager;
         this.prodCardManager = prodCardManager;
         this.eventCardManager = eventCardManager;
@@ -272,7 +269,7 @@ public class GameState {
      * @return
      */
     public int getGeneralHazardIndicatorLevel(Emergency e) {
-        return indicators.get(e).getCurrentLevel();
+        return e.getGeneralHazardIndicator().getCurrentLevel();
     }
 
     /**
@@ -280,7 +277,7 @@ public class GameState {
      * @param e
      */
     public void raiseGeneralHazardIndicatorLevel(Emergency e) {
-        indicators.get(e).raiseHazardLevel();
+        e.getGeneralHazardIndicator().raiseHazardLevel();
     }
 
     /**

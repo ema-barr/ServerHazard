@@ -3,6 +3,7 @@ package it.uniba.hazard.engine.map;
 import it.uniba.hazard.engine.exception.NoSuchPawnException;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.pawns.GamePawn;
+import jdk.nashorn.internal.runtime.JSONFunctions;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -113,4 +114,5 @@ public class GameMap {
         }
         return strongholdArea;
     }
+
 }
