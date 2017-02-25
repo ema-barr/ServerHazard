@@ -90,7 +90,30 @@ public class EmergencyReader {
         } catch (SAXException e) {
             e.printStackTrace();
         }
-        return 0;
+        return -1;
+    }
+
+    public static int readStrongholdCost(String path){
+        try{
+            File fXmlFile = new File(path);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+            doc.getDocumentElement().normalize();
+
+            Element gameElem = (Element) doc.getElementsByTagName("game").item(0);
+            Element emergenciesElem = (Element) gameElem.getElementsByTagName("emergencies").item(0);
+            Element strongholdCostElem = (Element) emergenciesElem.getElementsByTagName("strongholdCost").item(0);
+
+            return Integer.parseInt(strongholdCostElem.getTextContent());
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public static List<GravityLevel> readGravityLevels(String path){

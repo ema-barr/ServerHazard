@@ -6,10 +6,13 @@ import it.uniba.hazard.engine.cards.CardManager;
 import it.uniba.hazard.engine.cards.EventCard;
 import it.uniba.hazard.engine.cards.ProductionCard;
 import it.uniba.hazard.engine.endgame.EndCondition;
+import it.uniba.hazard.engine.endgame.LossCondition;
+import it.uniba.hazard.engine.endgame.VictoryCondition;
 import it.uniba.hazard.engine.exception.InsufficientNumOfLocationsError;
 import it.uniba.hazard.engine.groups.ActionGroup;
 import it.uniba.hazard.engine.groups.ProductionGroup;
 import it.uniba.hazard.engine.map.Area;
+import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.turn.EmergencyTurn;
@@ -25,10 +28,13 @@ import java.util.*;
 
 public class GameInitialization {
     private GameState gs;
+    private Game game;
     private String pathXML;
+    private Repository repository;
 
     public GameInitialization(String pathXML){
-        gs = new GameState();//TODO
+        HashMap<String, Object> rep = new HashMap<String, Object>();
+        repository = new Repository(rep);
         this.pathXML = pathXML;
     }
 
@@ -44,12 +50,9 @@ public class GameInitialization {
         for (Location loc: locationsList){
             Repository.insertInRepository(loc.getObjectID(), loc);
         }
-        UndirectedGraph<Location, DefaultEdge> graph = createGraph(); //TODO creazione grafo
+        UndirectedGraph<Location, DefaultEdge> graph = createGraph();
 
         ArrayList<Area> areasList = (ArrayList<Area>) MapReader.readAreas(pathXML);
-        for (Area a : areasList){
-            //TODO inserire le aree nel repository?
-        }
 
         //Emergencies
         ArrayList<Emergency> emergenciesList = (ArrayList<Emergency>) EmergencyReader.readEmergencies(pathXML);
@@ -57,7 +60,8 @@ public class GameInitialization {
             Repository.insertInRepository(em.getObjectID(), em);
         }
 
-        int maxGravityLevel = EmergencyReader.readMaxGravityLevel(pathXML); //TODO capire dove mettere questo valore
+        int strongholdCost = EmergencyReader.readMaxGravityLevel(pathXML);
+        int maxGravityLevel = EmergencyReader.readMaxGravityLevel(pathXML);
 
         //Setup
         Map<Emergency, Map<Integer, Integer>> setup = SetupReader.readSetup(pathXML);
@@ -100,19 +104,33 @@ public class GameInitialization {
         }
 
         //Turns
-        //TODO inserire i turni nel repository?
         ArrayList<EmergencyTurn> emergencyTurnsList = (ArrayList<EmergencyTurn>) TurnReader.readEmergencyTurns(pathXML);
         ArrayList<ActionTurn> actionTurnsList = (ArrayList<ActionTurn>) TurnReader.readActionTurns(pathXML);
         ArrayList<ProductionTurn> productionTurnsList = (ArrayList<ProductionTurn>) TurnReader.readProductionTurns(pathXML);
         ArrayList<EventTurn> eventTurnsList = (ArrayList<EventTurn>) TurnReader.readEventTurns(pathXML);
         ArrayList<Turn> turnOrder = (ArrayList<Turn>) TurnReader.readTurnOrder(pathXML);
+        int numOfProductionCards = TurnReader.readNumOfProductionCards(pathXML);
+        TurnSequence ts = new TurnSequence(turnOrder);
 
         //EndGame
-        //TODO inserire nel repository?
-        ArrayList<EndCondition> endConditionsList = (ArrayList<EndCondition>) EndGameReader.readEndConditions(pathXML);
-
+        ArrayList<VictoryCondition> victoryConditionsList = (ArrayList<VictoryCondition>)
+        EndGameReader.readVictoryConditions(pathXML);
+        ArrayList<LossCondition> lossConditionsList = (ArrayList<LossCondition>) EndGameReader.readLossConditions(pathXML);
+        //Creazione del gamestate
+        GameMap gm = new GameMap(graph, areasList);
+        gs = new GameState(gm, bonusCardManager, productionCardManager, eventCardManager, emergenciesList,
+                victoryConditionsList, lossConditionsList, repository, maxGravityLevel, strongholdCost,
+                numOfProductionCards,ts);
+        game = new Game(gs, ts);
     }
 
+    public Game getGame() {
+        return game;
+    }
+
+    public GameState getGameState() {
+        return gs;
+    }
 
     /**
      * Initial setup
