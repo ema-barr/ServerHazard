@@ -121,7 +121,7 @@ public class ActionGroup {
 
     public void moveActionPawn(GameState state, Location l) {
         state.movePawn(actionPawn, l);
-    }
+    } //TODO spostare di un passo alla volta controllando che lo spostamento sia adiacente
 
 
     @Override

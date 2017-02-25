@@ -64,7 +64,7 @@ public class ProductionGroup {
 
     public void moveTransportPawn(GameState state, TransportPawn transportPawn, Location location){
         state.movePawn(transportPawn, location);
-    }
+    } //TODO spostare di un passo alla volta controllando che lo spostamento sia adiacente
 
     @Override
     public String toString() {
