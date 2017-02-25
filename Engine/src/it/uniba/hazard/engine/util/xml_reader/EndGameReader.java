@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EndGameReader {
-    public static List<EndCondition> readEndConditions(String path){
+    public static List<VictoryCondition> readVictoryConditions(String path){
         try{
             File fXmlFile = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -29,7 +29,7 @@ public class EndGameReader {
             Element endGameElem = (Element) gameElem.getElementsByTagName("endGame").item(0);
 
             NodeList victCondList = endGameElem.getElementsByTagName("victoryCondition");
-            ArrayList<EndCondition> endConditionsList = new ArrayList<EndCondition>();
+            ArrayList<VictoryCondition> victoryConditionsList = new ArrayList<VictoryCondition>();
 
             for (int i = 0; i< victCondList.getLength(); i++){
                 Element element = (Element) victCondList.item(i);
@@ -41,8 +41,38 @@ public class EndGameReader {
                 Class victoryClass = Class.forName(type);
                 VictoryCondition vc = (VictoryCondition) victoryClass.newInstance();
 
-                endConditionsList.add(vc);
+                victoryConditionsList.add(vc);
             }
+
+            return victoryConditionsList;
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<LossCondition> readLossConditions(String path){
+        try{
+            File fXmlFile = new File(path);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+            doc.getDocumentElement().normalize();
+
+            Element gameElem = (Element) doc.getElementsByTagName("game").item(0);
+            Element endGameElem = (Element) gameElem.getElementsByTagName("endGame").item(0);
+
+            ArrayList<LossCondition> lossConditionsList = new ArrayList<LossCondition>();
 
             NodeList lossCondList = endGameElem.getElementsByTagName("lossCondition");
             for (int i = 0; i< lossCondList.getLength(); i++){
@@ -55,10 +85,10 @@ public class EndGameReader {
                 Class lossClass = Class.forName(type);
                 LossCondition lc = (LossCondition) lossClass.newInstance();
 
-                endConditionsList.add(lc);
+                lossConditionsList.add(lc);
             }
 
-            return endConditionsList;
+            return lossConditionsList;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {

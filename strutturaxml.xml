@@ -44,6 +44,7 @@
             <name>Gatti</name>
         </resources>
         <emergencies>
+            <strongholdCost>10</strongholdCost>
             <maxGravityLevel>4</maxGravityLevel>
             <gravityLevels>
                 <level>
@@ -72,8 +73,8 @@
                 </generalHazardIndicator>
             </emergency>
         </emergencies>
-
         <turns>
+            <numOfProductionCards>1</numOfProductionCards>
             <emergencyTurn>
                 <name>FirstEmergencyTurn</name>
                 <emergency>Emergenza1</emergency>
@@ -86,7 +87,6 @@
             </actionTurn>
             <productionTurn>
                 <group>ProductionGroup1</group>
-                <numOfProductionCards>1</numOfProductionCards>
                 <ordNum>1</ordNum>
                 <numMovesPerTransportPawn>2</numMovesPerTransportPawn>
             </productionTurn>
@@ -180,7 +180,6 @@
                         <gravityLevel>1</gravityLevel>
                         <numLocation>3</numLocation>
                     </setting>
-
                 </settings>
             </emergencySetup>
         </setup>
