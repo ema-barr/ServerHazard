@@ -34,7 +34,9 @@ public class ActionTurn implements PlayerTurn {
         pawns = pa;
     }
 
-
+    public ActionGroup getPlayer() {
+        return player;
+    }
 
 
 
