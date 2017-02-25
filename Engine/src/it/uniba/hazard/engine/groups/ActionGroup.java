@@ -9,6 +9,7 @@ import it.uniba.hazard.engine.pawns.ActionPawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
 import java.util.List;
+import java.util.Set;
 
 public class ActionGroup {
 
@@ -120,7 +121,19 @@ public class ActionGroup {
     }
 
     public void moveActionPawn(GameState state, Location l) {
-        state.movePawn(actionPawn, l);
+        Set<Location> adjacentLocations = state.getAdjacentLocations(actionPawn);
+        boolean found = false;
+        for (Location adjLoc: adjacentLocations){
+            if (adjLoc.toString().equals(l.toString())){
+                found = true;
+                break;
+            }
+        }
+        if (found){
+            state.movePawn(actionPawn, l);
+        } else {
+            throw new CannotMovePawnException("Invalid location");
+        }
     }
 
 
