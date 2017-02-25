@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.map;
 
+import com.google.gson.*;
 import it.uniba.hazard.engine.exception.NoSuchPawnException;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.pawns.GamePawn;
@@ -7,6 +8,7 @@ import jdk.nashorn.internal.runtime.JSONFunctions;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -115,4 +117,21 @@ public class GameMap {
         return strongholdArea;
     }
 
+    public String toJSON() {
+        Gson g = new Gson();
+        GsonBuilder gb = new GsonBuilder();
+    }
+
+    public class GameMapSerializer implements JsonSerializer<GameMap> {
+
+        @Override
+        public JsonElement serialize(GameMap gameMap, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            JsonObject locations = new JsonObject();
+            for (Location l: mapGraph.vertexSet()) {
+
+            }
+            return result;
+        }
+    }
 }
