@@ -341,6 +341,12 @@ public class GameState {
      * @param l2
      */
     public void block(Location l1, Location l2) {
+        //Check if there is already a blockade
+        for (Blockade b: blockades) {
+            if (b.contains(l1, l2)) {
+                throw new CannotCreateBlockadeException("A blockade is already present.");
+            }
+        }
         //Check if locations are adjacent
         Set<Location> locations = gameMap.getAdjacentLocations(l1);
         if (locations.contains(l2)) {

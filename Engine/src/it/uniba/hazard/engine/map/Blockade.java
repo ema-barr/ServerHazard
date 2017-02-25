@@ -3,7 +3,9 @@ package it.uniba.hazard.engine.map;
 import it.uniba.hazard.engine.exception.CannotCreateBlockadeException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by andrea_iovine on 05/01/2017.
@@ -11,9 +13,10 @@ import java.util.List;
  * Neither players nor emergencies can pass through a blockade.
  */
 public class Blockade {
-    private ArrayList<Location> locations;
+    private Set<Location> locations;
 
     public Blockade(Location location1, Location location2) {
+        locations = new HashSet<Location>();
         if (!location1.equals(location2)) {
             locations.add(location1);
             locations.add(location2);
@@ -22,7 +25,7 @@ public class Blockade {
         }
     }
 
-    public List<Location> getLocations() {
+    public Set<Location> getLocations() {
         return locations;
     }
 
