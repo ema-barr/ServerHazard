@@ -360,6 +360,21 @@ public class GameState {
     }
 
     /**
+     * Checks whether there is a blockade between the specified locations
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public boolean isBlocked(Location l1, Location l2) {
+        try {
+            findBlockade(l1, l2);
+        } catch(NoSuchBlockadeException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Removes a previously placed blockade between two locations. Throws an exception if there is no
      * blockade between them.
      * @param l1
