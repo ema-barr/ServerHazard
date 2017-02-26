@@ -1,5 +1,8 @@
 package it.uniba.hazard.engine.main;
 
+import com.google.gson.*;
+
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -22,5 +25,26 @@ public class GeneralHazardIndicator {
 
     public int getCurrentLevel() {
         return steps.get(currentStep);
+    }
+
+    public JsonElement toJson() {
+        GsonBuilder gb = new GsonBuilder();
+        gb.registerTypeAdapter(GeneralHazardIndicator.class, new GeneralHazardIndicatorSerializer());
+        return gb.create().toJsonTree(this);
+    }
+
+    public class GeneralHazardIndicatorSerializer implements JsonSerializer<GeneralHazardIndicator> {
+
+        @Override
+        public JsonElement serialize(GeneralHazardIndicator generalHazardIndicator, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            JsonArray stepsJson = new JsonArray();
+            for (int i : steps) {
+                stepsJson.add(i);
+            }
+            result.add("steps", stepsJson);
+            result.addProperty("currentStepIndex", currentStep);
+            return result;
+        }
     }
 }

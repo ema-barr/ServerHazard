@@ -118,7 +118,6 @@ public class GameMap {
     }
 
     public JsonElement toJSON() {
-        Gson g = new Gson();
         GsonBuilder gb = new GsonBuilder();
         gb.registerTypeAdapter(GameMap.class, new GameMapSerializer());
         return gb.create().toJsonTree(this);
