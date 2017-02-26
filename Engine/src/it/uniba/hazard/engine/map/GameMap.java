@@ -117,7 +117,7 @@ public class GameMap {
         return strongholdArea;
     }
 
-    public JsonElement toJSON() {
+    public JsonElement toJson() {
         GsonBuilder gb = new GsonBuilder();
         gb.registerTypeAdapter(GameMap.class, new GameMapSerializer());
         return gb.create().toJsonTree(this);
