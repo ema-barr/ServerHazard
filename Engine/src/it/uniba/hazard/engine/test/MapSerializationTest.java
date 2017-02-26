@@ -6,6 +6,7 @@ import it.uniba.hazard.engine.endgame.StrongholdInAllAreasVictoryCondition;
 import it.uniba.hazard.engine.endgame.VictoryCondition;
 import it.uniba.hazard.engine.groups.ActionGroup;
 import it.uniba.hazard.engine.main.Emergency;
+import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.GeneralHazardIndicator;
 import it.uniba.hazard.engine.main.Resource;
 import it.uniba.hazard.engine.map.Area;
@@ -65,8 +66,23 @@ public class MapSerializationTest {
 
         GameMap map = new GameMap(mapGraph, areas);
 
+        GameState gs = new GameState(map,
+                null,
+                null,
+                null,
+                emergencies,
+                null,
+                null,
+                null,
+                5,
+                5,
+                1,
+                null
+                );
+
         ActionPawn p = new ActionPawn(new ActionGroup(null, null, null, null, null, null, null));
         map.placePawn(p, l1);
         System.out.println(map.toJSON().toString());
+        System.out.println(gs.toJson().toString());
     }
 }

@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.main;
 
+import com.google.gson.*;
 import it.uniba.hazard.engine.cards.*;
 import it.uniba.hazard.engine.endgame.LossCondition;
 import it.uniba.hazard.engine.endgame.VictoryCondition;
@@ -14,6 +15,7 @@ import it.uniba.hazard.engine.pawns.GamePawn;
 import it.uniba.hazard.engine.pawns.StrongholdPawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -519,6 +521,16 @@ public class GameState {
         return turns;
     }
 
+    /**
+     * Returns a Json object containing the game state
+     * @return
+     */
+    public JsonElement toJson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(GameState.class, new GameStateSerializer());
+        return gsonBuilder.create().toJsonTree(this);
+    }
+
 
     /*Private Methods*/
 
@@ -552,5 +564,28 @@ public class GameState {
             }
         }
         return false;
+    }
+
+    public class GameStateSerializer implements JsonSerializer<GameState> {
+
+        @Override
+        public JsonElement serialize(GameState gameState, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            result.addProperty("currentState", currentState.toString());
+            result.add("gameMap", gameMap.toJSON());
+            JsonArray blockJson = new JsonArray();
+            for (Blockade b : blockades) {
+                blockJson.add(b.toJson());
+            }
+            result.add("blockades", blockJson);
+            JsonArray emergencyJson = new JsonArray();
+            for (Emergency e : emergencies) {
+                emergencyJson.add(e.toJson());
+            }
+            result.add("emergencies", emergencyJson);
+            result.addProperty("numOfProductionCards", numberOfProductionCards);
+            result.addProperty("currentStrongholdCost", currentStrongholdCost);
+            return result;
+        }
     }
 }
