@@ -6,6 +6,7 @@ import it.uniba.hazard.engine.map.Location;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -14,6 +15,7 @@ public class CardManager<C> {
     public List<C> cards;
 
     public List<C> instanceCards = new ArrayList<C>();
+    public HashMap<ProductionCard,Integer> instanceProductionCards = new HashMap<ProductionCard,Integer>();
 
     public CardManager(){};
 
@@ -56,6 +58,10 @@ public class CardManager<C> {
         Random random = new Random();
         int number = random.nextInt(cards.size()-1);
         return number;
+    }
+
+    public void instanceCard(ProductionCard pc, int quantity){
+        instanceProductionCards.put(pc,quantity);
     }
 
     //metodo per istanziare le carte dall'xml
