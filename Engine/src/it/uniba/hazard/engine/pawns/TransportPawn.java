@@ -83,6 +83,7 @@ public class TransportPawn implements PlayerPawn{
             result.addProperty("pawnID", objectID);
             result.addProperty("type", "TransportPawn");
             result.addProperty("group", productionGroup.toString());
+            result.add("payload", payload.toJson());
             return result;
     }
     }

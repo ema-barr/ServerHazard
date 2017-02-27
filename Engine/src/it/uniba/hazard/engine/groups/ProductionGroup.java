@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.groups;
 
+import com.google.gson.*;
 import it.uniba.hazard.engine.exception.MaxNumberOfTransportPawnsReachedException;
 import it.uniba.hazard.engine.exception.TransportPawnNotFoundException;
 import it.uniba.hazard.engine.main.GameState;
@@ -7,6 +8,7 @@ import it.uniba.hazard.engine.main.Provisions;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class ProductionGroup {
@@ -69,5 +71,20 @@ public class ProductionGroup {
     @Override
     public String toString() {
         return nameProductionGroup;
+    }
+
+    public class ProductionGroupSerializer implements JsonSerializer<ProductionGroup> {
+
+        @Override
+        public JsonElement serialize(ProductionGroup productionGroup, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            result.addProperty("name", nameProductionGroup);
+            JsonArray transportJson = new JsonArray();
+            for (TransportPawn tp : pawns) {
+                transportJson.add(tp.toJson());
+            }
+            result.add("transportPawns", transportJson);
+            return result;
+        }
     }
 }
