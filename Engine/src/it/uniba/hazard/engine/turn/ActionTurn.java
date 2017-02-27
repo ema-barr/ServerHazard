@@ -1,6 +1,8 @@
 package it.uniba.hazard.engine.turn;
 
+import it.uniba.hazard.engine.cards.BonusCard;
 import it.uniba.hazard.engine.cards.Card;
+import it.uniba.hazard.engine.exception.NoActionsAvailableException;
 import it.uniba.hazard.engine.groups.ActionGroup;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
@@ -8,7 +10,9 @@ import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.ActionPawn;
 import it.uniba.hazard.engine.pawns.GamePawn;
+import it.uniba.hazard.engine.pawns.TransportPawn;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,74 +25,80 @@ import java.util.Set;
  */
 public class ActionTurn implements PlayerTurn {
 
+    // attributo rappresentante il gruppo azione
     private ActionGroup player;
-    private int pawns;
 
-    private List<Card> bonusCards;
+    // attributo rappresentante la lista di carte bonus
+    private List<BonusCard> bonusCards;
 
-    private int numActions = 4;
+    // numero massimo di azioni disponibili nel singolo turno
+    private int numActions;
+
+    // numero di azioni eseguite
     private int currentActions = 0;
 
-    public ActionTurn (ActionGroup pl, int pa) {
+    // costruttori
+    public ActionTurn (ActionGroup pl, int na) {
         player = pl;
-        pawns = pa;
+        numActions = na;
+        bonusCards = new ArrayList<>();
     }
 
     public ActionGroup getPlayer() {
         return player;
     }
 
+    private void solveEmergency (GameState gameState, String emergencyStr) {
+        Emergency e = (Emergency) Repository.getFromRepository(emergencyStr);
+        player.solveEmergency(gameState, e);
+    }
 
+    private void moveActionPawn (GameState gameState, String locationStr) {
+        Location destination = Repository.getLocationFromRepository(locationStr);
+        player.moveActionPawn(gameState, destination);
+    }
 
-    private void movePawn (GameState gameState, String pawnStr, String currentLocationStr, String newLocationStr) {
-        Set<Location> ls = gameState.getMapLocations();
-        Location currentLocation = null;
+    private void takeResources (GameState gameState, String pawnStr) {
+        TransportPawn tp = Repository.getTransportPawnFromRepository(pawnStr);
+        player.takeResources(gameState, tp);
 
-        for (Location l : ls) {
-            if (l.toString().equals(currentLocationStr)) {
-                currentLocation = l;
+    }
+
+    private void setBonusCards (GameState gameState, String numCardsStr) {
+        int numCards = Integer.valueOf(numCardsStr);
+        List<BonusCard> newBonusCards = gameState.getBonusCards(numCards);
+        if (!newBonusCards.isEmpty()) {
+            for (BonusCard bc : newBonusCards) {
+                bonusCards.add(bc);
             }
-        }
 
-        if (currentLocation != null) {
-            ActionPawn pawn = null;
-            Set<GamePawn> ps = gameState.getPawnsOnLocation(currentLocation);
-            for (GamePawn p : ps) {
-                ActionPawn temp = (ActionPawn) p;
-                if (temp.getObjectID().equals(pawnStr)) {
-                    pawn = temp;
-                }
-            }
-
-            if (pawn != null) {
-                ls = gameState.getAdjacentLocations(pawn);
-                Location newLocation = null;
-                for (Location l : ls) {
-                    if (l.toString().equals(newLocationStr)) {
-                        newLocation = l;
-                    }
-                }
-
-                if (newLocation != null) {
-                    //gameState.removePawn(pawn);
-                    gameState.movePawn(pawn, newLocation);
-                }
-            }
         }
     }
 
-    private void getResources (GameState gameState) {
-
+    private void useBonusCard (GameState gameState, String cardStr) {
+        int numCard = Integer.valueOf(cardStr);
+        bonusCards.get(numCard).executeAction(gameState);
     }
 
-
-    // metodo per settare le carte bonus
-    private void setBonusCards (GameState gameState) {
-
+    private List<BonusCard> getBonusCards (GameState gameState) {
+        // da modificare
+        return bonusCards;
     }
 
-    private void useBonusCard (GameState gameState) {
+    private void addBonusCard (GameState gameState) {
+        List<BonusCard> newBonusCards = gameState.getBonusCards(1);
+        if (!newBonusCards.isEmpty())
+            bonusCards.add(newBonusCards.get(0));
+    }
 
+    private void deleteAllBonusCard (GameState gameState) {
+        bonusCards.clear();
+    }
+
+    private void buildStronghold (GameState gameState, String emergencyStr, String locationStr) {
+        Emergency emergencyStronghold = (Emergency) Repository.getFromRepository(emergencyStr);
+        Location locationStronghold = (Location) Repository.getFromRepository(locationStr);
+        player.buildStronghold(gameState, emergencyStronghold, locationStronghold);
     }
 
     @Override
@@ -101,35 +111,44 @@ public class ActionTurn implements PlayerTurn {
         if (currentActions < numActions) {
             switch (param[0]) {
                 case "moveActionPawn":
-                    Location destination = (Location) Repository.getFromRepository(param[1]);
-                    player.moveActionPawn(gameState, destination);
+                    this.moveActionPawn(gameState, param[1]);
+                    currentActions++;
                     break;
 
                 case "solveEmergency":
-                    Emergency e = (Emergency) Repository.getFromRepository(param[1]);
-                    player.solveEmergency(gameState, e);
+                    this.solveEmergency(gameState, param[1]);
+                    currentActions++;
                     break;
 
-                case "getResources":
-                    this.getResources(gameState, param[1], param[2], param[3]);
+                case "takeResources":
+                    this.takeResources(gameState, param[1]);
+                    currentActions++;
                     break;
 
                 case "buildStronghold":
-                    Emergency emergencyStronghold = (Emergency) Repository.getFromRepository(param[1]);
-                    Location locationStronghold = (Location) Repository.getFromRepository(param[2]);
-                    player.buildStronghold(gameState, emergencyStronghold, locationStronghold);
+                    this.buildStronghold(gameState, param[1], param[2]);
                     currentActions++;
                     break;
 
                 case "getBonusCards":
-                    this.setBonusCards(gameState, param[1], param[2], param[3]);
+                    this.setBonusCards(gameState, param[1]);
                     break;
+
                 case "useBonusCard":
-                    this.useBonusCard(gameState, param[1], param[2], param[3]);
+                    this.useBonusCard(gameState, param[1]);
+                    break;
+
+                case "deleteAllBonusCard":
+                    this.deleteAllBonusCard(gameState);
+                    break;
+
+                case "addBonusCard":
+                    this.addBonusCard(gameState);
                     break;
             }
-            currentActions++;
         }
-        // else throw exception
+        else {
+            throw new NoActionsAvailableException("The maximum number of actions for this turn is reached");
+        }
     }
 }
