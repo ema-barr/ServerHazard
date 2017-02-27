@@ -572,19 +572,26 @@ public class GameState {
         public JsonElement serialize(GameState gameState, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject result = new JsonObject();
             result.addProperty("currentState", currentState.toString());
-            result.add("gameMap", gameMap.toJSON());
+            result.add("gameMap", gameMap.toJson());
             JsonArray blockJson = new JsonArray();
             for (Blockade b : blockades) {
                 blockJson.add(b.toJson());
             }
             result.add("blockades", blockJson);
             JsonArray emergencyJson = new JsonArray();
+            JsonArray contagionRatiosJson = new JsonArray();
             for (Emergency e : emergencies) {
                 emergencyJson.add(e.toJson());
+                JsonObject contagionJson = new JsonObject();
+                contagionJson.addProperty("emergency", e.getNameEmergency());
+                contagionJson.addProperty("contagionRatio", getContagionRatio(e));
+                contagionRatiosJson.add(contagionJson);
             }
             result.add("emergencies", emergencyJson);
+            result.addProperty("maxEmergencyLevel", maxEmergencyLevel);
             result.addProperty("numOfProductionCards", numberOfProductionCards);
             result.addProperty("currentStrongholdCost", currentStrongholdCost);
+            result.add("contagionRatios", contagionRatiosJson);
             return result;
         }
     }
