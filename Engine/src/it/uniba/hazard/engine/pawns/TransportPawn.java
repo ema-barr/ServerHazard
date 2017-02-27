@@ -1,11 +1,13 @@
 package it.uniba.hazard.engine.pawns;
 
+import com.google.gson.*;
 import it.uniba.hazard.engine.exception.ResourceNotInPayloadException;
 import it.uniba.hazard.engine.groups.ProductionGroup;
 import it.uniba.hazard.engine.main.Provisions;
 import it.uniba.hazard.engine.main.Resource;
 import it.uniba.hazard.engine.map.Location;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +62,28 @@ public class TransportPawn implements PlayerPawn{
         }
     }
 
+
+    @Override
+    public JsonElement toJson() {
+        GsonBuilder gb = new GsonBuilder();
+        gb.registerTypeAdapter(ActionPawn.class, new TransportPawnSerializer());
+        return gb.create().toJsonTree(this);
+    }
+
     @Override
     public String toString() {
         return productionGroup.toString() + "_" + id;
+    }
+
+    public class TransportPawnSerializer implements JsonSerializer<TransportPawn> {
+
+        @Override
+        public JsonElement serialize(TransportPawn transportPawn, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            result.addProperty("pawnID", objectID);
+            result.addProperty("type", "TransportPawn");
+            result.addProperty("group", productionGroup.toString());
+            return result;
+    }
     }
 }

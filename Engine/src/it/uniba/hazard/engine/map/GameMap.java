@@ -135,8 +135,7 @@ public class GameMap {
             result.add("locations", locations);
             JsonArray pawnsJson = new JsonArray();
             for (GamePawn p: pawnLocations.keySet()) {
-                JsonObject pj = new JsonObject();
-                pj.addProperty("pawnId", p.getObjectID());
+                JsonObject pj = p.toJson().getAsJsonObject();
                 pj.addProperty("location", pawnLocations.get(p).toString());
                 pawnsJson.add(pj);
             }
