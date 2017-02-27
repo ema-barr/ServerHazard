@@ -31,7 +31,7 @@ public class ContagionPercentageLossCondition implements LossCondition {
             for (int i = 0; i < emergencies.size(); i++) {
                 //For each emergency, check if the location has maximum level
                 Emergency e = emergencies.get(i);
-                if (l.getEmergencyLevel(e) == state.MAX_EMERGENCY_LEVEL) {
+                if (l.getEmergencyLevel(e) == state.getMaxEmergencyLevel()) {
                     maxEmergencyLocations[i]++;
                 }
             }

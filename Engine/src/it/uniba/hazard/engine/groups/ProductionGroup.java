@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.groups;
 
+import it.uniba.hazard.engine.exception.CannotMovePawnException;
 import it.uniba.hazard.engine.exception.MaxNumberOfTransportPawnsReachedException;
 import it.uniba.hazard.engine.exception.TransportPawnNotFoundException;
 import it.uniba.hazard.engine.main.GameState;
@@ -8,6 +9,7 @@ import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
 import java.util.List;
+import java.util.Set;
 
 public class ProductionGroup {
     private String objectID;
@@ -63,7 +65,19 @@ public class ProductionGroup {
     }
 
     public void moveTransportPawn(GameState state, TransportPawn transportPawn, Location location){
-        state.movePawn(transportPawn, location);
+        Set<Location> adjacentLocations = state.getAdjacentLocations(transportPawn);
+        boolean found = false;
+        for (Location adjLoc: adjacentLocations){
+            if (adjLoc.toString().equals(location.toString())){
+                found = true;
+                break;
+            }
+        }
+        if (found){
+            state.movePawn(transportPawn, location);
+        } else {
+            throw new CannotMovePawnException("Invalid location");
+        }
     }
 
     @Override

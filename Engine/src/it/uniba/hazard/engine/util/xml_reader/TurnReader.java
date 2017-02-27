@@ -148,6 +148,29 @@ public class TurnReader {
         return null;
     }
 
+    public static int readNumOfProductionCards(String path){
+        try{
+            File fXmlFile = new File(path);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+            doc.getDocumentElement().normalize();
+
+            Element gameElem = (Element) doc.getElementsByTagName("game").item(0);
+            Element turnsElem = (Element) gameElem.getElementsByTagName("turns").item(0);
+
+            Element numOfProdElem = (Element) turnsElem.getElementsByTagName("numOfProductionCards").item(0);
+            return Integer.parseInt(numOfProdElem.getTextContent());
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public static List<EventTurn> readEventTurns(String path){
         try{
             File fXmlFile = new File(path);

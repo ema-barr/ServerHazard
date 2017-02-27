@@ -27,7 +27,6 @@ public class GameState {
     };
 
     private GameMap gameMap;
-    private Map<Emergency, GeneralHazardIndicator> indicators;
     private CardManager<BonusCard> bonusCardManager;
     private CardManager<ProductionCard> prodCardManager;
     private CardManager<EventCard> eventCardManager;
@@ -47,7 +46,6 @@ public class GameState {
     private int defaultNumOfProductionCards;
 
     public GameState(GameMap gameMap,
-                     Map<Emergency, GeneralHazardIndicator> indicators,
                      CardManager<BonusCard> bonusCardManager,
                      CardManager<ProductionCard> prodCardManager,
                      CardManager<EventCard> eventCardManager,
@@ -60,7 +58,6 @@ public class GameState {
                      int defaultNumOfProductionCards,
                      TurnSequence turns) {
         this.gameMap = gameMap;
-        this.indicators = indicators;
         this.bonusCardManager = bonusCardManager;
         this.prodCardManager = prodCardManager;
         this.eventCardManager = eventCardManager;
@@ -272,7 +269,7 @@ public class GameState {
      * @return
      */
     public int getGeneralHazardIndicatorLevel(Emergency e) {
-        return indicators.get(e).getCurrentLevel();
+        return e.getGeneralHazardIndicator().getCurrentLevel();
     }
 
     /**
@@ -280,7 +277,7 @@ public class GameState {
      * @param e
      */
     public void raiseGeneralHazardIndicatorLevel(Emergency e) {
-        indicators.get(e).raiseHazardLevel();
+        e.getGeneralHazardIndicator().raiseHazardLevel();
     }
 
     /**
@@ -344,6 +341,12 @@ public class GameState {
      * @param l2
      */
     public void block(Location l1, Location l2) {
+        //Check if there is already a blockade
+        for (Blockade b: blockades) {
+            if (b.contains(l1, l2)) {
+                throw new CannotCreateBlockadeException("A blockade is already present.");
+            }
+        }
         //Check if locations are adjacent
         Set<Location> locations = gameMap.getAdjacentLocations(l1);
         if (locations.contains(l2)) {
@@ -354,6 +357,21 @@ public class GameState {
         } else {
             throw new CannotCreateBlockadeException("Locations must be adjacent");
         }
+    }
+
+    /**
+     * Checks whether there is a blockade between the specified locations
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public boolean isBlocked(Location l1, Location l2) {
+        try {
+            findBlockade(l1, l2);
+        } catch(NoSuchBlockadeException e) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -475,6 +493,14 @@ public class GameState {
     }
 
     /**
+     * Returns the maximum emergency level.
+     * @return
+     */
+    public int getMaxEmergencyLevel() {
+        return maxEmergencyLevel;
+    }
+
+    /**
      * Returns the object repository
      * @return
      */
@@ -547,7 +573,7 @@ public class GameState {
         repository.insertInRepository(p.getObjectID(), p);
     }
 
-    private boolean isOccupiedByTransportPawn(Location l) {
+    public boolean isOccupiedByTransportPawn(Location l) {
         Set<GamePawn> pawnsOnLocation = gameMap.getPawnsOnLocation(l);
         for (GamePawn p : pawnsOnLocation) {
             if (p instanceof TransportPawn) {

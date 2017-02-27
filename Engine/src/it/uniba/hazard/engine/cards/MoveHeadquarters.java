@@ -21,4 +21,9 @@ public class MoveHeadquarters extends BonusCard{
     public void executeAction(GameState gameState) {
 
     }
+
+    @Override
+    public void revertAction(GameState gameState) {
+
+    }
 }

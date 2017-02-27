@@ -48,6 +48,10 @@ public class ProductionTurn implements PlayerTurn {
         numberOfCards = nc;
     }
 
+    public ProductionGroup getPlayer() {
+        return player;
+    }
+
     // metodo da eseguire a inizio turno
     // pesca un numero di ProductionCard pari a numberOfCards
     @Override
