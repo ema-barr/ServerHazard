@@ -6,5 +6,6 @@ package it.uniba.hazard.engine.exception;
 public class NoActionsAvailableException extends RuntimeException {
     public NoActionsAvailableException (String message) {
         super(message);
+
     }
 }
