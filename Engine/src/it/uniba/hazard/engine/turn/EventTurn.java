@@ -20,16 +20,11 @@ public class EventTurn implements Turn {
     private List<EventCard> activatedCards;
 
     // numero di carte evento da richiedere
-    private int numberOfCards = 1;
+    private int numberOfCards;
 
     // numero di carte evento da attivare
-    private int numberOfExecutions = 1;
+    private int numberOfExecutions;
 
-    // cotruttore, richiede un numero di carte pari a numberOfCards
-    public EventTurn (GameState gameState) {
-
-        eventCards = gameState.getEventCards(numberOfCards);
-    }
 
     // costruttore per modificare il numero di carte da richiedere
     // e il numero di carte da attivare
