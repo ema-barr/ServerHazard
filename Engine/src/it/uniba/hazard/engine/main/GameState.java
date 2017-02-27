@@ -493,6 +493,14 @@ public class GameState {
     }
 
     /**
+     * Returns the maximum emergency level.
+     * @return
+     */
+    public int getMaxEmergencyLevel() {
+        return maxEmergencyLevel;
+    }
+
+    /**
      * Returns the object repository
      * @return
      */
