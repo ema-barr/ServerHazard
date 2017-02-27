@@ -82,7 +82,7 @@ public class MapSerializationTest {
 
         ActionPawn p = new ActionPawn(new ActionGroup(null, null, null, null, null, null, null));
         map.placePawn(p, l1);
-        System.out.println(map.toJSON().toString());
+        System.out.println(map.toJson().toString());
         System.out.println(gs.toJson().toString());
     }
 }
