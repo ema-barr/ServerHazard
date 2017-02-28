@@ -149,6 +149,10 @@ public class ActionTurn implements PlayerTurn {
             JsonObject result = new JsonObject();
             result.addProperty("type", "ActionTurn");
             result.add("group", player.toJson());
+            JsonArray cardsJson = new JsonArray();
+            for (Card c : bonusCards) {
+                cardsJson.add(((BonusCard) c).toJson());
+            }
             result.addProperty("numActions", currentActions);
             result.addProperty("maxNumActions", numActions);
             return result;
