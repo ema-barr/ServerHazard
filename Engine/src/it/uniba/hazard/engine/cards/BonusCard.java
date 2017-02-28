@@ -26,5 +26,10 @@ public class BonusCard implements Card {
 
     }
 
+    @Override
+    public String getObjectID() {
+        return null;
+    }
+
 
 }
