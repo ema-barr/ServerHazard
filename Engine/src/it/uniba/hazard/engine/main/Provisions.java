@@ -1,7 +1,9 @@
 package it.uniba.hazard.engine.main;
 
+import com.google.gson.*;
 import it.uniba.hazard.engine.exception.ResourceNotFoundException;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +63,12 @@ public class Provisions {
         return resources.isEmpty();
     }
 
+    public JsonElement toJson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Provisions.class, new ProvisionsSerializer());
+        return gsonBuilder.create().toJsonTree(this);
+    }
+
     public Map<Resource, Integer> getResources() {
         return resources;
     }
@@ -68,5 +76,20 @@ public class Provisions {
     @Override
     public String toString() {
         return objectID;
+    }
+
+    public class ProvisionsSerializer implements JsonSerializer<Provisions> {
+
+        @Override
+        public JsonElement serialize(Provisions provisions, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonArray result = new JsonArray();
+            for (Resource r : resources.keySet()) {
+                JsonObject resJson = new JsonObject();
+                resJson.addProperty("resource", r.getNameResource());
+                resJson.addProperty("quantity", resources.get(r));
+                result.add(resJson);
+            }
+            return result;
+        }
     }
 }

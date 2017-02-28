@@ -117,9 +117,10 @@ public class GameMap {
         return strongholdArea;
     }
 
-    public String toJSON() {
-        Gson g = new Gson();
+    public JsonElement toJson() {
         GsonBuilder gb = new GsonBuilder();
+        gb.registerTypeAdapter(GameMap.class, new GameMapSerializer());
+        return gb.create().toJsonTree(this);
     }
 
     public class GameMapSerializer implements JsonSerializer<GameMap> {
@@ -127,10 +128,18 @@ public class GameMap {
         @Override
         public JsonElement serialize(GameMap gameMap, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject result = new JsonObject();
-            JsonObject locations = new JsonObject();
+            JsonArray locations = new JsonArray();
             for (Location l: mapGraph.vertexSet()) {
-
+                locations.add(l.toJson());
             }
+            result.add("locations", locations);
+            JsonArray pawnsJson = new JsonArray();
+            for (GamePawn p: pawnLocations.keySet()) {
+                JsonObject pj = p.toJson().getAsJsonObject();
+                pj.addProperty("location", pawnLocations.get(p).toString());
+                pawnsJson.add(pj);
+            }
+            result.add("pawns", pawnsJson);
             return result;
         }
     }

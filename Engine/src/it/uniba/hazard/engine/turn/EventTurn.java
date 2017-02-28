@@ -1,5 +1,7 @@
 package it.uniba.hazard.engine.turn;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.cards.Card;
 import it.uniba.hazard.engine.cards.EventCard;
 import it.uniba.hazard.engine.main.GameState;
@@ -70,5 +72,11 @@ public class EventTurn implements Turn {
                 ", numberOfCards=" + numberOfCards +
                 ", numberOfExecutions=" + numberOfExecutions +
                 '}';
+    }
+
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+        result.addProperty("type", "EventTurn");
+        return result;
     }
 }

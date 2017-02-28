@@ -1,8 +1,10 @@
 package it.uniba.hazard.engine.map;
 
+import com.google.gson.*;
 import it.uniba.hazard.engine.exception.InvalidEmergencyLevelException;
 import it.uniba.hazard.engine.main.Emergency;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,5 +63,29 @@ public class Location implements Comparable<Location>{
 
     public boolean isQuarantined() {
         return isQuarantined;
+    }
+
+    public JsonElement toJson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Location.class, new LocationSerializer());
+        return gsonBuilder.create().toJsonTree(this);
+    }
+
+    public class LocationSerializer implements JsonSerializer<Location> {
+
+        @Override
+        public JsonElement serialize(Location location, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject res = new JsonObject();
+            res.addProperty("name", Location.this.name);
+            JsonArray emergencyLevelsJson = new JsonArray();
+            for (Emergency e : emergencyLevels.keySet()) {
+                JsonObject j = new JsonObject();
+                j.addProperty("emergency", e.getNameEmergency());
+                j.addProperty("level", emergencyLevels.get(e));
+                emergencyLevelsJson.add(j);
+            }
+            res.add("emergencyLevels", emergencyLevelsJson);
+            return res;
+        }
     }
 }
