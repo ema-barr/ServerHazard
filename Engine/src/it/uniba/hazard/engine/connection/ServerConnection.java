@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.connection;
 
+import it.uniba.hazard.engine.connection.listeners.RequestListener;
 import it.uniba.hazard.engine.connection.listeners.ServerConnectionListener;
 import it.uniba.hazard.engine.main.Game;
 
@@ -31,6 +32,7 @@ public class ServerConnection {
     }
 
     private void initializeListeners() {
-        socket.on("welcome", new ServerConnectionListener(socket));
+        socket.on("welcome", new ServerConnectionListener(socket, game));
+        socket.on("request", new RequestListener(socket, game));
     }
 }

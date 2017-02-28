@@ -4,18 +4,22 @@ import io.socket.client.Ack;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import it.uniba.hazard.engine.connection.ServerConnection;
+import it.uniba.hazard.engine.main.Game;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ServerConnectionListener implements Emitter.Listener{
+/**
+ * This class listens to the "welcome" server message, and sends back a message to the server identifying itself as
+ * the game engine.
+ */
+public class ServerConnectionListener extends Listener {
     private final static Logger LOGGER = Logger.getLogger(ServerConnectionListener.class.getName());
-    private Socket socket;
 
-    public ServerConnectionListener(Socket socket) {
-        this.socket = socket;
+    public ServerConnectionListener(Socket socket, Game game) {
+        super(socket, game);
     }
 
     @Override
