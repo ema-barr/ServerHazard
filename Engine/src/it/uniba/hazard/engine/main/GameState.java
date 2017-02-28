@@ -343,6 +343,12 @@ public class GameState {
      * @param l2
      */
     public void block(Location l1, Location l2) {
+        //Check if there is already a blockade
+        for (Blockade b: blockades) {
+            if (b.contains(l1, l2)) {
+                throw new CannotCreateBlockadeException("A blockade is already present.");
+            }
+        }
         //Check if locations are adjacent
         Set<Location> locations = gameMap.getAdjacentLocations(l1);
         if (locations.contains(l2)) {
@@ -353,6 +359,21 @@ public class GameState {
         } else {
             throw new CannotCreateBlockadeException("Locations must be adjacent");
         }
+    }
+
+    /**
+     * Checks whether there is a blockade between the specified locations
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public boolean isBlocked(Location l1, Location l2) {
+        try {
+            findBlockade(l1, l2);
+        } catch(NoSuchBlockadeException e) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -471,6 +492,14 @@ public class GameState {
         }
 
         return ((double) counter) / locations.size();
+    }
+
+    /**
+     * Returns the maximum emergency level.
+     * @return
+     */
+    public int getMaxEmergencyLevel() {
+        return maxEmergencyLevel;
     }
 
     /**
