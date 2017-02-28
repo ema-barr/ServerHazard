@@ -1,5 +1,7 @@
 package it.uniba.hazard.engine.turn;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
 
@@ -23,5 +25,12 @@ public class EmergencyTurn implements Turn {
     @Override
     public void startTurn(GameState gameState) {
 
+    }
+
+    public JsonElement toJson() {
+        JsonObject result = new JsonObject();
+        result.addProperty("type", "EmergencyTurn");
+        result.addProperty("emergency", emergency.getNameEmergency());
+        return result;
     }
 }

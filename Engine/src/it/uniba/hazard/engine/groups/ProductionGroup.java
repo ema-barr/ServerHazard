@@ -73,6 +73,12 @@ public class ProductionGroup {
         return nameProductionGroup;
     }
 
+    public JsonElement toJson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(ProductionGroup.class, new ProductionGroupSerializer());
+        return gsonBuilder.create().toJsonTree(this);
+    }
+
     public class ProductionGroupSerializer implements JsonSerializer<ProductionGroup> {
 
         @Override

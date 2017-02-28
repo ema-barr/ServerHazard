@@ -5,14 +5,12 @@ import it.uniba.hazard.engine.endgame.LossCondition;
 import it.uniba.hazard.engine.endgame.StrongholdInAllAreasVictoryCondition;
 import it.uniba.hazard.engine.endgame.VictoryCondition;
 import it.uniba.hazard.engine.groups.ActionGroup;
-import it.uniba.hazard.engine.main.Emergency;
-import it.uniba.hazard.engine.main.GameState;
-import it.uniba.hazard.engine.main.GeneralHazardIndicator;
-import it.uniba.hazard.engine.main.Resource;
+import it.uniba.hazard.engine.main.*;
 import it.uniba.hazard.engine.map.Area;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.ActionPawn;
+import it.uniba.hazard.engine.turn.EmergencyTurn;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
@@ -82,7 +80,9 @@ public class MapSerializationTest {
 
         ActionPawn p = new ActionPawn(new ActionGroup(null, null, null, null, null, null, null));
         map.placePawn(p, l1);
+        Game g = new Game(gs, new TurnSequence(new ArrayList<Turn>()));
         System.out.println(map.toJson().toString());
         System.out.println(gs.toJson().toString());
+        System.out.println(g.toJson());
     }
 }
