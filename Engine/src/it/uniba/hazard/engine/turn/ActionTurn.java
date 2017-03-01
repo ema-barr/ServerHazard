@@ -104,6 +104,10 @@ public class ActionTurn implements PlayerTurn {
         player.buildStronghold(gameState, emergencyStronghold, locationStronghold);
     }
 
+    private int getCurrentActions (GameState) {
+        return currentActions;
+    }
+
     @Override
     public void executeTurn(GameState gameState) {
 
@@ -148,6 +152,11 @@ public class ActionTurn implements PlayerTurn {
                 case "addBonusCard":
                     this.addBonusCard(gameState);
                     break;
+
+                case "getCurrentActions":
+                    this.getCurrentActions();
+                    break;
+
             }
         }
         else {
