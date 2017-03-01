@@ -4,6 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Turn;
+import it.uniba.hazard.engine.map.Location;
+
+import java.util.*;
 
 /**
  * Created by maccn on 25/12/2016.
@@ -16,15 +20,20 @@ public class EmergencyTurn implements Turn {
         emergency = e;
     }
 
-    public void firstTurn (GameState gameState) {
-        // esegue le azioni di settaggio iniziale della malattia
-        // TODO: come vengono decise le nazioni?
-        // gameState.diffuseEmergency(e,);
-    }
-
     @Override
-    public void startTurn(GameState gameState) {
+    public void executeTurn(GameState gameState) {
+        int numOfRandomLocations = gameState.getGeneralHazardIndicatorLevel(emergency);
 
+        ArrayList<Location> locs = new ArrayList<>(gameState.getMapLocations());
+        Map<Location, Integer> toDiffuse = new HashMap<>();
+
+        for (int i=0; i < numOfRandomLocations; i++) {
+            Random random = new Random();
+            int random_num = random.nextInt(locs.size()-1);
+            toDiffuse.put(locs.get(random_num), 1);
+            locs.remove(random_num);
+        }
+        gameState.diffuseEmergency(emergency, toDiffuse);
     }
 
     public JsonElement toJson() {
