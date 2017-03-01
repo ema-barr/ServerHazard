@@ -53,7 +53,7 @@ public class ProductionTurn implements PlayerTurn {
     // metodo da eseguire a inizio turno
     // pesca un numero di ProductionCard pari a numberOfCards
     @Override
-    public void startTurn(GameState gameState) {
+    public void executeTurn(GameState gameState) {
         /*
         Map<GamePawn, Location> pawns = gameState.getAllPawns();
         int numCurrentPawns = 0;
