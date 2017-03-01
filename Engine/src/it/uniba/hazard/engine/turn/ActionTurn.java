@@ -1,6 +1,8 @@
 package it.uniba.hazard.engine.turn;
 
 import it.uniba.hazard.engine.cards.BonusCard;
+import com.google.gson.*;
+import it.uniba.hazard.engine.cards.BonusCard;
 import it.uniba.hazard.engine.cards.Card;
 import it.uniba.hazard.engine.exception.NoActionsAvailableException;
 import it.uniba.hazard.engine.groups.ActionGroup;
@@ -12,6 +14,7 @@ import it.uniba.hazard.engine.pawns.ActionPawn;
 import it.uniba.hazard.engine.pawns.GamePawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -151,4 +154,29 @@ public class ActionTurn implements PlayerTurn {
             throw new NoActionsAvailableException("The maximum number of actions for this turn is reached");
         }
     }
+
+    public JsonElement toJson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(GameState.class, new ActionTurnSerializer());
+        return gsonBuilder.create().toJsonTree(this);
+    }
+
+    public class ActionTurnSerializer implements JsonSerializer<ActionTurn> {
+
+        @Override
+        public JsonElement serialize(ActionTurn actionTurn, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            result.addProperty("type", "ActionTurn");
+            result.add("group", player.toJson());
+            JsonArray cardsJson = new JsonArray();
+            for (Card c : bonusCards) {
+                cardsJson.add(((BonusCard) c).toJson());
+            }
+            result.addProperty("numActions", currentActions);
+            result.addProperty("maxNumActions", numActions);
+            return result;
+        }
+    }
+
+
 }

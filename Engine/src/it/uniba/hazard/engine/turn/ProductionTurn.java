@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.turn;
 
+import com.google.gson.*;
 import it.uniba.hazard.engine.cards.Card;
 import it.uniba.hazard.engine.cards.ProductionCard;
 import it.uniba.hazard.engine.groups.ProductionGroup;
@@ -12,6 +13,10 @@ import it.uniba.hazard.engine.pawns.GamePawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
 import java.util.*;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by maccn on 25/12/2016.
@@ -160,5 +165,23 @@ public class ProductionTurn implements PlayerTurn {
                 ", maxPawns=" + maxPawns +
                 ", numCurrentActions=" + numCurrentActions +
                 '}';
+    }
+
+    public JsonElement toJson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(ProductionTurn.class, new ProductionTurnSerializer());
+        return gsonBuilder.create().toJsonTree(this);
+    }
+
+    public class ProductionTurnSerializer implements JsonSerializer<ProductionTurn> {
+
+        @Override
+        public JsonElement serialize(ProductionTurn productionTurn, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            result.addProperty("type", "ActionTurn");
+            result.add("group", player.toJson());
+            //TODO: Add number of movements left for each transport pawn
+            return result;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.groups;
 
+import com.google.gson.*;
 import it.uniba.hazard.engine.exception.CannotMovePawnException;
 import it.uniba.hazard.engine.exception.InsufficientResourcesException;
 import it.uniba.hazard.engine.exception.EmergencyMismatchException;
@@ -8,6 +9,7 @@ import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.ActionPawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
@@ -136,10 +138,27 @@ public class ActionGroup {
         }
     }
 
+    public JsonElement toJson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(ActionGroup.class, new ActionGroupSerializer());
+        return gsonBuilder.create().toJsonTree(this);
+    }
+
 
     @Override
     public String toString() {
         return getNameActionGroup();
+    }
+
+    public class ActionGroupSerializer implements JsonSerializer<ActionGroup> {
+
+        @Override
+        public JsonElement serialize(ActionGroup actionGroup, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            result.addProperty("name", nameActionGroup);
+            result.add("resources", provisions.toJson());
+            return result;
+        }
     }
 
 }

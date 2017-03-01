@@ -1,7 +1,10 @@
 package it.uniba.hazard.engine.cards;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import it.uniba.hazard.engine.main.Game;
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.util.CardSerializer;
 
 //Super classe delle carte bonus
 public class BonusCard implements Card {
@@ -26,5 +29,15 @@ public class BonusCard implements Card {
 
     }
 
+    @Override
+    public String getObjectID() {
+        return null;
+    }
+
+    public JsonElement toJson() {
+        GsonBuilder gb = new GsonBuilder();
+        gb.registerTypeAdapter(BonusCard.class, new CardSerializer());
+        return gb.create().toJsonTree(this);
+    }
 
 }

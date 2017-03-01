@@ -1,5 +1,8 @@
 package it.uniba.hazard.engine.main;
 
+import com.google.gson.*;
+import java.lang.reflect.Type;
+
 public class Emergency {
     private String objectID;
     private String nameEmergency;
@@ -36,5 +39,24 @@ public class Emergency {
 
     public boolean equals(Object o) {
         return ((Emergency) o).nameEmergency.equals(nameEmergency);
+    }
+
+    public JsonElement toJson() {
+        GsonBuilder gb = new GsonBuilder();
+        gb.registerTypeAdapter(Emergency.class, new EmergencySerializer());
+        return gb.create().toJsonTree(this);
+    }
+
+    public class EmergencySerializer implements JsonSerializer<Emergency> {
+
+        @Override
+        public JsonElement serialize(Emergency emergency, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            result.addProperty("name", nameEmergency);
+            result.addProperty("resourceNeeded", resourceNeeded.getObjectID());
+            result.addProperty("objectID", objectID);
+            result.add("generalHazardIndicator", generalHazardIndicator.toJson());
+            return result;
+        }
     }
 }

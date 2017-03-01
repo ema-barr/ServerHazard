@@ -1,6 +1,9 @@
 package it.uniba.hazard.engine.pawns;
 
+import com.google.gson.*;
 import it.uniba.hazard.engine.main.Stronghold;
+
+import java.lang.reflect.Type;
 
 public class StrongholdPawn implements GamePawn {
     private String objectID;
@@ -27,7 +30,25 @@ public class StrongholdPawn implements GamePawn {
     }
 
     @Override
+    public JsonElement toJson() {
+        GsonBuilder gb = new GsonBuilder();
+        gb.registerTypeAdapter(ActionPawn.class, new StrongholdPawnSerializer());
+        return gb.create().toJsonTree(this);
+    }
+
+    @Override
     public String toString() {
         return stronghold.toString();
+    }
+
+    public class StrongholdPawnSerializer implements JsonSerializer<StrongholdPawn> {
+        @Override
+        public JsonElement serialize(StrongholdPawn strongholdPawn, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            result.addProperty("pawnID", objectID);
+            result.addProperty("type", "StrongholdPawn");
+            result.addProperty("forEmergency", stronghold.getStrongholdInfo().getEmergency().getNameEmergency());
+            return result;
+        }
     }
 }
