@@ -2,9 +2,9 @@ package it.uniba.hazard.engine.turn;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.uniba.hazard.engine.cards.Card;
 import it.uniba.hazard.engine.cards.EventCard;
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Turn;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class EventTurn implements Turn {
 
     // metodo da chiamare per eseguire le azioni di inizio turno
     @Override
-    public void startTurn(GameState gameState) {
+    public void executeTurn(GameState gameState) {
         revertEventCards(gameState);
         if (numberOfExecutions <= numberOfCards) {
             for (EventCard e : eventCards) {
