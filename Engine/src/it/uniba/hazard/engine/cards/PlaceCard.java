@@ -2,6 +2,7 @@ package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Resource;
+import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 
 import java.util.Dictionary;
@@ -22,7 +23,12 @@ public class PlaceCard extends ProductionCard{
     }
 
     @Override
-    public void executeAction(GameState gameState) {
+    public void executeAction(GameState gameState, Turn turn) {
+
+    }
+
+    @Override
+    public void revertAction(GameState gameState) {
 
     }
 }

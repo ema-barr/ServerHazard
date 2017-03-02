@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import it.uniba.hazard.engine.main.Game;
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.util.CardSerializer;
 
 //Super classe delle carte bonus
@@ -20,7 +21,7 @@ public class BonusCard implements Card {
 
 
     @Override
-    public void executeAction(GameState gameState) {
+    public void executeAction(GameState gameState, Turn turn) {
 
     }
 

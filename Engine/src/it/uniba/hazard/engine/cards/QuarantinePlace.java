@@ -2,6 +2,7 @@ package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Set;
 public class QuarantinePlace extends BonusCard{
 
     private String objectID;
+    private Emergency randomEmergency;
+
 
 
     public QuarantinePlace(String bonusType) {
@@ -24,11 +27,11 @@ public class QuarantinePlace extends BonusCard{
     }
 
     @Override
-    public void executeAction(GameState gameState) {
+    public void executeAction(GameState gameState,Turn turn) {
         List<Emergency> listEmergency =  gameState.getEmergencies();
         Set<Location> listLocation = gameState.getMapLocations();
         //prendo un' emergenza random
-        Emergency randomEmergency = listEmergency.get(new Random().nextInt(listEmergency.size()));
+        randomEmergency = listEmergency.get(new Random().nextInt(listEmergency.size()));
 
         Location[] l = new Location[listLocation.size()];
         listLocation.toArray(l);

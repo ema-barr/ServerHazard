@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 import  it.uniba.hazard.engine.exception.NoSuchBlockadeException;
 
@@ -22,7 +23,7 @@ public class AddBlockade extends EventCard{
     }
 
     @Override
-    public void executeAction(GameState gameState) {
+    public void executeAction(GameState gameState, Turn turn) {
         Set<Location> allLocations =  gameState.getMapLocations();
         Location[] l = new Location[allLocations.size()-1];
 

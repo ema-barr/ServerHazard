@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Turn;
 
 //Carta Evento: pesca una carta bonus
 public class TakeBonusCard extends EventCard{
@@ -18,7 +19,7 @@ public class TakeBonusCard extends EventCard{
     }
 
     @Override
-    public void executeAction(GameState gameState) {
+    public void executeAction(GameState gameState,Turn turn) {
         gameState.getBonusCards(1);
     }
 

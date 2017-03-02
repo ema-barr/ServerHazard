@@ -2,6 +2,7 @@ package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Resource;
+import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
 
@@ -22,7 +23,7 @@ public class BonusProductionCard extends EventCard{
 
 
     @Override
-    public void executeAction(GameState gameState) {
+    public void executeAction(GameState gameState,Turn turn) {
         numberProductionCards = gameState.getNumberOfProductionCards();
 
         //aumenta di uno il numero di carte produzione

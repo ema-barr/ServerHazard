@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Turn;
 
 //Carta Evento: non scaturisce nessun evento.
 public class DefaultCard extends EventCard{
@@ -17,7 +18,7 @@ public class DefaultCard extends EventCard{
     }
 
     @Override
-    public void executeAction(GameState gameState) {
+    public void executeAction(GameState gameState, Turn turn) {
 
     }
 
