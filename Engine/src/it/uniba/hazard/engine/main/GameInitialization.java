@@ -111,6 +111,7 @@ public class GameInitialization {
         ArrayList<Turn> turnOrder = (ArrayList<Turn>) TurnReader.readTurnOrder(pathXML);
         int numOfProductionCards = TurnReader.readNumOfProductionCards(pathXML);
         TurnSequence ts = new TurnSequence(turnOrder);
+        Repository.insertInRepository("turn_order", ts);
 
         //EndGame
         ArrayList<VictoryCondition> victoryConditionsList = (ArrayList<VictoryCondition>)
