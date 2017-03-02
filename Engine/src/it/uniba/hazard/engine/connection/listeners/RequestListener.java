@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import io.socket.client.Ack;
 import io.socket.client.Socket;
 import it.uniba.hazard.engine.main.Game;
+import it.uniba.hazard.engine.util.response.Response;
 import org.json.JSONObject;
 
 import java.util.logging.Level;
@@ -27,8 +28,7 @@ public class RequestListener extends Listener {
         JsonElement reqObject = parser.parse(((JSONObject) args[0]).toString());
         LOGGER.log(Level.INFO, "Received request from server. Request is: " + reqObject.toString());
         Ack ack = (Ack) args[args.length - 1];
-        JsonObject response = new JsonObject();
-        response.addProperty("response", "Response text");
-        ack.call(response);
+        Response response = game.request(reqObject);
+        ack.call(response.toJson());
     }
 }

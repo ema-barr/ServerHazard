@@ -44,6 +44,39 @@ io.on('connection', function (socket) {
           callback(response);
        });
     });
+
+    socket.on('getState', function(data, callback) {
+        console.log(data);
+        var reqData = data;
+        //Add the request name to the JSON request data
+        reqData.requestName = 'getState';
+        //Send the new request object to the game engine
+        io.sockets.connected[gameEngineSocketID].emit('request', reqData, function(response) {
+            callback(response);
+        });
+    });
+
+    socket.on('nextTurn', function(data, callback) {
+        console.log(data);
+        var reqData = data;
+        //Add the request name to the JSON request data
+        reqData.requestName = 'nextTurn';
+        //Send the new request object to the game engine
+        io.sockets.connected[gameEngineSocketID].emit('request', reqData, function(response) {
+            callback(response);
+        });
+    });
+
+    socket.on('solveEmergency', function(data, callback) {
+        console.log(data);
+        var reqData = data;
+        //Add the request name to the JSON request data
+        reqData.requestName = 'nextTurn';
+        //Send the new request object to the game engine
+        io.sockets.connected[gameEngineSocketID].emit('request', reqData, function(response) {
+            callback(response);
+        });
+    });
 });
 
 app.listen(6882);

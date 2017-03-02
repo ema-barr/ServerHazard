@@ -31,6 +31,14 @@ public class Game {
         currentTurn.executeTurn(state);
     }
 
+    public TurnSequence getTurns() {
+        return this.turns;
+    }
+
+    public GameState getState() {
+        return this.state;
+    }
+
     public JsonElement toJson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Game.class, new GameSerializer());
@@ -38,7 +46,7 @@ public class Game {
     }
 
     public Response request(JsonElement reqData) {
-        return controller.request(reqData, state, turns);
+        return controller.request(reqData, this);
     }
 
     public class GameSerializer implements JsonSerializer<Game> {

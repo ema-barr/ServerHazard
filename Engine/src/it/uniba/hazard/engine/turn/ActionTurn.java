@@ -105,11 +105,6 @@ public class ActionTurn implements PlayerTurn {
     }
 
     @Override
-    public void startTurn(GameState gameState) {
-
-    }
-
-    @Override
     public void runCommand(GameState gameState, String[] param) {
         if (currentActions < numActions) {
             switch (param[0]) {
@@ -155,9 +150,14 @@ public class ActionTurn implements PlayerTurn {
         }
     }
 
+    @Override
+    public void executeTurn(GameState state) {
+
+    }
+
     public JsonElement toJson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(GameState.class, new ActionTurnSerializer());
+        gsonBuilder.registerTypeAdapter(ActionTurn.class, new ActionTurnSerializer());
         return gsonBuilder.create().toJsonTree(this);
     }
 
