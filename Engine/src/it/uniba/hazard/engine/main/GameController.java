@@ -12,6 +12,7 @@ public class GameController {
         JsonObject reqDataJ = reqData.getAsJsonObject();
         String requestName = reqDataJ.get("requestName").getAsString();
         Turn currentTurn;
+        String[] params;
         switch (requestName) {
             case "nextTurn":
                 game.getTurns().setNextTurn();
@@ -27,7 +28,42 @@ public class GameController {
                 break;
             case "moveActionPawn":
                 currentTurn = game.getTurns().getCurrentTurn();
-                String[] params = {"moveActionPawn", reqDataJ.get("targetDestination").getAsString()};
+                params = new String[2];
+                params[0] = "moveActionPawn";
+                params[1] = reqDataJ.get("targetDestination").getAsString();
+                ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                break;
+            case "solveEmergency":
+                currentTurn = game.getTurns().getCurrentTurn();
+                params = new String[2];
+                params[0] = "solveEmergency";
+                params[1] = reqDataJ.get("emergencyID").getAsString();
+                ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                break;
+            case "takeResources":
+                currentTurn = game.getTurns().getCurrentTurn();
+                params = new String[2];
+                params[0] = "takeResources";
+                params[1] = reqDataJ.get("pawnID").getAsString();
+                ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                break;
+            case "useBonusCard":
+                currentTurn = game.getTurns().getCurrentTurn();
+                params = new String[2];
+                params[0] = "useBonusCard";
+                params[1] = reqDataJ.get("cardIndex").getAsString();
+                ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                break;
+            case "buildStronghold":
+                currentTurn = game.getTurns().getCurrentTurn();
+                params = new String[3];
+                params[0] = "buildStronghold";
+                params[1] = reqDataJ.get("emergencyID").getAsString();
+                params[2] = reqDataJ.get("locationID").getAsString();
                 ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
