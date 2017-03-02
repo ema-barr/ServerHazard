@@ -1,13 +1,14 @@
 package it.uniba.hazard.engine.groups;
 
 import com.google.gson.*;
-import it.uniba.hazard.engine.exception.CannotMovePawnException;
-import it.uniba.hazard.engine.exception.InsufficientResourcesException;
-import it.uniba.hazard.engine.exception.EmergencyMismatchException;
 import it.uniba.hazard.engine.main.*;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.ActionPawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
+import it.uniba.hazard.engine.util.response.action_group.ActionGroupMoveResponse;
+import it.uniba.hazard.engine.util.response.action_group.BuildStrongholdResponse;
+import it.uniba.hazard.engine.util.response.action_group.SolveEmergencyResponse;
+import it.uniba.hazard.engine.util.response.action_group.TakeResourceResponse;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -69,11 +70,16 @@ public class ActionGroup {
         return nameActionGroup;
     }
 
-    public void takeResources(GameState state, TransportPawn tp) {
+    public TakeResourceResponse takeResources(GameState state, TransportPawn tp) {
+        TakeResourceResponse takeResourceResponse;
+
         Provisions prov = state.takeResources(usedRes, actionPawn, tp);
+        //TODO è il gamestate che dice se le risorse sono state prese o no?
         for (Resource r : prov.getListResources()) {
             provisions.addResource(r, prov.getQuantity(r));
         }
+        takeResourceResponse = new TakeResourceResponse(true, tp, this);
+        return takeResourceResponse;
     }
 
     public List<Location> getHQs() {
@@ -84,45 +90,59 @@ public class ActionGroup {
         return startingPoint;
     }
 
-    public void solveEmergency(GameState state, Emergency toSolve) {
+    public SolveEmergencyResponse solveEmergency(GameState state, Emergency toSolve) {
+        SolveEmergencyResponse solveEmergencyResponse;
+
         //Check if the emergency can be solved by this group
         if (!emergencyToBeSolved.contains(toSolve)) {
-            throw new EmergencyMismatchException("This emergency cannot be solved by this group.");
+            //throw new EmergencyMismatchException("This emergency cannot be solved by this group.");
+            solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this);
         }
         //Check if there is sufficient resources to solve the emergency
         Resource res = toSolve.getResourceNeeded();
         int resQuantity = provisions.getQuantity(res);
         if (resQuantity <= 0) {
-            throw new InsufficientResourcesException("Not enough resources to execute the requested action.");
+            //throw new InsufficientResourcesException("Not enough resources to execute the requested action.");
+            solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this);
         } else {
             //If there is, withdraw the resources from the group's deposit
             provisions.withdrawResource(res);
             provisions.addResource(res, resQuantity - 1);
+            solveEmergencyResponse = new SolveEmergencyResponse(true, toSolve, this);
         }
         state.solveEmergency(toSolve, state.getLocationInMap(actionPawn));
+        return solveEmergencyResponse;
     }
 
-    public void buildStronghold(GameState state, Emergency e, Location l) {
+    public BuildStrongholdResponse buildStronghold(GameState state, Emergency e, Location l) {
+        BuildStrongholdResponse buildStrongholdResponse;
+
         StrongholdInfo si = (StrongholdInfo) state.getRepository().getFromRepository("StrongholdInfo_" + e.getNameEmergency());
         //Check if the emergency can be solved by this group
         if (!emergencyToBeSolved.contains(e)) {
-            throw new EmergencyMismatchException("This emergency cannot be solved by this group.");
+            //throw new EmergencyMismatchException("This emergency cannot be solved by this group.");
+            buildStrongholdResponse = new BuildStrongholdResponse(false, this, e , l);
         }
         //Check if there is sufficient resources to solve the emergency
         Resource res = si.getResourceNeeded();
         int resQuantity = provisions.getQuantity(res);
         if (resQuantity - state.getCurrentStrongholdCost() <= 0) {
-            throw new InsufficientResourcesException("Not enough resources to execute the requested action.");
+            //throw new InsufficientResourcesException("Not enough resources to execute the requested action.");
+            buildStrongholdResponse = new BuildStrongholdResponse(false, this, e , l);
         } else {
             //If there is, withdraw the resources from the group's deposit
             provisions.withdrawResource(res);
             provisions.addResource(res, resQuantity - state.getCurrentStrongholdCost());
             Stronghold s = new Stronghold(l, si);
             state.placeStronghold(s);
+            buildStrongholdResponse = new BuildStrongholdResponse(true, this, e , l);
         }
+        return buildStrongholdResponse;
     }
 
-    public void moveActionPawn(GameState state, Location l) {
+    public ActionGroupMoveResponse moveActionPawn(GameState state, Location l) {
+        ActionGroupMoveResponse actionGroupMoveResponse;
+
         Set<Location> adjacentLocations = state.getAdjacentLocations(actionPawn);
         boolean found = false;
         for (Location adjLoc: adjacentLocations){
@@ -133,10 +153,14 @@ public class ActionGroup {
         }
         if (found){
             state.movePawn(actionPawn, l);
+            actionGroupMoveResponse = new ActionGroupMoveResponse(true, l, this);
         } else {
-            throw new CannotMovePawnException("Invalid location");
+            actionGroupMoveResponse = new ActionGroupMoveResponse(false, l , this);
+            //throw new CannotMovePawnException("Invalid movement");
         }
+        return actionGroupMoveResponse;
     }
+
 
     public JsonElement toJson() {
         GsonBuilder gsonBuilder = new GsonBuilder();

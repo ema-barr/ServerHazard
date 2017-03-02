@@ -1,13 +1,14 @@
 package it.uniba.hazard.engine.groups;
 
-import it.uniba.hazard.engine.exception.CannotMovePawnException;
 import com.google.gson.*;
 import it.uniba.hazard.engine.exception.MaxNumberOfTransportPawnsReachedException;
-import it.uniba.hazard.engine.exception.TransportPawnNotFoundException;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Provisions;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.TransportPawn;
+import it.uniba.hazard.engine.util.response.production_group.InsertNewTransportPawnResponse;
+import it.uniba.hazard.engine.util.response.production_group.MoveTransportPawnResponse;
+import it.uniba.hazard.engine.util.response.production_group.RemoveTransportPawnResponse;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -39,23 +40,32 @@ public class ProductionGroup {
 
     }
 
-    public void insertNewTransportPawn(GameState state, Provisions payload, Location location){
+    public InsertNewTransportPawnResponse insertNewTransportPawn(GameState state, Provisions payload, Location location){
+        InsertNewTransportPawnResponse insertNewTransportPawnResponse;
         int numTransportPawns = pawns.size();
+        TransportPawn pawn = null;
         if (numTransportPawns < maxTransportPawns){
-            TransportPawn pawn = new TransportPawn(this, payload, location);
+            pawn = new TransportPawn(this, payload, location);
             state.addTransportPawn(pawn, location);
             pawns.add(pawn);
+            insertNewTransportPawnResponse = new InsertNewTransportPawnResponse(true, location, pawn);
         }else {
-            throw new MaxNumberOfTransportPawnsReachedException("Max number of transport pawns reached");
+            //throw new MaxNumberOfTransportPawnsReachedException("Max number of transport pawns reached");
+            insertNewTransportPawnResponse = new InsertNewTransportPawnResponse(false, location, pawn);
         }
-
+        return insertNewTransportPawnResponse;
     }
 
-    public void removeTransportPawn(TransportPawn transportPawn){
+    public RemoveTransportPawnResponse removeTransportPawn(TransportPawn transportPawn){
+        RemoveTransportPawnResponse removeTransportPawnResponse;
+
         boolean remove = pawns.remove(transportPawn);
         if (!remove){
-            throw new TransportPawnNotFoundException("Transport pawn " + transportPawn.getObjectID() + " does not exist");
+            //throw new TransportPawnNotFoundException("Transport pawn " + transportPawn.getObjectID() + " does not exist");
+            removeTransportPawnResponse = new RemoveTransportPawnResponse(false, transportPawn);
         }
+        removeTransportPawnResponse = new RemoveTransportPawnResponse(true, transportPawn);
+        return removeTransportPawnResponse;
     }
 
     public List<TransportPawn> getTransportPawns() {
@@ -66,7 +76,9 @@ public class ProductionGroup {
         return objectID;
     }
 
-    public void moveTransportPawn(GameState state, TransportPawn transportPawn, Location location){
+    public MoveTransportPawnResponse moveTransportPawn(GameState state, TransportPawn transportPawn, Location location){
+        MoveTransportPawnResponse moveTransportPawnResponse;
+
         Set<Location> adjacentLocations = state.getAdjacentLocations(transportPawn);
         boolean found = false;
         for (Location adjLoc: adjacentLocations){
@@ -77,9 +89,12 @@ public class ProductionGroup {
         }
         if (found){
             state.movePawn(transportPawn, location);
+            moveTransportPawnResponse = new MoveTransportPawnResponse(true, transportPawn, location);
         } else {
-            throw new CannotMovePawnException("Invalid location");
+            //throw new CannotMovePawnException("Invalid location");
+            moveTransportPawnResponse = new MoveTransportPawnResponse(false, transportPawn, location);
         }
+        return moveTransportPawnResponse;
     }
 
     @Override

@@ -19,12 +19,11 @@ public class InsertNewTransportPawnResponse implements Response{
 
     public InsertNewTransportPawnResponse(boolean success,
                                           Location location,
-                                          TransportPawn transportPawn,
-                                          ProductionGroup productionGroup){
+                                          TransportPawn transportPawn){
         this.success = success;
         this.location = location;
         this.transportPawn = transportPawn;
-        this.productionGroup = productionGroup;
+        this.productionGroup = transportPawn.getProductionGroup();
         if (success){
             logString = "Creato " + transportPawn.toString() + " per il gruppo " + productionGroup.toString() + " in " +
                     location.toString();
