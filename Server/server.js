@@ -77,6 +77,10 @@ io.on('connection', function (socket) {
         handleRequest('getCurrentTurn', data, callback);
     });
 
+    socket.on('getAdjacentLocations', function(data, callback) {
+        handleRequest('getAdjacentLocations', data, callback);
+    });
+
     function handleRequest(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:" + data);
         var reqData = data;

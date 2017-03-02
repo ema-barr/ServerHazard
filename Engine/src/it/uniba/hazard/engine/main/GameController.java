@@ -7,6 +7,7 @@ import it.uniba.hazard.engine.pawns.ActionPawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.turn.ProductionTurn;
+import it.uniba.hazard.engine.util.response.AdjacentLocationsResponse;
 import it.uniba.hazard.engine.util.response.GenericResponse;
 import it.uniba.hazard.engine.util.response.GetCurrentTurnResponse;
 import it.uniba.hazard.engine.util.response.Response;
@@ -14,6 +15,7 @@ import it.uniba.hazard.engine.util.response.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The GameController class handles the requests coming from the server, routes them to the appropriate classes
@@ -96,6 +98,12 @@ public class GameController {
                 } else {
                     resp = new GenericResponse(currentTurn.toJson());
                 }
+                break;
+            case "getAdjacentLocations":
+                String locationID = reqDataJ.get("locationID").getAsString();
+                Location l = Repository.getLocationFromRepository(locationID);
+                Set<Location> adjLocations = game.getState().getAdjacentLocations(l);
+                resp = new AdjacentLocationsResponse(adjLocations);
                 break;
         }
         return resp;

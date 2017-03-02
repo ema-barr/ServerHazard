@@ -14,7 +14,9 @@ import org.jgrapht.graph.SimpleGraph;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by isz_d on 28/02/2017.
@@ -42,6 +44,12 @@ public class ServerTest {
         locations.add(l2);
         locations.add(l3);
         locations.add(l4);
+
+        Map<String, Object> repMap = new HashMap<String, Object>();
+        repMap.put(l1.getObjectID(), l1);
+        repMap.put(l2.getObjectID(), l2);
+        repMap.put(l3.getObjectID(), l3);
+        repMap.put(l4.getObjectID(), l4);
 
         Area a = new Area(locations);
         List<Area> areas = new ArrayList<>();
@@ -81,6 +89,7 @@ public class ServerTest {
         map.placePawn(ag.getActionPawn(), l1);
         Game g = new Game(gs, ts, new GameController());
         g.nextTurn();
+        Repository r = new Repository(repMap);
         ServerConnection sc = new ServerConnection("http://localhost:6882", g);
         sc.startConnection();
     }
