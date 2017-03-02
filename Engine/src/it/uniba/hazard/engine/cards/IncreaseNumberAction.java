@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Turn;
 
 //Carta bonus: Aumenta il numero di azioni
 public class IncreaseNumberAction extends BonusCard{
@@ -18,10 +19,12 @@ public class IncreaseNumberAction extends BonusCard{
     }
 
     @Override
-    public void executeAction(GameState gameState) {
-
+    public void executeAction(GameState gameState, Turn turn) {
 
     }
 
+    @Override
+    public void revertAction(GameState gameState) {
 
+    }
 }

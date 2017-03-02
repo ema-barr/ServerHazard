@@ -1,12 +1,12 @@
 package it.uniba.hazard.engine.cards;
 
-import it.uniba.hazard.engine.main.Game;
+
 import it.uniba.hazard.engine.main.GameState;
-import it.uniba.hazard.engine.main.Repository;
+import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.GamePawn;
+import it.uniba.hazard.engine.pawns.TransportPawn;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -15,6 +15,7 @@ import java.util.Set;
 public class RemoveTransportPawn extends EventCard{
 
     private String objectID;
+
 
     public RemoveTransportPawn(String eventType) {
         super(eventType);
@@ -26,7 +27,7 @@ public class RemoveTransportPawn extends EventCard{
     }
 
     @Override
-    public void executeAction(GameState gameState) {
+    public void executeAction(GameState gameState,Turn turn) {
         Set<Map.Entry<GamePawn,Location>> allPawns = gameState.getAllPawns().entrySet();
 
         //Map.entry permette di poter prendere sia la chiave , sia il valore del dizionario
@@ -46,6 +47,7 @@ public class RemoveTransportPawn extends EventCard{
 
     @Override
     public void revertAction(GameState gameState) {
+
 
     }
 }

@@ -1,7 +1,9 @@
 package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
+import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.turn.ActionTurn;
 
 import java.util.Random;
 import java.util.Set;
@@ -23,11 +25,18 @@ public class MovePlace extends BonusCard{
 
     //TO DO: Posto di partenza della pedina
     @Override
-    public void executeAction(GameState gameState) {
-        Set<Location> listLocation = gameState.getMapLocations();
-        Location[] l = new Location[listLocation.size()];
-        listLocation.toArray(l);
+    public void executeAction(GameState gameState, Turn turn) {
+        ActionTurn at = (ActionTurn) turn;
 
+        Set<Location> l = gameState.getMapLocations();
+
+        Location[] allLocations = new Location[l.size()];
+        l.toArray(allLocations);
+
+        int randomIndex = new Random().nextInt(allLocations.length-1);
+
+        //muovo la pedina trasporto verso destinazione definita casualmente
+        at.getPlayer().moveActionPawn(gameState,allLocations[randomIndex]);
     }
 
     @Override
