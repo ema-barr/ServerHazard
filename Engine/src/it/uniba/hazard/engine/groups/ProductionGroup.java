@@ -60,11 +60,11 @@ public class ProductionGroup {
         RemoveTransportPawnResponse removeTransportPawnResponse;
 
         boolean remove = pawns.remove(transportPawn);
+        removeTransportPawnResponse = new RemoveTransportPawnResponse(true, transportPawn);
         if (!remove){
             //throw new TransportPawnNotFoundException("Transport pawn " + transportPawn.getObjectID() + " does not exist");
             removeTransportPawnResponse = new RemoveTransportPawnResponse(false, transportPawn);
         }
-        removeTransportPawnResponse = new RemoveTransportPawnResponse(true, transportPawn);
         return removeTransportPawnResponse;
     }
 
