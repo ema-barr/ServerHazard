@@ -77,6 +77,7 @@ public class Location implements Comparable<Location>{
         public JsonElement serialize(Location location, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject res = new JsonObject();
             res.addProperty("name", Location.this.name);
+            res.addProperty("locationID", Location.this.objectID);
             JsonArray emergencyLevelsJson = new JsonArray();
             for (Emergency e : emergencyLevels.keySet()) {
                 JsonObject j = new JsonObject();
