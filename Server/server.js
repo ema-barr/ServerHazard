@@ -73,8 +73,12 @@ io.on('connection', function (socket) {
         handleRequest('buildStronghold', data, callback);
     });
 
+    socket.on('getCurrentTurn', function(data, callback) {
+        handleRequest('getCurrentTurn', data, callback);
+    });
+
     function handleRequest(requestName, data, callback) {
-        console.log(data);
+        console.log("Request received. Name: " + requestName + ", \nData:" + data);
         var reqData = data;
         //Add the request name to the JSON request data
         reqData.requestName = requestName;

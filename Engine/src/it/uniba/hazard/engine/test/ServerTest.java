@@ -78,9 +78,9 @@ public class ServerTest {
         List<Turn> turns = new ArrayList<>();
         turns.add(new ActionTurn(ag, 5));
         TurnSequence ts = new TurnSequence(turns);
-        ActionPawn p = new ActionPawn(ag);
-        map.placePawn(p, l1);
+        map.placePawn(ag.getActionPawn(), l1);
         Game g = new Game(gs, ts, new GameController());
+        g.nextTurn();
         ServerConnection sc = new ServerConnection("http://localhost:6882", g);
         sc.startConnection();
     }
