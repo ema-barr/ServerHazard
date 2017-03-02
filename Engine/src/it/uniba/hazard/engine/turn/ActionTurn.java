@@ -172,6 +172,7 @@ public class ActionTurn implements PlayerTurn {
             for (Card c : bonusCards) {
                 cardsJson.add(((BonusCard) c).toJson());
             }
+            result.add("bonusCards", cardsJson);
             result.addProperty("numActions", currentActions);
             result.addProperty("maxNumActions", numActions);
             return result;
