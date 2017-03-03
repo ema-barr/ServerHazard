@@ -11,6 +11,10 @@ import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.GamePawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.production_group.InsertNewTransportPawnResponse;
+import it.uniba.hazard.engine.util.response.production_turn.GetProductionCardsResponse;
+import it.uniba.hazard.engine.util.response.production_turn.ProductionTurnExecuteTurnResponse;
 
 import java.util.*;
 import java.lang.reflect.Type;
@@ -36,13 +40,17 @@ public class ProductionTurn implements PlayerTurn {
     // numero massimo di pedine presenti contemporaneamente sulla mappa
     private int maxPawns;
 
+    // numero massimo di azioni disponibili per turno
+    private int numActions;
+
     // numero di azioni correnti
     private int numCurrentActions = 0;
 
-    public ProductionTurn (ProductionGroup pl, int nc, int mp) {
+    public ProductionTurn (ProductionGroup pl, int nc, int mp, int na) {
         player = pl;
         numberOfCards = nc;
         maxPawns = mp;
+        numActions = na;
         productionCards = new ArrayList<>();
     }
 
@@ -53,106 +61,64 @@ public class ProductionTurn implements PlayerTurn {
     // metodo da eseguire a inizio turno
     // pesca un numero di ProductionCard pari a numberOfCards
     @Override
-    public void executeTurn(GameState gameState) {
-        /*
-        Map<GamePawn, Location> pawns = gameState.getAllPawns();
-        int numCurrentPawns = 0;
-        for (GamePawn p : pawns.keySet()) {
-            if (p instanceof TransportPawn)
-                numCurrentPawns++;
-        }
-        if (numCurrentPawns < maxPawns)
-            productionCards = gameState.getProductionCards(numberOfCards);
-        */
+    public Response executeTurn(GameState gameState) {
         List<TransportPawn> tps = player.getTransportPawns();
         int numCurrentPawns = tps.size();
 
         if (numCurrentPawns < maxPawns)
             productionCards = gameState.getProductionCards(numberOfCards);
+
+        return new ProductionTurnExecuteTurnResponse(true, player);
     }
 
 
     // metodo per richiamare i metodi rappresentanti le azioni
     @Override
-    public void runCommand(GameState gameState, String [] param) {
+    public Response runCommand(GameState gameState, String [] param) {
 
+        Response resp = null;
         switch (param[0]) {
             case "chooseCard":
-                this.chooseCard(gameState, Integer.getInteger(param[1]));
+                resp = this.chooseCard(gameState, param[1]);
                 break;
             case "movePawn":
-                this.movePawn(gameState, param[1], param[2]);
+                resp = this.movePawn(gameState, param[1], param[2]);
                 break;
             case "getProductionCards":
-                this.getProductionCards(gameState);
+                resp = this.getProductionCards(gameState);
                 break;
         }
+
+        return resp;
     }
 
 
-    // metodo per scegliere la carta produzione
-    private void chooseCard (GameState gameState, int i) {
-        /*
-        if (i >= 0 & i < productionCards.size() - 1) {
-            ProductionCard prodCard = productionCards.get(i);
-            prodCard.executeAction(gameState);
-            gameState.addTransportPawn(new TransportPawn(player, new Provisions(prodCard.getResource()),prodCard.getLocation()), prodCard.getLocation());
+    // metodo per scegliere la carta produzione e inserire un nuovo TransportPawn
+    private Response chooseCard (GameState gameState, String cardStr) {
+        int numCard = Integer.valueOf(cardStr);
+        Response resp = null;
+        if (numCard >= 0 & numCard < productionCards.size() - 1) {
+            ProductionCard prodCard = productionCards.get(numCard);
+            prodCard.executeAction(gameState, this);
+            resp = player.insertNewTransportPawn(gameState, new Provisions(prodCard.getResource()), prodCard.getLocation());
         }
-        */
-
-        if (i >= 0 & i < productionCards.size() - 1) {
-            ProductionCard prodCard = productionCards.get(i);
-            prodCard.executeAction(gameState);
-            player.insertNewTransportPawn(gameState, new Provisions(prodCard.getResource()), prodCard.getLocation());
-        }
+        return resp;
     }
 
-    private void movePawn (GameState gameState, String pawnStr, String newLocationStr) {
+    private Response movePawn (GameState gameState, String pawnStr, String newLocationStr) {
         // metodo per muovere le pedine
-        /*
-        Set<Location> ls = gameState.getMapLocations();
-        Location currentLocation = null;
-
-        for (Location l : ls) {
-            if (l.toString().equals(currentLocationStr)) {
-                currentLocation = l;
-            }
-        }
-
-        if (currentLocation != null) {
-            TransportPawn pawn = null;
-            Set<GamePawn> ps = gameState.getPawnsOnLocation(currentLocation);
-            for (GamePawn p : ps) {
-                TransportPawn temp = (TransportPawn) p;
-                if (temp.getObjectID().equals(pawnStr)) {
-                    pawn = temp;
-                }
-            }
-
-            if (pawn != null) {
-                ls = gameState.getAdjacentLocations(pawn);
-                Location newLocation = null;
-                for (Location l : ls) {
-                    if (l.toString().equals(newLocationStr)) {
-                        newLocation = l;
-                    }
-                }
-
-                if (newLocation != null) {
-                    //gameState.removePawn(pawn);
-                    gameState.movePawn(pawn, newLocation);
-                }
-            }
-        }
-        */
         Location newLocation = Repository.getLocationFromRepository(newLocationStr);
         TransportPawn tp = Repository.getTransportPawnFromRepository(pawnStr);
-        player.moveTransportPawn(gameState, tp, newLocation);
+        Response resp = player.moveTransportPawn(gameState, tp, newLocation);
+        return resp;
     }
 
-    private List<ProductionCard> getProductionCards (GameState gameState) {
-        // da modiricare
-        return productionCards;
+    private Response getProductionCards (GameState gameState) {
+        return new GetProductionCardsResponse(true, player, productionCards);
+    }
+
+    public int getNumCurrentActions() {
+        return numCurrentActions;
     }
 
     @Override

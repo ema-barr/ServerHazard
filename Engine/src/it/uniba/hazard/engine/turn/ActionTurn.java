@@ -2,7 +2,6 @@ package it.uniba.hazard.engine.turn;
 
 import it.uniba.hazard.engine.cards.BonusCard;
 import com.google.gson.*;
-import it.uniba.hazard.engine.cards.BonusCard;
 import it.uniba.hazard.engine.cards.Card;
 import it.uniba.hazard.engine.exception.NoActionsAvailableException;
 import it.uniba.hazard.engine.groups.ActionGroup;
@@ -10,14 +9,14 @@ import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
-import it.uniba.hazard.engine.pawns.ActionPawn;
-import it.uniba.hazard.engine.pawns.GamePawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.action_group.*;
+import it.uniba.hazard.engine.util.response.action_turn.*;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by maccn on 25/12/2016.
@@ -38,7 +37,7 @@ public class ActionTurn implements PlayerTurn {
     private int numActions;
 
     // numero di azioni eseguite
-    private int currentActions = 0;
+    private int numCurrentActions = 0;
 
     // costruttori
     public ActionTurn (ActionGroup pl, int na) {
@@ -51,110 +50,149 @@ public class ActionTurn implements PlayerTurn {
         return player;
     }
 
-    private void solveEmergency (GameState gameState, String emergencyStr) {
+    private Response solveEmergency (GameState gameState, String emergencyStr) {
         Emergency e = (Emergency) Repository.getFromRepository(emergencyStr);
-        player.solveEmergency(gameState, e);
+        Response resp = player.solveEmergency(gameState, e);
+        numCurrentActions++;
+        return resp;
     }
 
-    private void moveActionPawn (GameState gameState, String locationStr) {
+    private Response moveActionPawn (GameState gameState, String locationStr) {
         Location destination = Repository.getLocationFromRepository(locationStr);
-        player.moveActionPawn(gameState, destination);
+        Response resp = player.moveActionPawn(gameState, destination);
+        numCurrentActions++;
+        return resp;
     }
 
-    private void takeResources (GameState gameState, String pawnStr) {
+    private Response takeResources (GameState gameState, String pawnStr) {
         TransportPawn tp = Repository.getTransportPawnFromRepository(pawnStr);
-        player.takeResources(gameState, tp);
+        Response resp = player.takeResources(gameState, tp);
+        numCurrentActions++;
+        return resp;
 
     }
 
-    private void setBonusCards (GameState gameState, String numCardsStr) {
+    // aggiunge un numero di carte bonus pari a numCardStr
+    private Response setBonusCards (GameState gameState, String numCardsStr) {
         int numCards = Integer.valueOf(numCardsStr);
         List<BonusCard> newBonusCards = gameState.getBonusCards(numCards);
+        Response resp;
         if (!newBonusCards.isEmpty()) {
             for (BonusCard bc : newBonusCards) {
                 bonusCards.add(bc);
             }
-
+            resp = new SetBonusCardsResponse(true, player, numCards);
         }
+        else {
+            resp = new SetBonusCardsResponse(false, player, numCards);
+        }
+        return resp;
     }
 
-    private void useBonusCard (GameState gameState, String cardStr) {
+    private Response useBonusCard (GameState gameState, String cardStr) {
         int numCard = Integer.valueOf(cardStr);
-        bonusCards.get(numCard).executeAction(gameState);
+        // TODO: verificare dopo la modifica alle carte bonus
+        Response resp = bonusCards.get(numCard).executeAction(gameState, this);
+        return resp;
     }
 
-    private List<BonusCard> getBonusCards (GameState gameState) {
+    private Response getBonusCards (GameState gameState) {
         // da modificare
-        return bonusCards;
+        return new GetBonusCardsResponse(true, player, bonusCards);
     }
 
-    private void addBonusCard (GameState gameState) {
+    // aggiunge una carta bonus
+    private Response addBonusCard (GameState gameState) {
         List<BonusCard> newBonusCards = gameState.getBonusCards(1);
-        if (!newBonusCards.isEmpty())
+        Response resp;
+        if (!newBonusCards.isEmpty()) {
             bonusCards.add(newBonusCards.get(0));
+            resp = new AddBonusCardResponse(true, player);
+        }
+        else {
+            resp = new AddBonusCardResponse(false, player);
+        }
+        return resp;
     }
 
-    private void deleteAllBonusCard (GameState gameState) {
+    private Response deleteAllBonusCard (GameState gameState) {
         bonusCards.clear();
+        return new DeleteAllBonusCardsResponse(true, player);
     }
 
-    private void buildStronghold (GameState gameState, String emergencyStr, String locationStr) {
+    private Response buildStronghold (GameState gameState, String emergencyStr, String locationStr) {
         Emergency emergencyStronghold = (Emergency) Repository.getFromRepository(emergencyStr);
         Location locationStronghold = (Location) Repository.getFromRepository(locationStr);
-        player.buildStronghold(gameState, emergencyStronghold, locationStronghold);
+        Response resp = player.buildStronghold(gameState, emergencyStronghold, locationStronghold);
+        numCurrentActions++;
+        return resp;
     }
 
-    private int getCurrentActions (GameState) {
-        return currentActions;
+    // restituisce il numero di azioni eseguite
+    public int getNumCurrentActions() {
+        return numCurrentActions;
+    }
+
+    // restituisce il numero di azioni rimanenti
+    public int getRemainingActions() {
+        return numActions - numCurrentActions;
+    }
+
+    // incrementa il numero massimo di azioni di n
+    public void incrementNumActions (int n) {
+        numActions = numActions + n;
+    }
+
+    // imposta il numero massimo di azioni ad n
+    public void setNumActions (int n) {
+        numActions = n;
     }
 
     @Override
-    public void executeTurn(GameState gameState) {
-
+    public Response executeTurn(GameState gameState) {
+        return new ActionTurnExecuteTurnResponse(true, player);
     }
 
     @Override
-    public void runCommand(GameState gameState, String[] param) {
-        if (currentActions < numActions) {
+    public Response runCommand(GameState gameState, String[] param) {
+        Response response = null;
+        if (numCurrentActions < numActions) {
             switch (param[0]) {
                 case "moveActionPawn":
-                    this.moveActionPawn(gameState, param[1]);
-                    currentActions++;
+                    response = this.moveActionPawn(gameState, param[1]);
                     break;
 
                 case "solveEmergency":
-                    this.solveEmergency(gameState, param[1]);
-                    currentActions++;
+                    response = this.solveEmergency(gameState, param[1]);
                     break;
 
                 case "takeResources":
-                    this.takeResources(gameState, param[1]);
-                    currentActions++;
+                    response = this.takeResources(gameState, param[1]);
                     break;
 
                 case "buildStronghold":
-                    this.buildStronghold(gameState, param[1], param[2]);
-                    currentActions++;
+                    response = this.buildStronghold(gameState, param[1], param[2]);
+                    break;
+
+                // implementare altre response
+                case "setBonusCards":
+                    response = this.setBonusCards(gameState, param[1]);
                     break;
 
                 case "getBonusCards":
-                    this.setBonusCards(gameState, param[1]);
+                    response = this.getBonusCards(gameState);
                     break;
 
                 case "useBonusCard":
-                    this.useBonusCard(gameState, param[1]);
+                    response = this.useBonusCard(gameState, param[1]);
                     break;
 
                 case "deleteAllBonusCard":
-                    this.deleteAllBonusCard(gameState);
+                    response = this.deleteAllBonusCard(gameState);
                     break;
 
                 case "addBonusCard":
-                    this.addBonusCard(gameState);
-                    break;
-
-                case "getCurrentActions":
-                    this.getCurrentActions();
+                    response = this.addBonusCard(gameState);
                     break;
 
             }
@@ -162,6 +200,7 @@ public class ActionTurn implements PlayerTurn {
         else {
             throw new NoActionsAvailableException("The maximum number of actions for this turn is reached");
         }
+        return response;
     }
 
     public JsonElement toJson() {
@@ -181,7 +220,7 @@ public class ActionTurn implements PlayerTurn {
             for (Card c : bonusCards) {
                 cardsJson.add(((BonusCard) c).toJson());
             }
-            result.addProperty("numActions", currentActions);
+            result.addProperty("numActions", numCurrentActions);
             result.addProperty("maxNumActions", numActions);
             return result;
         }
