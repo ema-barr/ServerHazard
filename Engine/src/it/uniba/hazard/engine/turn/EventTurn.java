@@ -5,7 +5,10 @@ import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.cards.EventCard;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.event_turn.EventTurnExecuteTurnResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,15 +48,18 @@ public class EventTurn implements Turn {
 
     // metodo da chiamare per eseguire le azioni di inizio turno
     @Override
-    public void executeTurn(GameState gameState) {
+    public Response executeTurn(GameState gameState) {
+        ArrayList<Response> responses = new ArrayList<>();
         revertEventCards(gameState);
         if (numberOfExecutions <= numberOfCards) {
             for (EventCard e : eventCards) {
                 // attiva gli effetti della carta evento
-                e.executeAction(gameState);
+                responses.add(e.executeAction(gameState, this));
                 activatedCards.add(e);
             }
         }
+
+        return new EventTurnExecuteTurnResponse(true, responses);
     }
 
     // annulla l'effetto degli eventi del turno precedente
