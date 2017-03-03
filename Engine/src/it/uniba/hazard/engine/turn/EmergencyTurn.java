@@ -6,6 +6,7 @@ import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.util.response.Response;
 
 import java.util.*;
 
@@ -14,14 +15,14 @@ import java.util.*;
  */
 public class EmergencyTurn implements Turn {
 
-    private Emergency emergency;  // attributo di tipo Emergenza
+    private Emergency emergency;
 
     public EmergencyTurn (Emergency e) {
         emergency = e;
     }
 
     @Override
-    public void executeTurn(GameState gameState) {
+    public Response executeTurn(GameState gameState) {
         int numOfRandomLocations = gameState.getGeneralHazardIndicatorLevel(emergency);
 
         ArrayList<Location> locs = new ArrayList<>(gameState.getMapLocations());
