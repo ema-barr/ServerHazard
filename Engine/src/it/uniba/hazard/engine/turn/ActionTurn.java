@@ -12,10 +12,7 @@ import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.action_group.*;
-import it.uniba.hazard.engine.util.response.action_turn.AddBonusCardResponse;
-import it.uniba.hazard.engine.util.response.action_turn.DeleteAllBonusCardsResponse;
-import it.uniba.hazard.engine.util.response.action_turn.GetBonusCardsResponse;
-import it.uniba.hazard.engine.util.response.action_turn.SetBonusCardsResponse;
+import it.uniba.hazard.engine.util.response.action_turn.*;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -152,8 +149,8 @@ public class ActionTurn implements PlayerTurn {
     }
 
     @Override
-    public void executeTurn(GameState gameState) {
-
+    public Response executeTurn(GameState gameState) {
+        return new ActionTurnExecuteTurnResponse(true, player);
     }
 
     @Override
