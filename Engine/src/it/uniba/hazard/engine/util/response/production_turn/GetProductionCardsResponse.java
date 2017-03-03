@@ -33,8 +33,8 @@ public class GetProductionCardsResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
-        res.addProperty("actionGroup", productionGroup.getObjectID());
-        res.addProperty("bonusCards", productionCards);
+        res.addProperty("productionGroup", productionGroup.getObjectID());
+        res.addProperty("productionCards", productionCards);
         res.addProperty("logString", logString);
         return res.toString();
     }
