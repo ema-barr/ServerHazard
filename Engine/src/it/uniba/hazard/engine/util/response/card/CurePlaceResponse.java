@@ -1,4 +1,4 @@
-package it.uniba.hazard.engine.util.response.action_group;
+package it.uniba.hazard.engine.util.response.card;
 
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.map.Location;

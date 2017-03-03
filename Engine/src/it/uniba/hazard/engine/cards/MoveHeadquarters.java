@@ -5,6 +5,7 @@ import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.turn.ActionTurn;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -25,7 +26,6 @@ public class MoveHeadquarters extends BonusCard{
 
     @Override
     public void executeAction(GameState gameState, Turn turn) {
-
 
     }
 
