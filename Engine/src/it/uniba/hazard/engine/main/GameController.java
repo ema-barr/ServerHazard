@@ -2,20 +2,17 @@ package it.uniba.hazard.engine.main;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.uniba.hazard.engine.groups.ActionGroup;
+import it.uniba.hazard.engine.map.Area;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.ActionPawn;
+import it.uniba.hazard.engine.pawns.GamePawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.turn.ProductionTurn;
-import it.uniba.hazard.engine.util.response.AdjacentLocationsResponse;
-import it.uniba.hazard.engine.util.response.GenericResponse;
-import it.uniba.hazard.engine.util.response.GetCurrentTurnResponse;
-import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The GameController class handles the requests coming from the server, routes them to the appropriate classes
@@ -29,7 +26,7 @@ public class GameController {
         Turn currentTurn;
         String[] params;
         switch (requestName) {
-            case "nextTurn":
+            case "nextTurn": {
                 game.getTurns().setNextTurn();
                 currentTurn =  game.getTurns().getCurrentTurn();
                 currentTurn.executeTurn(game.getState());
@@ -38,10 +35,13 @@ public class GameController {
                 o.addProperty("ok", "ok");
                 resp = new GenericResponse(o);
                 break;
-            case "getState":
+            }
+            case "getState": {
                 resp = new GenericResponse(game.toJson());
                 break;
+            }
             case "moveActionPawn":
+            {
                 currentTurn = game.getTurns().getCurrentTurn();
                 params = new String[2];
                 params[0] = "moveActionPawn";
@@ -49,7 +49,8 @@ public class GameController {
                 ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
-            case "solveEmergency":
+            }
+            case "solveEmergency": {
                 currentTurn = game.getTurns().getCurrentTurn();
                 params = new String[2];
                 params[0] = "solveEmergency";
@@ -57,7 +58,8 @@ public class GameController {
                 ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
-            case "takeResources":
+            }
+            case "takeResources": {
                 currentTurn = game.getTurns().getCurrentTurn();
                 params = new String[2];
                 params[0] = "takeResources";
@@ -65,7 +67,8 @@ public class GameController {
                 ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
-            case "useBonusCard":
+            }
+            case "useBonusCard": {
                 currentTurn = game.getTurns().getCurrentTurn();
                 params = new String[2];
                 params[0] = "useBonusCard";
@@ -73,7 +76,8 @@ public class GameController {
                 ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
-            case "buildStronghold":
+            }
+            case "buildStronghold": {
                 currentTurn = game.getTurns().getCurrentTurn();
                 params = new String[3];
                 params[0] = "buildStronghold";
@@ -82,7 +86,8 @@ public class GameController {
                 ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
-            case "getCurrentTurn":
+            }
+            case "getCurrentTurn": {
                 currentTurn = game.getTurns().getCurrentTurn();
                 if (currentTurn instanceof ActionTurn) {
                     ActionPawn pawn = ((ActionTurn) currentTurn).getPlayer().getActionPawn();
@@ -99,12 +104,37 @@ public class GameController {
                     resp = new GenericResponse(currentTurn.toJson());
                 }
                 break;
-            case "getAdjacentLocations":
+            }
+            case "getAdjacentLocations": {
                 String locationID = reqDataJ.get("locationID").getAsString();
                 Location l = Repository.getLocationFromRepository(locationID);
                 Set<Location> adjLocations = game.getState().getAdjacentLocations(l);
                 resp = new AdjacentLocationsResponse(adjLocations);
                 break;
+            }
+            case "getEmergencies": {
+                String locationID = reqDataJ.get("locationID").getAsString();
+                Location l = Repository.getLocationFromRepository(locationID);
+                List<Area> areas = game.getState().getAreas();
+                Area locArea = null;
+                for(Area a : areas) {
+                    if (a.contains(l)) locArea = a;
+                }
+                resp = new EmergenciesResponse(l, locArea);
+                break;
+            }
+            case "getTransports": {
+                String locationID = reqDataJ.get("locationID").getAsString();
+                Location l = Repository.getLocationFromRepository(locationID);
+                Set<GamePawn> pawns = game.getState().getPawnsOnLocation(l);
+                List<TransportPawn> transportPawns = new ArrayList<>();
+                for (GamePawn p : pawns) {
+                    if (p instanceof TransportPawn) transportPawns.add((TransportPawn) p);
+                }
+                ActionGroup ag = ((ActionTurn) game.getTurns().getCurrentTurn()).getPlayer();
+                resp = new GetTransportsResponse(transportPawns, ag);
+                break;
+            }
         }
         return resp;
     }

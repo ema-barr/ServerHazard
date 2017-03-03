@@ -81,6 +81,14 @@ io.on('connection', function (socket) {
         handleRequest('getAdjacentLocations', data, callback);
     });
 
+    socket.on('getEmergencies', function(data, callback) {
+        handleRequest('getEmergencies', data, callback);
+    });
+
+    socket.on('getTransports', function(data, callback) {
+        handleRequest('getTransports', data, callback);
+    });
+
     function handleRequest(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:" + data);
         var reqData = data;

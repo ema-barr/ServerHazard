@@ -2,11 +2,13 @@ package it.uniba.hazard.engine.test;
 
 import it.uniba.hazard.engine.connection.ServerConnection;
 import it.uniba.hazard.engine.groups.ActionGroup;
+import it.uniba.hazard.engine.groups.ProductionGroup;
 import it.uniba.hazard.engine.main.*;
 import it.uniba.hazard.engine.map.Area;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.ActionPawn;
+import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.turn.ActionTurn;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
@@ -23,6 +25,8 @@ import java.util.Map;
  */
 public class ServerTest {
     public static void main(String[] args) throws URISyntaxException {
+        Map<String, Object> repMap = new HashMap<String, Object>();
+        Repository r = new Repository(repMap);
         List<Integer> steps = new ArrayList<>();
         steps.add(1);
         steps.add(2);
@@ -32,6 +36,9 @@ public class ServerTest {
         List<Emergency> emergencies = new ArrayList<>();
         emergencies.add(e);
 
+        Resource res = new Resource("risorsa");
+        List<Resource> resources = new ArrayList<>();
+        resources.add(res);
 
         Graph<Location, DefaultEdge> mapGraph = new SimpleGraph<Location, DefaultEdge>(DefaultEdge.class);
         Location l1 = new Location("bari", emergencies);
@@ -45,7 +52,7 @@ public class ServerTest {
         locations.add(l3);
         locations.add(l4);
 
-        Map<String, Object> repMap = new HashMap<String, Object>();
+
         repMap.put(l1.getObjectID(), l1);
         repMap.put(l2.getObjectID(), l2);
         repMap.put(l3.getObjectID(), l3);
@@ -82,14 +89,17 @@ public class ServerTest {
                 null
         );
 
-        ActionGroup ag = new ActionGroup(emergencies, null, new Provisions(), null, "test", null, null);
+        ActionGroup ag = new ActionGroup(emergencies, resources, new Provisions(), null, "test", null, null);
+        ProductionGroup pg = new ProductionGroup(new ArrayList<TransportPawn>(), "prod", 5);
+        Provisions ps = new Provisions();
+        ps.addResource(res, 2);
+        pg.insertNewTransportPawn(gs, ps, l1);
         List<Turn> turns = new ArrayList<>();
         turns.add(new ActionTurn(ag, 5));
         TurnSequence ts = new TurnSequence(turns);
         map.placePawn(ag.getActionPawn(), l1);
         Game g = new Game(gs, ts, new GameController());
         g.nextTurn();
-        Repository r = new Repository(repMap);
         ServerConnection sc = new ServerConnection("http://localhost:6882", g);
         sc.startConnection();
     }
