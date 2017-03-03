@@ -14,6 +14,7 @@ import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.production_group.InsertNewTransportPawnResponse;
 import it.uniba.hazard.engine.util.response.production_turn.GetProductionCardsResponse;
+import it.uniba.hazard.engine.util.response.production_turn.ProductionTurnExecuteTurnResponse;
 
 import java.util.*;
 import java.lang.reflect.Type;
@@ -60,12 +61,14 @@ public class ProductionTurn implements PlayerTurn {
     // metodo da eseguire a inizio turno
     // pesca un numero di ProductionCard pari a numberOfCards
     @Override
-    public void executeTurn(GameState gameState) {
+    public Response executeTurn(GameState gameState) {
         List<TransportPawn> tps = player.getTransportPawns();
         int numCurrentPawns = tps.size();
 
         if (numCurrentPawns < maxPawns)
             productionCards = gameState.getProductionCards(numberOfCards);
+
+        return new ProductionTurnExecuteTurnResponse(true, player);
     }
 
 
