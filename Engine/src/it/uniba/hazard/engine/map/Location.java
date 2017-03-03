@@ -84,6 +84,7 @@ public class Location implements Comparable<Location>{
                 j.addProperty("level", emergencyLevels.get(e));
                 emergencyLevelsJson.add(j);
             }
+            res.addProperty("isQuarantined", isQuarantined);
             res.add("emergencyLevels", emergencyLevelsJson);
             return res;
         }
