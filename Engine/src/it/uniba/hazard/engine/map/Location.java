@@ -8,6 +8,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by andrea_iovine on 24/12/2016.
@@ -42,6 +43,10 @@ public class Location implements Comparable<Location>{
             emergencyLevels.remove(e);
         }
         emergencyLevels.put(e, level);
+    }
+
+    public Set<Emergency> getEmergencies() {
+        return emergencyLevels.keySet();
     }
 
     //WARNING: Do not call this outside of the GameState class
