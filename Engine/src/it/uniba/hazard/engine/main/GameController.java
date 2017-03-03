@@ -65,6 +65,9 @@ public class GameController {
                 params[0] = "takeResources";
                 params[1] = reqDataJ.get("pawnID").getAsString();
                 ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                JsonObject o = new JsonObject();
+                o.addProperty("ok", "ok");
+                resp = new GenericResponse(o);
                 //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
             }
@@ -84,6 +87,9 @@ public class GameController {
                 params[1] = reqDataJ.get("emergencyID").getAsString();
                 params[2] = reqDataJ.get("locationID").getAsString();
                 ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                JsonObject o = new JsonObject();
+                o.addProperty("ok", "ok");
+                resp = new GenericResponse(o);
                 //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
             }
@@ -134,6 +140,18 @@ public class GameController {
                 ActionGroup ag = ((ActionTurn) game.getTurns().getCurrentTurn()).getPlayer();
                 resp = new GetTransportsResponse(transportPawns, ag);
                 break;
+            }
+            case "getStrongholdInfo": {
+                String locationID = reqDataJ.get("locationID").getAsString();
+                Location l = Repository.getLocationFromRepository(locationID);
+                List<Area> areas = game.getState().getAreas();
+                Area locArea = null;
+                for(Area a : areas) {
+                    if (a.contains(l)) locArea = a;
+                }
+                List<Stronghold> strongholds = locArea.getStrongholds();
+                resp = new GetStrongholdInfoResponse(game.getState().getEmergencies(),
+                        strongholds, game.getState().getCurrentStrongholdCost());
             }
         }
         return resp;

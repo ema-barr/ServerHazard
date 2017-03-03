@@ -89,8 +89,13 @@ io.on('connection', function (socket) {
         handleRequest('getTransports', data, callback);
     });
 
+    socket.on('getStrongholdInfo', function(data, callback) {
+        handleRequest('getStrongholdInfo', data, callback);
+    });
+
     function handleRequest(requestName, data, callback) {
-        console.log("Request received. Name: " + requestName + ", \nData:" + data);
+        console.log("Request received. Name: " + requestName + ", \nData:");
+        console.log(data);
         var reqData = data;
         //Add the request name to the JSON request data
         reqData.requestName = requestName;

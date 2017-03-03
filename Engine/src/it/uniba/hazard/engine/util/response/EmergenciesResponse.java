@@ -10,6 +10,10 @@ import it.uniba.hazard.engine.map.Location;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This Response class shows the emergencies in a location, and for every emergency checks if there is a stronghold
+ * in the containing area.
+ */
 public class EmergenciesResponse implements Response {
     private JsonObject responseJson;
 

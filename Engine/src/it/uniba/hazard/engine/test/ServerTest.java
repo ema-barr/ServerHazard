@@ -51,17 +51,19 @@ public class ServerTest {
         locations.add(l2);
         locations.add(l3);
         locations.add(l4);
-
+        StrongholdInfo si = new StrongholdInfo(e, res);
 
         repMap.put(l1.getObjectID(), l1);
         repMap.put(l2.getObjectID(), l2);
         repMap.put(l3.getObjectID(), l3);
         repMap.put(l4.getObjectID(), l4);
+        repMap.put(e.getObjectID(), e);
+        repMap.put(StrongholdInfo.class.getName() + "_" + e.toString(), si);
 
         Area a = new Area(locations);
         List<Area> areas = new ArrayList<>();
         areas.add(a);
-
+        a.addStrongHold(new Stronghold(l1, si));
 
         mapGraph.addVertex(l1);
         mapGraph.addVertex(l2);
@@ -92,7 +94,7 @@ public class ServerTest {
         ActionGroup ag = new ActionGroup(emergencies, resources, new Provisions(), null, "test", null, null);
         ProductionGroup pg = new ProductionGroup(new ArrayList<TransportPawn>(), "prod", 5);
         Provisions ps = new Provisions();
-        ps.addResource(res, 2);
+        ps.addResource(res, 8);
         pg.insertNewTransportPawn(gs, ps, l1);
         List<Turn> turns = new ArrayList<>();
         turns.add(new ActionTurn(ag, 5));

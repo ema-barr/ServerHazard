@@ -10,7 +10,8 @@ import it.uniba.hazard.engine.pawns.TransportPawn;
 import java.util.List;
 
 /**
- * Created by isz_d on 03/03/2017.
+ * This response class contains all the transport pawns located in the specified location, and for each one shows the
+ * resources that can be withdrawn by the specified Action Group.
  */
 public class GetTransportsResponse implements Response {
     private JsonObject responseJson;
