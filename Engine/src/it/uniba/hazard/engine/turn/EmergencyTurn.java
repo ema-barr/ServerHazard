@@ -7,6 +7,7 @@ import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.emergency_turn.EmergencyTurnExecuteTurnResponse;
 
 import java.util.*;
 
@@ -35,6 +36,8 @@ public class EmergencyTurn implements Turn {
             locs.remove(random_num);
         }
         gameState.diffuseEmergency(emergency, toDiffuse);
+
+        return new EmergencyTurnExecuteTurnResponse(true, emergency);
     }
 
     public JsonElement toJson() {
