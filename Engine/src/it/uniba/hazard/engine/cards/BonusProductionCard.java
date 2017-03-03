@@ -5,6 +5,9 @@ import it.uniba.hazard.engine.main.Resource;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.card.BonusProductionCardResponse;
+import it.uniba.hazard.engine.util.response.card.BonusProductionCardRevertResponse;
 
 import java.util.Dictionary;
 
@@ -23,16 +26,18 @@ public class BonusProductionCard extends EventCard{
 
 
     @Override
-    public void executeAction(GameState gameState,Turn turn) {
+    public Response executeAction(GameState gameState, Turn turn) {
         numberProductionCards = gameState.getNumberOfProductionCards();
 
         //aumenta di uno il numero di carte produzione
         gameState.setNumberOfProductionCards(numberProductionCards + 1);
 
+        return new BonusProductionCardResponse(true,numberProductionCards+1);
     }
 
-    public void revertAction(GameState gameState) {
+    public Response revertAction(GameState gameState) {
         gameState.setNumberOfProductionCards(numberProductionCards);
+        return new BonusProductionCardRevertResponse(true,numberProductionCards);
     }
 
     public String getObjectID(){

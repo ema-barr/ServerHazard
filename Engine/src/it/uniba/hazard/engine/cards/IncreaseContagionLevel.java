@@ -4,6 +4,8 @@ import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.GeneralHazardIndicator;
 import it.uniba.hazard.engine.main.Turn;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.card.IncreaseContagionLevelResponse;
 
 import java.util.List;
 import java.util.Random;
@@ -26,15 +28,16 @@ public class IncreaseContagionLevel extends EventCard{
 
     //aumentare livello di contagio di una determinata emergenza
     @Override
-    public void executeAction(GameState gameState, Turn turn) {
+    public Response executeAction(GameState gameState, Turn turn) {
         List<Emergency> listEmergency = gameState.getEmergencies();
         //prendo in maniera random un' emergenza
         randomEmergency = listEmergency.get(new Random().nextInt(listEmergency.size()));
         gameState.raiseGeneralHazardIndicatorLevel(randomEmergency);
+        return new IncreaseContagionLevelResponse(true,randomEmergency);
     }
 
 
-    public void revertAction(GameState gameState){
-
+    public Response revertAction(GameState gameState){
+        return null;
     }
 }

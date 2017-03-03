@@ -2,6 +2,8 @@ package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.card.DecreaseStrongholdPriceResponse;
 
 //Carta Evento: diminuisce il prezzo del presidio di una certa percentuale.
 public class DecreaseStrongholdPrice extends EventCard{
@@ -18,14 +20,15 @@ public class DecreaseStrongholdPrice extends EventCard{
     }
 
     @Override
-    public void executeAction(GameState gameState, Turn turn) {
+    public Response executeAction(GameState gameState, Turn turn) {
         int DefaultCost = gameState.getDefaultStrongholdCost();
         int DecreasePrice = DefaultCost * 75 /100;
         gameState.setCurrentStrongholdCost(DecreasePrice);
+        return new DecreaseStrongholdPriceResponse(true,DecreasePrice);
     }
 
     @Override
-    public void revertAction(GameState gameState) {
-
+    public Response revertAction(GameState gameState) {
+        return null;
     }
 }

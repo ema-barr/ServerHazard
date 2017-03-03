@@ -4,6 +4,8 @@ import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.card.QuarantinePlaceResponse;
 
 import java.util.List;
 import java.util.Random;
@@ -27,7 +29,7 @@ public class QuarantinePlace extends BonusCard{
     }
 
     @Override
-    public void executeAction(GameState gameState,Turn turn) {
+    public Response executeAction(GameState gameState, Turn turn) {
         List<Emergency> listEmergency =  gameState.getEmergencies();
         Set<Location> listLocation = gameState.getMapLocations();
         //prendo un' emergenza random
@@ -42,13 +44,13 @@ public class QuarantinePlace extends BonusCard{
             if(l[randomIndex].getEmergencyLevel(randomEmergency) != 0) {
                 //quarantena di un'emergenza in un determinato luogo
                 l[randomIndex].setQuarantined(true);
-                break;
+                return new QuarantinePlaceResponse(true,randomEmergency,l[randomIndex]);
             }
         }
     }
 
     @Override
-    public void revertAction(GameState gameState) {
-
+    public Response revertAction(GameState gameState) {
+        return null;
     }
 }

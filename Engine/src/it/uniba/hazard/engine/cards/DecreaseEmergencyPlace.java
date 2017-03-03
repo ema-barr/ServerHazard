@@ -4,6 +4,8 @@ import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.card.DecreaseEmergencyPlaceResponse;
 
 import java.util.List;
 import java.util.Random;
@@ -27,7 +29,7 @@ public class DecreaseEmergencyPlace extends EventCard{
     }
 
     @Override
-    public void executeAction(GameState gameState, Turn turn) {
+    public Response executeAction(GameState gameState, Turn turn) {
         List<Emergency> listEmergency =  gameState.getEmergencies();
         Set<Location> listLocation = gameState.getMapLocations();
         //prendo un' emergenza random
@@ -44,13 +46,13 @@ public class DecreaseEmergencyPlace extends EventCard{
 
                 //diminuisco di 1 il livello di una emergenza in una location
                 l[randomIndex].setEmergencyLevel(randomEmergency, currentEmergencyLevel-1);
-                break;
+                return new DecreaseEmergencyPlaceResponse(true,randomEmergency,l[randomIndex],currentEmergencyLevel-1);
             }
         }
     }
 
     @Override
-    public void revertAction(GameState gameState) {
-
+    public Response revertAction(GameState gameState) {
+        return null;
     }
 }

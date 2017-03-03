@@ -6,6 +6,8 @@ import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.GamePawn;
 import it.uniba.hazard.engine.pawns.TransportPawn;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.card.RemoveTransportPawnResponse;
 
 import java.util.Map;
 import java.util.Random;
@@ -27,7 +29,7 @@ public class RemoveTransportPawn extends EventCard{
     }
 
     @Override
-    public void executeAction(GameState gameState,Turn turn) {
+    public Response executeAction(GameState gameState,Turn turn) {
         Set<Map.Entry<GamePawn,Location>> allPawns = gameState.getAllPawns().entrySet();
 
         //Map.entry permette di poter prendere sia la chiave , sia il valore del dizionario
@@ -40,14 +42,14 @@ public class RemoveTransportPawn extends EventCard{
             //verifico che la pedina scelta random sia una pedina trasporto
             if(gameState.isOccupiedByTransportPawn(gl[randomIndex].getValue())){
                 gameState.removePawn(gl[randomIndex].getKey());
-                break;
+
+                return new RemoveTransportPawnResponse(true,(TransportPawn) gl[randomIndex].getKey(),gl[randomIndex].getValue());
             }
         }
     }
 
     @Override
-    public void revertAction(GameState gameState) {
-
-
+    public Response revertAction(GameState gameState) {
+        return null;
     }
 }

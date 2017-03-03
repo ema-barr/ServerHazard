@@ -4,6 +4,8 @@ import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Resource;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.card.MalusProductionCardResponse;
 
 import java.util.Dictionary;
 
@@ -24,15 +26,15 @@ public class MalusProductionCard extends EventCard{
     }
 
     @Override
-    public void executeAction(GameState gameState,Turn turn) {
+    public Response executeAction(GameState gameState, Turn turn) {
         numberProductionCards = gameState.getNumberOfProductionCards();
-
         //diminuisce di uno il numero di carte produzione
         gameState.setNumberOfProductionCards(numberProductionCards - 1);
+        return new MalusProductionCardResponse(true,numberProductionCards-1);
     }
 
-    public void revertAction(GameState gameState){
-
+    public Response revertAction(GameState gameState){
+        return null;
     }
 
 

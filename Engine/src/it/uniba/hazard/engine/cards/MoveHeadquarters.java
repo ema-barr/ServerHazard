@@ -4,6 +4,7 @@ import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.turn.ActionTurn;
+import it.uniba.hazard.engine.util.response.Response;
 
 import java.util.List;
 import java.util.Random;
@@ -25,12 +26,12 @@ public class MoveHeadquarters extends BonusCard{
     }
 
     @Override
-    public void executeAction(GameState gameState, Turn turn) {
-
+    public Response executeAction(GameState gameState, Turn turn) {
+        return null;
     }
 
     @Override
-    public void revertAction(GameState gameState) {
-
+    public Response revertAction(GameState gameState) {
+        return null;
     }
 }

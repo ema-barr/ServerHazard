@@ -2,6 +2,7 @@ package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
+import it.uniba.hazard.engine.util.response.Response;
 
 //Superclasse delle carte Evento
 public class EventCard implements Card {
@@ -14,13 +15,13 @@ public class EventCard implements Card {
     }
 
     @Override
-    public void executeAction(GameState gameState, Turn turn) {
-
+    public Response executeAction(GameState gameState, Turn turn) {
+        return null;
     }
 
     @Override
-    public void revertAction(GameState gameState) {
-
+    public Response revertAction(GameState gameState) {
+        return null;
     }
 
     @Override

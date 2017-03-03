@@ -5,6 +5,8 @@ import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.card.CurePlaceResponse;
 
 import java.util.List;
 import java.util.Random;
@@ -29,7 +31,7 @@ public class CurePlace extends BonusCard{
 
 
     @Override
-    public void executeAction(GameState gameState, Turn turn) {
+    public Response executeAction(GameState gameState, Turn turn) {
        List<Emergency> listEmergency =  gameState.getEmergencies();
        Set<Location> listLocation = gameState.getMapLocations();
        //prendo un' emergenza random
@@ -49,12 +51,13 @@ public class CurePlace extends BonusCard{
                //setto il livello per una specifica emergenza in una location pari a 0.
                l[randomIndex].setEmergencyLevel(randomEmergency, 0);
 
-               break;
+
+               return new CurePlaceResponse(true,randomEmergency,l[randomIndex]);
            }
        }
     }
 
-    public void revertAction(GameState gameState){
-
+    public Response revertAction(GameState gameState){
+        return null;
     }
 }

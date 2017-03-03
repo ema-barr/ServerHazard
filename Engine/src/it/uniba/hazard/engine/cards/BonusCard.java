@@ -6,6 +6,7 @@ import it.uniba.hazard.engine.main.Game;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.util.CardSerializer;
+import it.uniba.hazard.engine.util.response.Response;
 
 //Super classe delle carte bonus
 public class BonusCard implements Card {
@@ -21,13 +22,13 @@ public class BonusCard implements Card {
 
 
     @Override
-    public void executeAction(GameState gameState, Turn turn) {
-
+    public Response executeAction(GameState gameState, Turn turn) {
+        return null;
     }
 
     @Override
-    public void revertAction(GameState gameState) {
-
+    public Response revertAction(GameState gameState) {
+        return null;
     }
 
     @Override

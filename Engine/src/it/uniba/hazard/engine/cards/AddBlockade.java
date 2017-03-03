@@ -3,8 +3,11 @@ package it.uniba.hazard.engine.cards;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
-import  it.uniba.hazard.engine.exception.NoSuchBlockadeException;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.card.AddBlockadeResponse;
+import it.uniba.hazard.engine.util.response.card.AddBlockadeRevertResponse;
 
+import java.util.Random;
 import java.util.Set;
 
 //Carta Evento: aggiunta barriera su una tratta.
@@ -12,6 +15,7 @@ public class AddBlockade extends EventCard{
 
     private String objectID;
     private Location l1;
+    private Location loc2;
 
     public AddBlockade(String eventType) {
         super(eventType);
@@ -23,7 +27,7 @@ public class AddBlockade extends EventCard{
     }
 
     @Override
-    public void executeAction(GameState gameState, Turn turn) {
+    public Response executeAction(GameState gameState, Turn turn) {
         Set<Location> allLocations =  gameState.getMapLocations();
         Location[] l = new Location[allLocations.size()-1];
 
@@ -38,21 +42,22 @@ public class AddBlockade extends EventCard{
 
         //prese locazioni adiacenti al primo nodo
         Set<Location> l2 = gameState.getAdjacentLocations(l1);
+        Location[] locationSecondNode = new Location[l2.size()];
+        l2.toArray(locationSecondNode);
 
-        for(Location l3: l2) {
-            gameState.block(l1, l3);
-        }
+        //indice casuale per il nodo adiacente
+        int randomIndex = new Random().nextInt(locationSecondNode.length-1);
+
+        //blocco sulla tratta
+        gameState.block(l1, locationSecondNode[randomIndex]);
+
+        loc2 = locationSecondNode[randomIndex];
+
+        return new AddBlockadeResponse(true,l1,loc2);
     }
 
-    public void revertAction(GameState gameState) {
-        Set<Location> l2 = gameState.getAdjacentLocations(l1);
-        for(Location l3 : l2) {
-            try {
-                gameState.unblock(l1, l3);
-            }catch(Exception e) {
-                throw new NoSuchBlockadeException("The blockade is not present");
-            }
-        }
-
+    public Response revertAction(GameState gameState) {
+        gameState.unblock(l1, loc2);
+        return new AddBlockadeRevertResponse(true,l1,loc2);
     }
 }
