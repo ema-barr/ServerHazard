@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.util.response.card;
 
+import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;

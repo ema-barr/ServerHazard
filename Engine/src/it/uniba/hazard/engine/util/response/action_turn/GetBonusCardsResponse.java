@@ -1,10 +1,12 @@
 package it.uniba.hazard.engine.util.response.action_turn;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.cards.BonusCard;
 import it.uniba.hazard.engine.groups.ActionGroup;
 import it.uniba.hazard.engine.util.response.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,10 +34,15 @@ public class GetBonusCardsResponse implements Response {
     @Override
     public String toJson() {
         JsonObject res = new JsonObject();
+        JsonArray bonusCardsArray = new JsonArray();
+        for (BonusCard bonusCard: bonusCards){
+            bonusCardsArray.add(bonusCard.getObjectID());
+        }
         res.addProperty("success", success);
         res.addProperty("actionGroup", actionGroup.getNameActionGroup());
-        res.addProperty("bonusCards", bonusCards);
+        res.add("bonusCards", bonusCardsArray);
         res.addProperty("logString", logString);
         return res.toString();
     }
+
 }

@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.util.response.event_turn;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.util.response.Response;
 
@@ -27,8 +28,12 @@ public class EventTurnExecuteTurnResponse implements Response {
     @Override
     public String toJson() {
         JsonObject res = new JsonObject();
+        JsonArray responsesArray = new JsonArray();
+        for (Response resp: responses){
+            responsesArray.add(resp.toJson());
+        }
         res.addProperty("success", success);
-        res.addProperty("responses", responses);
+        res.add("responses", responsesArray);
         res.addProperty("logString", logString);
         return res.toString();
     }

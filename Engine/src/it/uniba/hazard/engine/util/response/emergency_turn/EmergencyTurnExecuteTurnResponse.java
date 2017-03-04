@@ -27,7 +27,7 @@ public class EmergencyTurnExecuteTurnResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
-        res.addProperty("emergency", emergency.getNameEmergency());
+        res.addProperty("emergency", emergency.toString());
         res.addProperty("logString", logString);
         return res.toString();
     }

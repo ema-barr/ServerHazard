@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.util.response.card;
 
+import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
@@ -31,7 +32,7 @@ public class QuarantinePlaceResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
-        res.addProperty("emergency", emergency.getNameEmergency());
+        res.addProperty("emergency", emergency.toString());
         res.addProperty("location", location.toString());
         res.addProperty("logString", logString);
         return res.toString();
