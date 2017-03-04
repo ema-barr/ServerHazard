@@ -93,6 +93,10 @@ io.on('connection', function (socket) {
         handleRequest('getStrongholdInfo', data, callback);
     });
 
+    socket.on('moveTransportPawn', function(data, callback) {
+        handleRequest('moveTransportPawn', data, callback);
+    });
+
     function handleRequest(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);

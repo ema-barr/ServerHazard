@@ -138,6 +138,17 @@ public class GameController {
                 List<Stronghold> strongholds = locArea.getStrongholds();
                 resp = new GetStrongholdInfoResponse(game.getState().getEmergencies(),
                         strongholds, game.getState().getCurrentStrongholdCost());
+                break;
+            }
+            case "moveTransportPawn": {
+                String locationID = reqDataJ.get("destinationID").getAsString();
+                String pawnID = reqDataJ.get("pawnID").getAsString();
+                params = new String[2];
+                params[0] = pawnID;
+                params[1] = locationID;
+                ProductionTurn turn = (ProductionTurn) game.getTurns().getCurrentTurn();
+                resp = turn.runCommand(game.getState(), params);
+                break;
             }
         }
         return resp;
