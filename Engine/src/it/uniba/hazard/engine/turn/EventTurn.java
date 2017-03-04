@@ -33,7 +33,7 @@ public class EventTurn implements Turn {
 
     // costruttore per modificare il numero di carte da richiedere
     // e il numero di carte da attivare
-    public EventTurn (GameState gameState, int nc, int ne) {
+    public EventTurn (int nc, int ne) {
 
         numberOfCards = nc;
 
@@ -43,7 +43,7 @@ public class EventTurn implements Turn {
         else
             numberOfExecutions = numberOfCards;
 
-        eventCards = gameState.getEventCards(numberOfCards);
+
     }
 
     // metodo da chiamare per eseguire le azioni di inizio turno
@@ -52,6 +52,7 @@ public class EventTurn implements Turn {
         ArrayList<Response> responses = new ArrayList<>();
         revertEventCards(gameState);
         if (numberOfExecutions <= numberOfCards) {
+            eventCards = gameState.getEventCards(numberOfCards);
             for (EventCard e : eventCards) {
                 // attiva gli effetti della carta evento
                 responses.add(e.executeAction(gameState, this));
