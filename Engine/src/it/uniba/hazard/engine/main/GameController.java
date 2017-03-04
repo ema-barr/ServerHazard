@@ -143,12 +143,21 @@ public class GameController {
             case "moveTransportPawn": {
                 String locationID = reqDataJ.get("destinationID").getAsString();
                 String pawnID = reqDataJ.get("pawnID").getAsString();
-                params = new String[2];
-                params[0] = pawnID;
-                params[1] = locationID;
+                params = new String[3];
+                params[0] = "moveTransportPawn";
+                params[1] = pawnID;
+                params[2] = locationID;
                 ProductionTurn turn = (ProductionTurn) game.getTurns().getCurrentTurn();
                 resp = turn.runCommand(game.getState(), params);
                 break;
+            }
+            case "chooseProductionCard": {
+                String cardIndex = reqDataJ.get("cardIndex").getAsString();
+                params = new String[2];
+                params[0] = "chooseCard";
+                params[1] = cardIndex;
+                ProductionTurn turn = (ProductionTurn) game.getTurns().getCurrentTurn();
+                resp = turn.runCommand(game.getState(), params);
             }
         }
         return resp;
