@@ -18,7 +18,7 @@ public class GetProductionCardsResponse implements Response {
     private ProductionGroup productionGroup;
     private String logString;
 
-    public GetProductionCardsResponse (boolean success, ProductionGroup group, List<ProductionCard cards>) {
+    public GetProductionCardsResponse (boolean success, ProductionGroup group, List<ProductionCard> cards) {
         this.success = success;
         productionCards = cards;
         productionGroup = group;
