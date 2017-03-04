@@ -144,7 +144,7 @@ public class ProductionTurn implements PlayerTurn {
         @Override
         public JsonElement serialize(ProductionTurn productionTurn, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject result = new JsonObject();
-            result.addProperty("type", "ActionTurn");
+            result.addProperty("type", "ProductionTurn");
             result.add("group", player.toJson());
             //TODO: Add number of movements left for each transport pawn
             return result;
