@@ -8,6 +8,6 @@ public class XMLReaderTest {
     public static void main (String[] args){
         //GroupReader.readActionGrooups("strutturaxml.xml");
         //GroupReader.readProductionGrooups("strutturaxml.xml");
-        //ResourceReader.readResources("strutturaxml.xml");
+        ResourceReader.readResources("strutturaxml.xml");
     }
 }

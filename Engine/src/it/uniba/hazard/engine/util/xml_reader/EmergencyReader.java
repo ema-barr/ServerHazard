@@ -37,8 +37,9 @@ public class EmergencyReader {
                 System.out.println("name:" + element.getElementsByTagName("name").item(0).getTextContent());
                 String name = element.getElementsByTagName("name").item(0).getTextContent();
                 System.out.println("resource needed:" + element.getElementsByTagName("resourceNeeded").item(0).getTextContent());
-                Resource resourceNeeded = (Resource) Repository.getFromRepository(Resource.class.getName() + "_" + name);
-                //TODO da rivedere quando si definiranno i metodi per i led
+                String resourceNeededString = element.getElementsByTagName("resourceNeeded").item(0).getTextContent();
+                Resource resourceNeeded = (Resource) Repository.getFromRepository(Resource.class.getName() + "_" + resourceNeededString);
+
                 ArrayList<Integer> steps = new ArrayList<Integer>();
 
                 Element ghiElem = (Element) element.getElementsByTagName("generalHazardIndicator").item(0);
@@ -49,7 +50,7 @@ public class EmergencyReader {
                     Element stepNode = (Element) stepList.item(j);
                     System.out.println("level:" + stepNode.getElementsByTagName("level").item(0).getTextContent());
                     int level = Integer.parseInt(stepNode.getElementsByTagName("level").item(0).getTextContent());
-                    System.out.println("level:" + stepNode.getElementsByTagName("led").item(0).getTextContent());
+                    System.out.println("led:" + stepNode.getElementsByTagName("led").item(0).getTextContent());
 
                     steps.add(level);
                 }
@@ -114,42 +115,5 @@ public class EmergencyReader {
             e.printStackTrace();
         }
         return -1;
-    }
-
-    public static List<GravityLevel> readGravityLevels(String path){
-        try{
-            //TODO controllare quando si definiranno i metodi per i led
-            File fXmlFile = new File(path);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
-            doc.getDocumentElement().normalize();
-
-            ArrayList<GravityLevel> gravityLevelsList = new ArrayList<GravityLevel>();
-
-            Element gameElem = (Element) doc.getElementsByTagName("game").item(0);
-            Element emergenciesElem = (Element) gameElem.getElementsByTagName("emergencies").item(0);
-            Element gravityLevels = (Element) emergenciesElem.getElementsByTagName("gravityLevels").item(0);
-
-            NodeList levels = gravityLevels.getElementsByTagName("level");
-            for (int i = 0; i < levels.getLength(); i++){
-                Element element = (Element) levels.item(i);
-                System.out.println("number:" + element.getElementsByTagName("number").item(0).getTextContent());
-                int num = Integer.parseInt(element.getElementsByTagName("number").item(0).getTextContent());
-                System.out.println("color:" + element.getElementsByTagName("color").item(0).getTextContent());
-                String color = element.getElementsByTagName("color").item(0).getTextContent();
-                GravityLevel gl = new GravityLevel(num, color);
-                gravityLevelsList.add(gl);
-            }
-
-            return gravityLevelsList;
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
