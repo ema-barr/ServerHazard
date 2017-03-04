@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class ServerTest {
     public static void main(String[] args) throws URISyntaxException {
-        Map<String, Object> repMap = new HashMap<String, Object>();
+        /*Map<String, Object> repMap = new HashMap<String, Object>();
         Repository r = new Repository(repMap);
         List<Integer> steps = new ArrayList<>();
         steps.add(1);
@@ -101,7 +101,10 @@ public class ServerTest {
         TurnSequence ts = new TurnSequence(turns);
         map.placePawn(ag.getActionPawn(), l1);
         Game g = new Game(gs, ts, new GameController());
-        g.nextTurn();
+        g.nextTurn();*/
+        GameInitialization gi = new GameInitialization("strutturaxml.xml");
+        gi.initialization();
+        Game g = gi.getGame();
         ServerConnection sc = new ServerConnection("http://localhost:6882", g);
         sc.startConnection();
     }
