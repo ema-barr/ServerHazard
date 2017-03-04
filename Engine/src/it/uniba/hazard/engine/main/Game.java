@@ -17,6 +17,7 @@ public class Game {
     public Game(GameState state, TurnSequence turns) {
         this.state = state;
         this.turns = turns;
+        controller = new GameController();
     }
 
     public Game(GameState state, TurnSequence turns, GameController controller) {
