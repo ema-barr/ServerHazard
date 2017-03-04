@@ -28,6 +28,10 @@ public class ProductionGroup {
         this.maxTransportPawns = maxTransportPawns;
     }
 
+    public int getMaxTransportPawns() {
+        return maxTransportPawns;
+    }
+
     public void insertNewTransportPawn(GameState state, Location location){
         int numTransportPawns = pawns.size();
         if (numTransportPawns < maxTransportPawns){

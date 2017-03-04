@@ -132,7 +132,7 @@ public class TurnReader {
                 System.out.println("ordNum: " + element.getElementsByTagName("ordNum").item(0).getTextContent());
                 System.out.println("numMovesPerTransportPawn: " + element.getElementsByTagName("numMovesPerTransportPawn").item(0).getTextContent());
                 int numMovesPerTransportPawn = Integer.parseInt(element.getElementsByTagName("numMovesPerTransportPawn").item(0).getTextContent());
-                ProductionTurn productionTurn = new ProductionTurn(productionGroup, 0, numMovesPerTransportPawn); //TODO inserire numero di pedine
+                ProductionTurn productionTurn = new ProductionTurn(productionGroup, 0, productionGroup.getMaxTransportPawns(), numMovesPerTransportPawn);
                 productionTurns.add(productionTurn);
                 int ordNum = Integer.parseInt(element.getElementsByTagName("ordNum").item(0).getTextContent());
                 turnOrder.add(ordNum, (Turn) productionTurn);
@@ -189,10 +189,13 @@ public class TurnReader {
             for(int i = 0; i < eventTurnsList.getLength(); i++){
                 Element element = (Element) eventTurnsList.item(i);
 
+                System.out.println("numCardsToDraw: " + element.getElementsByTagName("numCardsToDraw").item(0).getTextContent());
                 System.out.println("ordNum: " + element.getElementsByTagName("ordNum").item(0).getTextContent());
-                EventTurn eventTurn = new EventTurn(); //TODO non capisco come costruire il turno dell'evento
-                eventTurns.add(eventTurn);
+                int numCardsToDraw = Integer.parseInt(element.getElementsByTagName("numCardsToDraw").item(0).getTextContent());
                 int ordNum = Integer.parseInt(element.getElementsByTagName("ordNum").item(0).getTextContent());
+                EventTurn eventTurn = new EventTurn(numCardsToDraw, ordNum);
+                eventTurns.add(eventTurn);
+
                 turnOrder.add(ordNum, (Turn) eventTurn);
             }
             return eventTurns;
