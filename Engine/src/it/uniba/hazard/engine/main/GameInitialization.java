@@ -50,12 +50,13 @@ public class GameInitialization {
         for (Emergency em: emergenciesList){
             Repository.insertInRepository(em.getObjectID(), em);
         }
+        Repository.insertInRepository("emergenciesList", emergenciesList);
 
         int strongholdCost = EmergencyReader.readMaxGravityLevel(pathXML);
         int maxGravityLevel = EmergencyReader.readMaxGravityLevel(pathXML);
 
         //Map
-        ArrayList<Location> locationsList = (ArrayList<Location>) MapReader.readLocations(pathXML, emergenciesList);
+        ArrayList<Location> locationsList = (ArrayList<Location>) MapReader.readLocations(pathXML);
         for (Location loc: locationsList){
             Repository.insertInRepository(loc.getObjectID(), loc);
         }
@@ -64,10 +65,6 @@ public class GameInitialization {
         UndirectedGraph<Location, DefaultEdge> graph = createGraph();
 
         ArrayList<Area> areasList = (ArrayList<Area>) MapReader.readAreas(pathXML);
-
-        //Setup
-        Map<Emergency, Map<Integer, Integer>> setup = SetupReader.readSetup(pathXML);
-        doSetup(setup);
 
         //Groups
         ArrayList<ActionGroup> actionGroupsList = (ArrayList<ActionGroup>) GroupReader.readActionGrooups(pathXML);
@@ -106,6 +103,7 @@ public class GameInitialization {
         }
 
         //Turns
+        TurnReader.createTurnOrder(pathXML);
         ArrayList<EmergencyTurn> emergencyTurnsList = (ArrayList<EmergencyTurn>) TurnReader.readEmergencyTurns(pathXML);
         ArrayList<ActionTurn> actionTurnsList = (ArrayList<ActionTurn>) TurnReader.readActionTurns(pathXML);
         ArrayList<ProductionTurn> productionTurnsList = (ArrayList<ProductionTurn>) TurnReader.readProductionTurns(pathXML);
@@ -125,6 +123,12 @@ public class GameInitialization {
                 victoryConditionsList, lossConditionsList, repository, maxGravityLevel, strongholdCost,
                 numOfProductionCards,ts);
         game = new Game(gs, ts);
+
+        //Setup
+        Map<Emergency, Map<Integer, Integer>> setup = SetupReader.readSetup(pathXML);
+        doSetup(setup);
+
+        System.out.println("Inizializzazione completata");
     }
 
     public Game getGame() {
@@ -141,11 +145,11 @@ public class GameInitialization {
      */
     public void doSetup(Map<Emergency, Map<Integer, Integer>> settings){
         Set<Emergency> emergenciesKeyset = settings.keySet();
-        ArrayList<Location> locationsList = (ArrayList<Location>) Repository.getFromRepository("locationsList");
         int numLocations;
         Random random = new Random();
         int randomIndexLoc;
         for (Emergency emergency: emergenciesKeyset){
+            ArrayList<Location> locationsList = new ArrayList<Location>((ArrayList<Location>) Repository.getFromRepository("locationsList"));
             Map<Integer, Integer>  setup = settings.get(emergency);
 
             Set<Integer> setupKeyset = setup.keySet();
@@ -159,7 +163,7 @@ public class GameInitialization {
                     value = setup.get(key);
                     HashMap<Location, Integer> locationsStart = new HashMap<Location,Integer>();
 
-                    for (int i = 0; i < key; i++){
+                    for (int i = 0; i < value; i++){
                         numLocations = locationsList.size();
                         randomIndexLoc = random.nextInt(numLocations);
 
@@ -190,7 +194,7 @@ public class GameInitialization {
         Set<Integer> keys = setup.keySet();
 
         for (int key: keys){
-            numLocationsSett = numLocationsSett + key;
+            numLocationsSett = numLocationsSett + setup.get(key);
         }
 
         if (numLocations < numLocationsSett){
@@ -206,6 +210,7 @@ public class GameInitialization {
         for (Location loc: locationsList){
             graph.addVertex(loc);
         }
+        graph.addEdge(locationsList.get(0), locationsList.get(1));
         HashMap<Location, List<Location>> neighborMap = (HashMap<Location, List<Location>>) MapReader.readNeighbors(pathXML);
         Set<Location> locationKeyset = neighborMap.keySet();
         for (Location loc: locationKeyset){

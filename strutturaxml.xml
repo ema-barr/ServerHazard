@@ -4,8 +4,8 @@
             <actionGroup>
                 <name>ActionGroup1</name>
                 <emergenciesToSolve>
-                    <emergencyToSolve>Emergenza1</emergencyToSolve>
-                    <emergencyToSolve>Emergenza2</emergencyToSolve>
+                    <emergencyToSolve>Malattia</emergencyToSolve>
+                    <emergencyToSolve>Peste</emergencyToSolve>
                 </emergenciesToSolve>
                 <resourcesUsed>
                     <resource>Risorsa1</resource>
@@ -13,22 +13,24 @@
                 </resourcesUsed>
                 <headquarters>
                     <headquarter>Location1</headquarter>
-                    <headquarter>Location5</headquarter>
+                    <headquarter>Location3</headquarter>
                 </headquarters>
                 <startingPoint>Location2</startingPoint>
             </actionGroup>
             <actionGroup>
                 <name>ActionGroup2</name>
-                <emergencyToSolve>Emergenza2</emergencyToSolve>
+                <emergenciesToSolve>
+                    <emergencyToSolve>Peste</emergencyToSolve>
+                </emergenciesToSolve>
                 <resourcesUsed>
                     <resource>Risorsa3</resource>
                     <resource>Risorse4</resource>
                 </resourcesUsed>
                 <headquarters>
                     <headquarter>Location2</headquarter>
-                    <headquarter>Location0</headquarter>
+                    <headquarter>Location1</headquarter>
                 </headquarters>
-                <startingPoint>Location9</startingPoint>
+                <startingPoint>Location3</startingPoint>
             </actionGroup>
             <productionGroup>
                 <name>ProductionGroup1</name>
@@ -42,6 +44,10 @@
         <resources>
             <name>Medicinale</name>
             <name>Gatti</name>
+            <name>Risorsa1</name>
+            <name>Risorsa2</name>
+            <name>Risorsa3</name>
+            <name>Risorsa4</name>
         </resources>
         <emergencies>
             <strongholdCost>10</strongholdCost>
@@ -72,12 +78,28 @@
                     </steps>
                 </generalHazardIndicator>
             </emergency>
+            <emergency>
+                <name>Peste</name>
+                <resourceNeeded>Medicinale</resourceNeeded>
+                <generalHazardIndicator>
+                    <steps>
+                        <step>
+                            <level>1</level>
+                            <led>1</led>
+                        </step>
+                        <step>
+                            <level>2</level>
+                            <led>2</led>
+                        </step>
+                    </steps>
+                </generalHazardIndicator>
+            </emergency>
         </emergencies>
         <turns>
             <numOfProductionCards>1</numOfProductionCards>
             <emergencyTurn>
                 <name>FirstEmergencyTurn</name>
-                <emergency>Emergenza1</emergency>
+                <emergency>Malattia</emergency>
                 <ordNum>3</ordNum>
             </emergencyTurn>
             <actionTurn>
@@ -98,25 +120,25 @@
         <cards>
             <eventCards>
                 <eventCard>
-                    <name>CartaEv1</name>
+                    <name>IncreaseContagionLevel</name>
                     <quantity>10</quantity>
                 </eventCard>
                 <eventCard>
-                    <name>CartaEv2</name>
+                    <name>IncreaseEmergencyPlace</name>
                     <quantity>5</quantity>
                 </eventCard>
             </eventCards>
             <productionCards>
                 <productionCard>
                     <quantity>10</quantity>
-                    <location>Italia</location>
+                    <location>Location1</location>
                     <resourcesProd>
                         <resourceProd>
-                            <resource>Medicinali</resource>
+                            <resource>Risorsa1</resource>
                             <quantity>5</quantity>
                         </resourceProd>
                         <resourceProd>
-                            <resource>Gatti</resource>
+                            <resource>Risorsa2</resource>
                             <quantity>20</quantity>
                         </resourceProd>
                     </resourcesProd>
@@ -124,7 +146,7 @@
             </productionCards>
             <bonusCards>
                 <bonusCard>
-                    <name>Bonus1</name>
+                    <name>QuarantinePlace</name>
                     <quantity>10</quantity>
                 </bonusCard>
             </bonusCards>
@@ -153,6 +175,40 @@
                         <neighbor>Location3</neighbor>
                     </neighborhood>
                 </location>
+                <location>
+                    <name>Location3</name>
+                    <leds>
+                        <led>
+                            <number>10</number>
+                            <emergency>Emergenza1</emergency>
+                        </led>
+                        <led>
+                            <number>11</number>
+                            <emergency>Emergenza2</emergency>
+                        </led>
+                    </leds>
+                    <neighborhood>
+                        <neighbor>Location2</neighbor>
+                        <neighbor>Location1</neighbor>
+                    </neighborhood>
+                </location>
+                <location>
+                    <name>Location2</name>
+                    <leds>
+                        <led>
+                            <number>10</number>
+                            <emergency>Emergenza1</emergency>
+                        </led>
+                        <led>
+                            <number>11</number>
+                            <emergency>Emergenza2</emergency>
+                        </led>
+                    </leds>
+                    <neighborhood>
+                        <neighbor>Location1</neighbor>
+                        <neighbor>Location3</neighbor>
+                    </neighborhood>
+                </location>
             </area>
         </map>
         <endGame>
@@ -171,15 +227,28 @@
                 <settings>
                     <setting>
                         <gravityLevel>3</gravityLevel>
-                        <numLocation>3</numLocation>
+                        <numLocation>1</numLocation>
                     </setting>
                     <setting>
                         <gravityLevel>2</gravityLevel>
-                        <numLocation>3</numLocation>
+                        <numLocation>1</numLocation>
                     </setting>
                     <setting>
                         <gravityLevel>1</gravityLevel>
-                        <numLocation>3</numLocation>
+                        <numLocation>1</numLocation>
+                    </setting>
+                </settings>
+            </emergencySetup>
+            <emergencySetup>
+                <emergency>Peste</emergency>
+                <settings>
+                    <setting>
+                        <gravityLevel>2</gravityLevel>
+                        <numLocation>2</numLocation>
+                    </setting>
+                    <setting>
+                        <gravityLevel>1</gravityLevel>
+                        <numLocation>1</numLocation>
                     </setting>
                 </settings>
             </emergencySetup>

@@ -38,7 +38,7 @@ public class EndGameReader {
                 String type = element.getElementsByTagName("type").item(0).getTextContent();
 
                 //TODO da rivedere
-                Class victoryClass = Class.forName(type);
+                Class victoryClass = Class.forName("it.uniba.hazard.engine.endgame."+type);
                 VictoryCondition vc = (VictoryCondition) victoryClass.newInstance();
 
                 victoryConditionsList.add(vc);
@@ -82,7 +82,7 @@ public class EndGameReader {
                 String type = element.getElementsByTagName("type").item(0).getTextContent();
 
                 //TODO da rivedere
-                Class lossClass = Class.forName(type);
+                Class lossClass = Class.forName("it.uniba.hazard.engine.endgame."+type);
                 LossCondition lc = (LossCondition) lossClass.newInstance();
 
                 lossConditionsList.add(lc);

@@ -21,8 +21,9 @@ import java.util.Map;
 
 public class MapReader {
 
-    public static List<Location> readLocations(String path, List<Emergency> emergencies){
+    public static List<Location> readLocations(String path){
         try {
+            List<Emergency> emergencies = (List<Emergency>) Repository.getFromRepository("emergenciesList");
             File fXmlFile = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -59,6 +60,7 @@ public class MapReader {
 
     public static Map<Location, List<Location>> readNeighbors(String path){
         try {
+            List<Emergency> emergencies = (List<Emergency>) Repository.getFromRepository("emergenciesList");
             File fXmlFile = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -77,7 +79,7 @@ public class MapReader {
                 for (int k = 0; k < locationNodeList.getLength(); k++){
                     Element locationElem = (Element) locationNodeList.item(k);
                     String nameLocation = locationElem.getElementsByTagName("name").item(0).getTextContent();
-                    Location location = new Location(nameLocation, null);
+                    Location location = (Location) Repository.getFromRepository(Location.class.getName()+"_"+ nameLocation);
 
                     Element neighborhoodElem = (Element) locationElem.getElementsByTagName("neighborhood").item(0);
                     NodeList neighborsNodeList = neighborhoodElem.getElementsByTagName("neighbor");

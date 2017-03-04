@@ -68,11 +68,10 @@ public class CardManager<C> {
     public void instanceCard(String name, int quantity){
         try {
             try {
-                Constructor c = Class.forName(name).getConstructor(String.class, String.class);
+                Constructor c = Class.forName("it.uniba.hazard.engine.cards." + name).getConstructor(String.class);
                 try {
-                    c.newInstance(name);
                     for(int i= 0; i < quantity; i++){
-                        instanceCards.add((C) c);
+                        instanceCards.add((C) c.newInstance(name));
                     }
                 } catch (InstantiationException e) {
                     e.printStackTrace();
