@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.main;
 
 import com.google.gson.*;
+import it.uniba.hazard.engine.util.response.Response;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -11,12 +12,17 @@ import java.util.List;
 public class Game {
     private GameState state;
     private TurnSequence turns;
-    private List<Turn> turnOrder;
-    private int currentTurnIndex;
+    private GameController controller;
 
     public Game(GameState state, TurnSequence turns) {
         this.state = state;
         this.turns = turns;
+    }
+
+    public Game(GameState state, TurnSequence turns, GameController controller) {
+        this.state = state;
+        this.turns = turns;
+        this.controller = controller;
     }
 
     public void nextTurn() {
@@ -25,10 +31,22 @@ public class Game {
         currentTurn.executeTurn(state);
     }
 
+    public TurnSequence getTurns() {
+        return this.turns;
+    }
+
+    public GameState getState() {
+        return this.state;
+    }
+
     public JsonElement toJson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Game.class, new GameSerializer());
         return gsonBuilder.create().toJsonTree(this);
+    }
+
+    public Response request(JsonElement reqData) {
+        return controller.request(reqData, this);
     }
 
     public class GameSerializer implements JsonSerializer<Game> {
