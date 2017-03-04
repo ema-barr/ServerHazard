@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.util.xml_reader;
 
+import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Area;
 import it.uniba.hazard.engine.map.Location;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 public class MapReader {
 
-    public static List<Location> readLocations(String path){
+    public static List<Location> readLocations(String path, List<Emergency> emergencies){
         try {
             File fXmlFile = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -41,7 +42,7 @@ public class MapReader {
                 for (int k = 0; k < locationNodeList.getLength(); k++){
                     Element locationElem = (Element) locationNodeList.item(k);
                     String nameLocation = locationElem.getElementsByTagName("name").item(0).getTextContent();
-                    Location location = new Location(nameLocation, null);
+                    Location location = new Location(nameLocation, emergencies);
                     locationsList.add(location);
                 }
             }

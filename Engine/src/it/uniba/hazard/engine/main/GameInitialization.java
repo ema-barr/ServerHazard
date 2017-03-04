@@ -45,15 +45,6 @@ public class GameInitialization {
             Repository.insertInRepository(res.getObjectID(), res);
         }
 
-        //Map
-        ArrayList<Location> locationsList = (ArrayList<Location>) MapReader.readLocations(pathXML);
-        for (Location loc: locationsList){
-            Repository.insertInRepository(loc.getObjectID(), loc);
-        }
-        UndirectedGraph<Location, DefaultEdge> graph = createGraph();
-
-        ArrayList<Area> areasList = (ArrayList<Area>) MapReader.readAreas(pathXML);
-
         //Emergencies
         ArrayList<Emergency> emergenciesList = (ArrayList<Emergency>) EmergencyReader.readEmergencies(pathXML);
         for (Emergency em: emergenciesList){
@@ -62,6 +53,17 @@ public class GameInitialization {
 
         int strongholdCost = EmergencyReader.readMaxGravityLevel(pathXML);
         int maxGravityLevel = EmergencyReader.readMaxGravityLevel(pathXML);
+
+        //Map
+        ArrayList<Location> locationsList = (ArrayList<Location>) MapReader.readLocations(pathXML, emergenciesList);
+        for (Location loc: locationsList){
+            Repository.insertInRepository(loc.getObjectID(), loc);
+        }
+        Repository.insertInRepository("locationsList", locationsList);
+
+        UndirectedGraph<Location, DefaultEdge> graph = createGraph();
+
+        ArrayList<Area> areasList = (ArrayList<Area>) MapReader.readAreas(pathXML);
 
         //Setup
         Map<Emergency, Map<Integer, Integer>> setup = SetupReader.readSetup(pathXML);
@@ -139,7 +141,7 @@ public class GameInitialization {
      */
     public void doSetup(Map<Emergency, Map<Integer, Integer>> settings){
         Set<Emergency> emergenciesKeyset = settings.keySet();
-        ArrayList<Location> locationsList = (ArrayList<Location>) MapReader.readLocations(pathXML);
+        ArrayList<Location> locationsList = (ArrayList<Location>) Repository.getFromRepository("locationsList");
         int numLocations;
         Random random = new Random();
         int randomIndexLoc;
@@ -200,7 +202,7 @@ public class GameInitialization {
 
     private UndirectedGraph<Location, DefaultEdge> createGraph(){
         UndirectedGraph<Location, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
-        ArrayList<Location> locationsList = (ArrayList<Location>) MapReader.readLocations(pathXML);
+        ArrayList<Location> locationsList = (ArrayList<Location>) Repository.getFromRepository("locationsList");
         for (Location loc: locationsList){
             graph.addVertex(loc);
         }
