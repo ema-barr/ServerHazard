@@ -30,10 +30,7 @@ public class GameController {
                 game.getTurns().setNextTurn();
                 currentTurn =  game.getTurns().getCurrentTurn();
                 currentTurn.executeTurn(game.getState());
-                //resp = currentTurn.executeTurn(state);
-                JsonObject o = new JsonObject();
-                o.addProperty("ok", "ok");
-                resp = new GenericResponse(o);
+                resp = currentTurn.executeTurn(game.getState());
                 break;
             }
             case "getState": {
@@ -46,8 +43,7 @@ public class GameController {
                 params = new String[2];
                 params[0] = "moveActionPawn";
                 params[1] = reqDataJ.get("targetDestination").getAsString();
-                ((ActionTurn) currentTurn).runCommand(game.getState(), params);
-                //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
             }
             case "solveEmergency": {
@@ -55,8 +51,7 @@ public class GameController {
                 params = new String[2];
                 params[0] = "solveEmergency";
                 params[1] = reqDataJ.get("emergencyID").getAsString();
-                ((ActionTurn) currentTurn).runCommand(game.getState(), params);
-                //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
             }
             case "takeResources": {
@@ -64,11 +59,7 @@ public class GameController {
                 params = new String[2];
                 params[0] = "takeResources";
                 params[1] = reqDataJ.get("pawnID").getAsString();
-                ((ActionTurn) currentTurn).runCommand(game.getState(), params);
-                JsonObject o = new JsonObject();
-                o.addProperty("ok", "ok");
-                resp = new GenericResponse(o);
-                //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
             }
             case "useBonusCard": {
@@ -76,8 +67,7 @@ public class GameController {
                 params = new String[2];
                 params[0] = "useBonusCard";
                 params[1] = reqDataJ.get("cardIndex").getAsString();
-                ((ActionTurn) currentTurn).runCommand(game.getState(), params);
-                //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
             }
             case "buildStronghold": {
@@ -86,11 +76,7 @@ public class GameController {
                 params[0] = "buildStronghold";
                 params[1] = reqDataJ.get("emergencyID").getAsString();
                 params[2] = reqDataJ.get("locationID").getAsString();
-                ((ActionTurn) currentTurn).runCommand(game.getState(), params);
-                JsonObject o = new JsonObject();
-                o.addProperty("ok", "ok");
-                resp = new GenericResponse(o);
-                //resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
+                resp = ((ActionTurn) currentTurn).runCommand(game.getState(), params);
                 break;
             }
             case "getCurrentTurn": {
