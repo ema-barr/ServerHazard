@@ -205,7 +205,7 @@ public class ActionTurn implements PlayerTurn {
 
     public JsonElement toJson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(GameState.class, new ActionTurnSerializer());
+        gsonBuilder.registerTypeAdapter(ActionTurn.class, new ActionTurnSerializer());
         return gsonBuilder.create().toJsonTree(this);
     }
 
@@ -221,6 +221,8 @@ public class ActionTurn implements PlayerTurn {
                 cardsJson.add(((BonusCard) c).toJson());
             }
             result.addProperty("numActions", numCurrentActions);
+            result.add("bonusCards", cardsJson);
+            result.addProperty("numActions", currentActions);
             result.addProperty("maxNumActions", numActions);
             return result;
         }

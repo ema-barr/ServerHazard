@@ -8,6 +8,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by andrea_iovine on 24/12/2016.
@@ -44,6 +45,10 @@ public class Location implements Comparable<Location>{
         emergencyLevels.put(e, level);
     }
 
+    public Set<Emergency> getEmergencies() {
+        return emergencyLevels.keySet();
+    }
+
     //WARNING: Do not call this outside of the GameState class
     public void setQuarantined(boolean isQuarantined) {
         this.isQuarantined = isQuarantined;
@@ -77,6 +82,7 @@ public class Location implements Comparable<Location>{
         public JsonElement serialize(Location location, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject res = new JsonObject();
             res.addProperty("name", Location.this.name);
+            res.addProperty("locationID", Location.this.objectID);
             JsonArray emergencyLevelsJson = new JsonArray();
             for (Emergency e : emergencyLevels.keySet()) {
                 JsonObject j = new JsonObject();

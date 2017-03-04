@@ -66,7 +66,7 @@ public class TransportPawn implements PlayerPawn{
     @Override
     public JsonElement toJson() {
         GsonBuilder gb = new GsonBuilder();
-        gb.registerTypeAdapter(ActionPawn.class, new TransportPawnSerializer());
+        gb.registerTypeAdapter(TransportPawn.class, new TransportPawnSerializer());
         return gb.create().toJsonTree(this);
     }
 
