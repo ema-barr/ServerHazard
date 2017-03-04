@@ -128,6 +128,9 @@ public class GameInitialization {
         Map<Emergency, Map<Integer, Integer>> setup = SetupReader.readSetup(pathXML);
         doSetup(setup);
 
+        ts.setNextTurn();
+        System.out.println("Turno di gioco: " + ts.getCurrentTurn());
+
         System.out.println("Inizializzazione completata");
     }
 

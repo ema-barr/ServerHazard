@@ -7,6 +7,7 @@ import it.uniba.hazard.engine.main.Provisions;
 import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.main.Resource;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.pawns.TransportPawn;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -130,7 +131,8 @@ public class GroupReader {
                         .item(0).getTextContent() + "\n");
                 int maxTransportPawns = Integer.parseInt(element.getElementsByTagName("maxNumTransportPawns")
                         .item(0).getTextContent());
-                ProductionGroup productionGroup = new ProductionGroup(null, name, maxTransportPawns);
+                ArrayList<TransportPawn> transportPawns = new ArrayList<TransportPawn>(maxTransportPawns);
+                ProductionGroup productionGroup = new ProductionGroup(transportPawns, name, maxTransportPawns);
                 productionGroups.add(productionGroup);
             }
             return productionGroups;
