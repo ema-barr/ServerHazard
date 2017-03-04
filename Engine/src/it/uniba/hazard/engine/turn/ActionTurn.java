@@ -222,7 +222,7 @@ public class ActionTurn implements PlayerTurn {
             }
             result.addProperty("numActions", numCurrentActions);
             result.add("bonusCards", cardsJson);
-            result.addProperty("numActions", currentActions);
+            result.addProperty("remainingActions", getRemainingActions());
             result.addProperty("maxNumActions", numActions);
             return result;
         }
