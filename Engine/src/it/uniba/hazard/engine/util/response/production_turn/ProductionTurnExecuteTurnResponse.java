@@ -24,9 +24,9 @@ public class ProductionTurnExecuteTurnResponse implements Response {
         this.productionCards = productionCards;
 
         if (success)
-            logString = "Inizio turno del gruppo " + productionGroup.getObjectID() + " eseguito correttamente.";
+            logString = "Il gruppo " + productionGroup.toString() + " ha pescato le carte produzione.";
         else
-            logString = "Errore nell'esecuzione dell'inizio del turno del gruppo " + productionGroup.getObjectID() + ".";
+            logString = "Il gruppo " + productionGroup.toString() + " ha raggiunto il numero massimo di pedine trasporto.";
     }
 
     @Override
