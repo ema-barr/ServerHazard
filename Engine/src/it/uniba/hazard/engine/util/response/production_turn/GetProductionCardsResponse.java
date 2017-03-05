@@ -24,9 +24,9 @@ public class GetProductionCardsResponse implements Response {
         productionGroup = group;
 
         if (success)
-            logString = "Il gruppo " + productionGroup.getObjectID() + " ha " + productionCards.size() + " carte bonus.";
+            logString = "Il gruppo " + productionGroup.toString() + " ha " + productionCards.size() + " carte bonus.";
         else
-            logString = "Impossibile ricevere le carte produzione dal gruppo " + productionGroup.getObjectID() + ".";
+            logString = "Impossibile ricevere le carte produzione dal gruppo " + productionGroup.toString() + ".";
     }
 
     @Override
