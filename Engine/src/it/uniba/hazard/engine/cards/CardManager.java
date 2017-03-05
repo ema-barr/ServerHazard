@@ -3,6 +3,7 @@ package it.uniba.hazard.engine.cards;
 import it.uniba.hazard.engine.exception.NoClassExist;
 import it.uniba.hazard.engine.map.Location;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.Random;
 
 public class CardManager<C> {
 
-    public List<C> cards;
+    public List<C> cards = new ArrayList<C>();
 
     public List<C> instanceCards = new ArrayList<C>();
     public HashMap<ProductionCard,Integer> instanceProductionCards = new HashMap<ProductionCard,Integer>();
@@ -24,11 +25,12 @@ public class CardManager<C> {
     }
 
     //restituisce una numero di carte random
+    //It may return less than numberCards cards if there are no sufficient cards
     public List<C> getCards(int numberCards){
-
+        resetCards();
         List<C> extractCards = new ArrayList<C>();
 
-        for(int i = 0; i < numberCards; i++) {
+        for(int i = 0; (cards.size() > 0 && i < numberCards); i++) {
             int number = numRandom();
             extractCards.add(cards.get(number));
             cards.remove(number);
@@ -37,10 +39,12 @@ public class CardManager<C> {
         return  extractCards;
     }
 
+    //It may return less than numberCards cards if there are no sufficient cards
     public List<C> getProductionCards(List<Location> locationTransportPawns, int numberCards){
+        resetProductionCards();
         List<C> extractedCards = new ArrayList<C>();
         int i = 0;
-        while(i < numberCards){
+        while(cards.size() > 0 && i < numberCards){
             int number = numRandom();
             ProductionCard card = (ProductionCard) cards.get(number);
             Location l = card.getLocation();
@@ -89,5 +93,22 @@ public class CardManager<C> {
             throw new NoClassExist("Classe non istanziata");
         }
     }
+
+    private void resetCards() {
+        cards = new ArrayList<C>();
+        for(C c : instanceCards) {
+            cards.add(c);
+        }
+    }
+
+    private void resetProductionCards() {
+        cards = new ArrayList<C>();
+        for (ProductionCard c : instanceProductionCards.keySet()) {
+            for (int i = 0; i < instanceProductionCards.get(c); i++) {
+                cards.add((C) c);
+            }
+        }
+    }
+
 
 }
