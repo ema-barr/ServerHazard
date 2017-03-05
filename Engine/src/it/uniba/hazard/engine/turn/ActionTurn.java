@@ -91,13 +91,11 @@ public class ActionTurn implements PlayerTurn {
 
     private Response useBonusCard (GameState gameState, String cardStr) {
         int numCard = Integer.valueOf(cardStr);
-        // TODO: verificare dopo la modifica alle carte bonus
         Response resp = bonusCards.get(numCard).executeAction(gameState, this);
         return resp;
     }
 
     private Response getBonusCards (GameState gameState) {
-        // da modificare
         return new GetBonusCardsResponse(true, player, bonusCards);
     }
 
@@ -174,7 +172,6 @@ public class ActionTurn implements PlayerTurn {
                     response = this.buildStronghold(gameState, param[1], param[2]);
                     break;
 
-                // implementare altre response
                 case "setBonusCards":
                     response = this.setBonusCards(gameState, param[1]);
                     break;
