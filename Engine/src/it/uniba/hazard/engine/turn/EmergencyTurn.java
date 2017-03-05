@@ -37,7 +37,9 @@ public class EmergencyTurn implements Turn {
         }
         gameState.diffuseEmergency(emergency, toDiffuse);
 
-        return new EmergencyTurnExecuteTurnResponse(true, emergency);
+        List<Location> diffused = gameState.getLastDiffusedLocations();
+
+        return new EmergencyTurnExecuteTurnResponse(true, emergency, diffused);
     }
 
     public JsonElement toJson() {
