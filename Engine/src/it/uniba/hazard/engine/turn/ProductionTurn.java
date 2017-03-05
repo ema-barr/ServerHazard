@@ -68,7 +68,7 @@ public class ProductionTurn implements PlayerTurn {
         if (numCurrentPawns < maxPawns)
             productionCards = gameState.getProductionCards(numberOfCards);
 
-        return new ProductionTurnExecuteTurnResponse(true, player);
+        return new ProductionTurnExecuteTurnResponse(true, player, productionCards);
     }
 
 
@@ -146,6 +146,11 @@ public class ProductionTurn implements PlayerTurn {
             JsonObject result = new JsonObject();
             result.addProperty("type", "ProductionTurn");
             result.add("group", player.toJson());
+            JsonArray cardsJson = new JsonArray();
+            for(ProductionCard c : productionCards) {
+                cardsJson.add(c.toJson());
+            }
+            result.add("cards", cardsJson);
             //TODO: Add number of movements left for each transport pawn
             return result;
         }
