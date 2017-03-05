@@ -79,9 +79,9 @@ public class ProductionTurn implements PlayerTurn {
 
         if (numCurrentPawns < maxPawns) {
             productionCards = gameState.getProductionCards(numberOfCards);
-            return new ProductionTurnExecuteTurnResponse(true, player);
+            return new ProductionTurnExecuteTurnResponse(true, player, productionCards);
         } else {
-            return new ProductionTurnExecuteTurnResponse(false, player);
+            return new ProductionTurnExecuteTurnResponse(false, player, null);
         }
 
 
