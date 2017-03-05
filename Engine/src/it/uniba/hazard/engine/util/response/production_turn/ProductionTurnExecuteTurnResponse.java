@@ -27,7 +27,7 @@ public class ProductionTurnExecuteTurnResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
-        res.addProperty("productionGroup", productionGroup.getObjectID());
+        res.addProperty("productionGroup", productionGroup.toString());
         res.addProperty("logString", logString);
         return res.toString();
     }
