@@ -168,7 +168,14 @@ public class ProductionTurn implements PlayerTurn {
                 cardsJson.add(c.toJson());
             }
             result.add("cards", cardsJson);
-            //TODO: Add number of movements left for each transport pawn
+            JsonArray pawnMovementsJson = new JsonArray();
+            for (TransportPawn tp : pawns.keySet()) {
+                JsonObject pj = new JsonObject();
+                pj.addProperty("pawnID", tp.getObjectID());
+                pj.addProperty("remainingMoves", pawns.get(tp));
+                pawnMovementsJson.add(pj);
+            }
+            result.add("pawnMoves", pawnMovementsJson);
             return result;
         }
     }
