@@ -92,7 +92,7 @@ public class GroupReader {
                     System.out.println("starting point: " + element.getElementsByTagName("startingPoint").item(0).getTextContent() + "\n");
                     Location start = (Location) Repository.getFromRepository(Location.class.getName() + "_" +
                             element.getElementsByTagName("startingPoint").item(0).getTextContent());
-                    actionGroup = new ActionGroup( emergenciesToSolve,resources, null, null, name, HQs, start);
+                    actionGroup = new ActionGroup( emergenciesToSolve,resources, null, name, HQs, start);
                     actionGroupsList.add(actionGroup);
                 }
             }

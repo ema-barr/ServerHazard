@@ -26,11 +26,15 @@ public class ActionGroup {
     private Location startingPoint;
 
     public ActionGroup(List<Emergency> emergencyToBeSolved, List<Resource> usedRes, Provisions provisions,
-                       ActionPawn actionPawn, String nameActionGroup, List<Location> HQs, Location startingPoint) {
+                       String nameActionGroup, List<Location> HQs, Location startingPoint) {
         this.objectID = this.getClass().getName() + "_" + nameActionGroup;
         this.emergencyToBeSolved = emergencyToBeSolved;
         this.usedRes = usedRes;
-        this.provisions = provisions;
+        if (provisions == null){
+            this.provisions = new Provisions();
+        } else {
+            this.provisions = provisions;
+        }
         this.actionPawn = assignActionPawn();
         this.nameActionGroup = nameActionGroup;
         this.HQs = HQs;
