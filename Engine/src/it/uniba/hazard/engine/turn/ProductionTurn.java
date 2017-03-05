@@ -83,9 +83,6 @@ public class ProductionTurn implements PlayerTurn {
         } else {
             return new ProductionTurnExecuteTurnResponse(false, player, null);
         }
-
-
-        return new ProductionTurnExecuteTurnResponse(true, player, productionCards);
     }
 
 
