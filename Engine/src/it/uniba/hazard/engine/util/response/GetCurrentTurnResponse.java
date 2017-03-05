@@ -28,13 +28,13 @@ public class GetCurrentTurnResponse implements Response {
 
     public GetCurrentTurnResponse(ProductionTurn turn, Map<TransportPawn, Location> pawns) {
         responseJson = turn.toJson().getAsJsonObject();
-        JsonArray pawnsJson = new JsonArray();
+        /*JsonArray pawnsJson = new JsonArray();
         for(TransportPawn tp: pawns.keySet()) {
             JsonObject pl = tp.toJson().getAsJsonObject();
             pl.add("location", pawns.get(tp).toJson());
             pawnsJson.add(pl);
         }
-        responseJson.add("pawns", pawnsJson);
+        responseJson.add("pawns", pawnsJson);*/
     }
 
 
