@@ -22,11 +22,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
 /**
  * Created by maccn on 25/12/2016.
  */
 public class ProductionTurn implements PlayerTurn {
 
+
+    private enum StateTurn {
+        CHOOSE_PRODUCTION_CARDS,
+        MOVE_TRANSPORT_PAWN
+    }
+
+    private StateTurn state;
 
     // attributo rappresentante il gruppo produzione
     private ProductionGroup player;
@@ -64,11 +72,16 @@ public class ProductionTurn implements PlayerTurn {
     public Response executeTurn(GameState gameState) {
         List<TransportPawn> tps = player.getTransportPawns();
         int numCurrentPawns = tps.size();
+        state = StateTurn.CHOOSE_PRODUCTION_CARDS;
 
-        if (numCurrentPawns < maxPawns)
+        if (numCurrentPawns < maxPawns) {
             productionCards = gameState.getProductionCards(numberOfCards);
+            return new ProductionTurnExecuteTurnResponse(true, player);
+        } else {
+            return new ProductionTurnExecuteTurnResponse(false, player);
+        }
 
-        return new ProductionTurnExecuteTurnResponse(true, player);
+
     }
 
 
@@ -107,9 +120,11 @@ public class ProductionTurn implements PlayerTurn {
 
     private Response movePawn (GameState gameState, String pawnStr, String newLocationStr) {
         // metodo per muovere le pedine
+        state = StateTurn.MOVE_TRANSPORT_PAWN;
         Location newLocation = Repository.getLocationFromRepository(newLocationStr);
         TransportPawn tp = Repository.getTransportPawnFromRepository(pawnStr);
         Response resp = player.moveTransportPawn(gameState, tp, newLocation);
+        numCurrentActions++;
         return resp;
     }
 
@@ -117,8 +132,25 @@ public class ProductionTurn implements PlayerTurn {
         return new GetProductionCardsResponse(true, player, productionCards);
     }
 
+
+    // restituisce il numero di azioni eseguite
     public int getNumCurrentActions() {
         return numCurrentActions;
+    }
+
+    // restituisce il numero di azioni rimanenti
+    public int getRemainingActions() {
+        return numActions - numCurrentActions;
+    }
+
+    // incrementa il numero massimo di azioni di n
+    public void incrementNumActions (int n) {
+        numActions = numActions + n;
+    }
+
+    // imposta il numero massimo di azioni ad n
+    public void setNumActions (int n) {
+        numActions = n;
     }
 
     @Override
