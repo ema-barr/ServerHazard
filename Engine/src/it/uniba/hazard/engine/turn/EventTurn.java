@@ -17,7 +17,6 @@ import java.util.List;
 
 public class EventTurn implements Turn {
 
-
     // Lista di carte evento
     private List<EventCard> eventCards;
 
@@ -36,6 +35,8 @@ public class EventTurn implements Turn {
     public EventTurn (int nc, int ne) {
 
         numberOfCards = nc;
+        eventCards = new ArrayList<>();
+        activatedCards = new ArrayList<>();
 
         // controllo se il numero di carte da attivare è <= di quelle richieste
         if (ne <= numberOfCards)
