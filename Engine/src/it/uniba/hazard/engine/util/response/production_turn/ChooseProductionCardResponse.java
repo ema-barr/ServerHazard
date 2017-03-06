@@ -24,6 +24,7 @@ public class ChooseProductionCardResponse implements Response {
             logString = "Impossibile effettuare la scelta della carta produzione per il gruppo " + productionGroup.toString() + ".";
     }
 
+
     @Override
     public String toJson() {
         JsonObject res = new JsonObject();
