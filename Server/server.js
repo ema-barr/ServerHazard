@@ -97,6 +97,10 @@ io.on('connection', function (socket) {
         handleRequest('moveTransportPawn', data, callback);
     });
 
+    socket.on('chooseProductionCard', function(data, callback) {
+        handleRequest('chooseProductionCard', data, callback);
+    });
+
     function handleRequest(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);
