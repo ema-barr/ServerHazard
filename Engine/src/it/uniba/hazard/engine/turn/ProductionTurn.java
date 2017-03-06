@@ -10,7 +10,9 @@ import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.production_group.InsertNewTransportPawnResponse;
 import it.uniba.hazard.engine.util.response.production_group.MoveTransportPawnResponse;
+import it.uniba.hazard.engine.util.response.production_turn.ChooseProductionCardResponse;
 import it.uniba.hazard.engine.util.response.production_turn.GetProductionCardsResponse;
 import it.uniba.hazard.engine.util.response.production_turn.ProductionTurnExecuteTurnResponse;
 
@@ -30,6 +32,7 @@ public class ProductionTurn implements PlayerTurn {
         MOVE_TRANSPORT_PAWN
     }
 
+
     private StateTurn state;
 
     // attributo rappresentante il gruppo produzione
@@ -40,6 +43,12 @@ public class ProductionTurn implements PlayerTurn {
 
     // numero di carte presentate ad inizio turno
     private int numberOfCards;
+
+    // numero di carte produzione da scegliere
+    private int numberOfChoose;
+
+    // lista di carte produzione scelte
+    private ArrayList<Integer> selectedCards;
 
     // numero massimo di pedine presenti contemporaneamente sulla mappa
     private int maxPawns;
@@ -52,13 +61,15 @@ public class ProductionTurn implements PlayerTurn {
     // disponibili per ogni pedina
     private HashMap<TransportPawn,Integer> pawns;
 
-    public ProductionTurn (ProductionGroup pl, int nc, int mp, int na) {
-        player = pl;
-        numberOfCards = nc;
-        maxPawns = mp;
-        numActions = na;
+    public ProductionTurn (ProductionGroup player, int numberOfCards, int maxPawns, int numActions, int numberOfChoose) {
+        this.player = player;
+        this.numberOfCards = numberOfCards;
+        this.maxPawns = maxPawns;
+        this.numActions = numActions;
+        this.numberOfChoose = numberOfChoose;
         productionCards = new ArrayList<>();
         pawns = new HashMap<>();
+        selectedCards = new ArrayList<>();
     }
 
     public ProductionGroup getPlayer() {
@@ -75,12 +86,14 @@ public class ProductionTurn implements PlayerTurn {
             pawns.put(tp, numActions);
         }
         int numCurrentPawns = tps.size();
-        state = StateTurn.CHOOSE_PRODUCTION_CARDS;
+
 
         if (numCurrentPawns < maxPawns) {
             productionCards = gameState.getProductionCards(numberOfCards);
+            state = StateTurn.CHOOSE_PRODUCTION_CARDS;
             return new ProductionTurnExecuteTurnResponse(true, player, productionCards);
         } else {
+            state = StateTurn.MOVE_TRANSPORT_PAWN;
             return new ProductionTurnExecuteTurnResponse(false, player, null);
         }
     }
@@ -119,11 +132,25 @@ public class ProductionTurn implements PlayerTurn {
     private Response chooseCard (GameState gameState, String cardStr) {
         int numCard = Integer.valueOf(cardStr);
         Response resp = null;
-        if (numCard >= 0 & numCard < productionCards.size() - 1) {
-            ProductionCard prodCard = productionCards.get(numCard);
-            prodCard.executeAction(gameState, this);
-            resp = player.insertNewTransportPawn(gameState, new Provisions(prodCard.getResource()), prodCard.getLocation());
-            updatePawns();
+        if (!selectedCards.contains(numCard)) {
+            if (selectedCards.size() < numberOfChoose) {
+                if (numCard >= 0 & numCard < productionCards.size() - 1) {
+                    ProductionCard prodCard = productionCards.get(numCard);
+                    prodCard.executeAction(gameState, this);
+                    selectedCards.add(numCard);
+                    resp = player.insertNewTransportPawn(gameState, new Provisions(prodCard.getResource()), prodCard.getLocation());
+                    updatePawns();
+                    if (pawns.size() == maxPawns)
+                        state = StateTurn.MOVE_TRANSPORT_PAWN;
+                }
+            } else {
+                // il numero di scelte massimo è stato raggiunto
+                resp = new ChooseProductionCardResponse(false, player);
+                state = StateTurn.MOVE_TRANSPORT_PAWN;
+            }
+        } else {
+            // la carta è stata già scelta
+            resp = new ChooseProductionCardResponse(false, player);
         }
         return resp;
     }
@@ -140,11 +167,16 @@ public class ProductionTurn implements PlayerTurn {
         } else {
             resp = new MoveTransportPawnResponse (false, tp, newLocation);
         }
+
         return resp;
     }
 
     private Response getProductionCards (GameState gameState) {
         return new GetProductionCardsResponse(true, player, productionCards);
+    }
+
+    public StateTurn getState() {
+        return state;
     }
 
 
