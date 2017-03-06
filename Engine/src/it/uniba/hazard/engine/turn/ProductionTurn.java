@@ -146,11 +146,14 @@ public class ProductionTurn implements PlayerTurn {
             } else {
                 // il numero di scelte massimo è stato raggiunto
                 resp = new ChooseProductionCardResponse(false, player);
-                state = StateTurn.MOVE_TRANSPORT_PAWN;
             }
         } else {
             // la carta è stata già scelta
             resp = new ChooseProductionCardResponse(false, player);
+        }
+        //Once the specified number of production cards has been chosen, the production turn switches into movement mode
+        if (selectedCards.size() >= numberOfChoose) {
+            state = StateTurn.MOVE_TRANSPORT_PAWN;
         }
         return resp;
     }
@@ -200,6 +203,7 @@ public class ProductionTurn implements PlayerTurn {
                 cardsJson.add(c.toJson());
             }
             result.add("cards", cardsJson);
+            result.addProperty("state", state.toString());
             JsonArray pawnMovementsJson = new JsonArray();
             for (TransportPawn tp : pawns.keySet()) {
                 JsonObject pj = new JsonObject();
