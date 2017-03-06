@@ -27,7 +27,7 @@
 			function sendData(actionName, target) {
 				socket.emit(actionName, JSON.parse(target), function(response) {
                     document.getElementById("response").innerHTML += "<hr>";
-				    document.getElementById("response").innerHTML += response;
+				    document.getElementById("response").innerHTML += JSON.stringify(JSON.parse(response), null, 2);
 				} );
 			}
         </script>
@@ -43,7 +43,7 @@
 			<br>
 			<input type="submit" value="Send" />
 		</form>
-		<p id="response"></p>
+		<pre id="response"></pre>
 		<p id='connection'></p>
         <ul id='messages'></ul>
     </body>
