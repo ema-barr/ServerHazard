@@ -166,7 +166,7 @@ public class TurnReader {
                 System.out.println("ordNum: " + element.getElementsByTagName("ordNum").item(0).getTextContent());
                 System.out.println("numMovesPerTransportPawn: " + element.getElementsByTagName("numMovesPerTransportPawn").item(0).getTextContent());
                 int numMovesPerTransportPawn = Integer.parseInt(element.getElementsByTagName("numMovesPerTransportPawn").item(0).getTextContent());
-                ProductionTurn productionTurn = new ProductionTurn(productionGroup, NUMBER_OF_PRODUCTION_CARDS, productionGroup.getMaxTransportPawns(), numMovesPerTransportPawn);
+                ProductionTurn productionTurn = new ProductionTurn(productionGroup, NUMBER_OF_PRODUCTION_CARDS, productionGroup.getMaxTransportPawns(), numMovesPerTransportPawn, readNumOfProductionCards(path));
                 productionTurns.add(productionTurn);
                 int ordNum = Integer.parseInt(element.getElementsByTagName("ordNum").item(0).getTextContent());
                 turnOrder.set(ordNum-1, (Turn) productionTurn);
