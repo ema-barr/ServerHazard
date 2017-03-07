@@ -109,12 +109,18 @@ public class ActionGroup {
             //throw new InsufficientResourcesException("Not enough resources to execute the requested action.");
             solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this);
         } else {
-            //If there is, withdraw the resources from the group's deposit
-            provisions.withdrawResource(res);
-            provisions.addResource(res, resQuantity - 1);
-            solveEmergencyResponse = new SolveEmergencyResponse(true, toSolve, this);
+            //Check if the emergency has a level greater than zero
+            if (state.getLocationInMap(actionPawn).getEmergencyLevel(toSolve) > 0) {
+                //If it is, then withdraw the resources and solve the emergency
+                provisions.withdrawResource(res);
+                provisions.addResource(res, resQuantity - 1);
+                solveEmergencyResponse = new SolveEmergencyResponse(true, toSolve, this);
+                state.solveEmergency(toSolve, state.getLocationInMap(actionPawn));
+            } else {
+                //Otherwise, send an error response
+                solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this);
+            }
         }
-        state.solveEmergency(toSolve, state.getLocationInMap(actionPawn));
         return solveEmergencyResponse;
     }
 
