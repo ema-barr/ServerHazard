@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.util.response.emergency_turn;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.map.Location;
@@ -33,7 +34,11 @@ public class EmergencyTurnExecuteTurnResponse implements Response {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
         res.addProperty("emergency", emergency.toString());
-        res.addProperty("locations", locations);
+        JsonArray diffusedLocationsJson = new JsonArray();
+        for (Location l : locations) {
+            diffusedLocationsJson.add(l.toJson());
+        }
+        res.add("diffusedLocations", diffusedLocationsJson);
         res.addProperty("logString", logString);
         return res.toString();
     }
