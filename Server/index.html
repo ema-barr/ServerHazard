@@ -27,7 +27,7 @@
 			function sendData(actionName, target) {
 				socket.emit(actionName, JSON.parse(target), function(response) {
                     document.getElementById("response").innerHTML += "<hr>";
-				    document.getElementById("response").innerHTML += JSON.stringify(JSON.parse(response), null, 2);
+				    document.getElementById("response").innerHTML += JSON.stringify(JSON.parse(response), null, 4);
 				} );
 			}
         </script>
