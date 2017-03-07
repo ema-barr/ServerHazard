@@ -227,7 +227,7 @@ public class TurnReader {
                 System.out.println("ordNum: " + element.getElementsByTagName("ordNum").item(0).getTextContent());
                 int numCardsToDraw = Integer.parseInt(element.getElementsByTagName("numCardsToDraw").item(0).getTextContent());
                 int ordNum = Integer.parseInt(element.getElementsByTagName("ordNum").item(0).getTextContent());
-                EventTurn eventTurn = new EventTurn(numCardsToDraw, ordNum);
+                EventTurn eventTurn = new EventTurn(numCardsToDraw, 0);
                 eventTurns.add(eventTurn);
 
                 turnOrder.set(ordNum-1, (Turn) eventTurn);

@@ -13,6 +13,7 @@ public class GeneralHazardIndicator {
     private int currentStep;
 
     public GeneralHazardIndicator(List<Integer> steps) {
+        currentStep = 0;
         this.steps = steps;
     }
 
