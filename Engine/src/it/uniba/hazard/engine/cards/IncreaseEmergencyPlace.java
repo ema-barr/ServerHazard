@@ -45,7 +45,7 @@ public class IncreaseEmergencyPlace extends EventCard{
 
                 startLocation.put(l[randomIndex],currentEmergencyLevel);
                 gameState.diffuseEmergency(randomEmergency,startLocation);
-                return new IncreaseEmergencyPlaceResponse(true,randomEmergency,l[randomIndex],currentEmergencyLevel);
+                return new IncreaseEmergencyPlaceResponse(true, "IncreaseEmergencyPlace", randomEmergency,l[randomIndex],currentEmergencyLevel);
             }
         }
     }

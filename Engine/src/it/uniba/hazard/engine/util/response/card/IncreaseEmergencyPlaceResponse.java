@@ -15,9 +15,11 @@ public class IncreaseEmergencyPlaceResponse implements Response{
     public Location location;
     public int levelEmergency;
     public String logString;
+    public String cardName;
 
-    public IncreaseEmergencyPlaceResponse(boolean success, Emergency emergency, Location location, int levelEmergency){
+    public IncreaseEmergencyPlaceResponse(boolean success, String cardName, Emergency emergency, Location location, int levelEmergency){
         this.success = success;
+        this.cardName = cardName;
         this.emergency = emergency;
         this.location = location;
         this.levelEmergency = levelEmergency;
@@ -31,6 +33,7 @@ public class IncreaseEmergencyPlaceResponse implements Response{
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("cardName", cardName);
         res.addProperty("emergency", emergency.toString());
         res.addProperty("location", location.toString());
         res.addProperty("levelEmergency", levelEmergency);
