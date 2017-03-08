@@ -9,12 +9,14 @@ import it.uniba.hazard.engine.util.response.Response;
 public class TakeBonusCardResponse implements Response{
 
     private boolean success;
+    private String cardName;
     private int numCard;
     private String logString;
 
 
-    public TakeBonusCardResponse(boolean success){
+    public TakeBonusCardResponse(boolean success, String cardName){
         this.success = success;
+        this.cardName = cardName;
         if(success){
             logString = "E' stata pescata " + numCard + " carta bonus";
         }else {
@@ -27,6 +29,7 @@ public class TakeBonusCardResponse implements Response{
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("cardName", cardName);
         res.addProperty("TakeBonusCard", numCard);
         res.addProperty("logString", logString);
         return res.toString();

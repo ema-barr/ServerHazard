@@ -120,7 +120,7 @@
         <cards>
             <eventCards>
                 <eventCard>
-                    <name>IncreaseEmergencyPlace</name>
+                    <name>MalusProductionCard</name>
                     <quantity>10</quantity>
                 </eventCard>
             </eventCards>
