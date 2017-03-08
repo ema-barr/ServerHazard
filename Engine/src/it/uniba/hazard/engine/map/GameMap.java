@@ -42,9 +42,17 @@ public class GameMap {
         Set<Location> possibleLocations = new HashSet<Location>();
 
         for (DefaultEdge edge : edges) {
-            Location l = mapGraph.getEdgeTarget(edge);
-            if (!possibleLocations.contains(l) && l != loc) {
-                possibleLocations.add(l);
+            Location lt = mapGraph.getEdgeTarget(edge);
+            Location ls = mapGraph.getEdgeSource(edge);
+            Location possibleLocation;
+            if (!lt.equals(loc)) {
+                possibleLocation = lt;
+            } else {
+                possibleLocation = ls;
+            }
+
+            if (!possibleLocations.contains(possibleLocation)) {
+                possibleLocations.add(possibleLocation);
             }
         }
 
