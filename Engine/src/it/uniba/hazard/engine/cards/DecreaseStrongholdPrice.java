@@ -24,7 +24,7 @@ public class DecreaseStrongholdPrice extends EventCard{
         int DefaultCost = gameState.getDefaultStrongholdCost();
         int DecreasePrice = DefaultCost * 75 /100;
         gameState.setCurrentStrongholdCost(DecreasePrice);
-        return new DecreaseStrongholdPriceResponse(true,DecreasePrice);
+        return new DecreaseStrongholdPriceResponse(true, "DecreaseStrongholdPrice", DecreasePrice);
     }
 
     @Override

@@ -39,14 +39,14 @@ public class DecreaseEmergencyPlace extends EventCard{
         listLocation.toArray(l);
 
         while(true){
-            int randomIndex = new Random().nextInt()*l.length-1;
+            int randomIndex = new Random().nextInt(l.length-1);
             //verifico che ci sia l'emergenza in quella location
             if(l[randomIndex].getEmergencyLevel(randomEmergency) > 0) {
                 currentEmergencyLevel = l[randomIndex].getEmergencyLevel(randomEmergency);
 
                 //diminuisco di 1 il livello di una emergenza in una location
                 l[randomIndex].setEmergencyLevel(randomEmergency, currentEmergencyLevel-1);
-                return new DecreaseEmergencyPlaceResponse(true,randomEmergency,l[randomIndex],currentEmergencyLevel-1);
+                return new DecreaseEmergencyPlaceResponse(true, "DecreaseEmergencyPlace", randomEmergency,l[randomIndex],currentEmergencyLevel-1);
             }
         }
     }

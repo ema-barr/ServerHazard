@@ -120,7 +120,7 @@
         <cards>
             <eventCards>
                 <eventCard>
-                    <name>AddBlockade</name>
+                    <name>DefaultCard</name>
                     <quantity>10</quantity>
                 </eventCard>
             </eventCards>

@@ -12,11 +12,13 @@ import java.util.ArrayList;
  */
 public class AddBlockadeResponse implements Response{
     private boolean success;
+    private String cardName;
     private ArrayList<Location> locationsBlockade;
     private String logString;
 
-    public AddBlockadeResponse(boolean success, ArrayList<Location> locationsBlockade){
+    public AddBlockadeResponse(boolean success, String cardName, ArrayList<Location> locationsBlockade){
         this.locationsBlockade = locationsBlockade;
+        this.cardName = cardName;
         this.success = success;
         if(success){
             logString = "Barriera costruita tra ";
@@ -37,7 +39,7 @@ public class AddBlockadeResponse implements Response{
             array.add(loc.toString());
         }
         res.addProperty("success", success);
-        res.addProperty("eventType", "AddBlockade");
+        res.addProperty("cardName", cardName);
         res.add("locationsBlockade", array);
         res.addProperty("logString", logString);
         return res.toString();

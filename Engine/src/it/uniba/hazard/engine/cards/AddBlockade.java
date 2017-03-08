@@ -51,10 +51,11 @@ public class AddBlockade extends EventCard{
         }
 
 
-        return new AddBlockadeResponse(true,locationsBlockade);
+        return new AddBlockadeResponse(true, "AddBlockade", locationsBlockade);
     }
 
     public Response revertAction(GameState gameState) {
+
         gameState.unblock(l1, loc2);
         return new AddBlockadeRevertResponse(true,l1,loc2);
     }
