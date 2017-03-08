@@ -34,7 +34,7 @@ public class IncreaseContagionLevel extends EventCard{
         randomEmergency = listEmergency.get(new Random().nextInt(listEmergency.size()));
         gameState.raiseGeneralHazardIndicatorLevel(randomEmergency);
         int level = gameState.getGeneralHazardIndicatorLevel(randomEmergency);
-        return new IncreaseContagionLevelResponse(true,randomEmergency, level);
+        return new IncreaseContagionLevelResponse(true,"IncreaseContagionLevel", randomEmergency, level);
     }
 
 

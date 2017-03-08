@@ -39,6 +39,7 @@ public class Repository {
 
     }
 
+    /* NON USARE
     public static ActionGroup getActionGroupFromRepository(String objectID){
         boolean checkActionGroup;
         checkActionGroup = objectID.startsWith(ActionGroup.class.getName());
@@ -98,4 +99,6 @@ public class Repository {
             throw new ObjectNotStrongholdPawnException("Object with objectID " + objectID + "is not a StrongholdPawn" );
         }
     }
+
+    */
 }

@@ -120,7 +120,7 @@
         <cards>
             <eventCards>
                 <eventCard>
-                    <name>AddBlockade</name>
+                    <name>IncreaseEmergencyPlace</name>
                     <quantity>10</quantity>
                 </eventCard>
             </eventCards>

@@ -10,18 +10,20 @@ import it.uniba.hazard.engine.util.response.Response;
 public class IncreaseContagionLevelResponse implements Response {
 
     private boolean success;
+    private String cardName;
     private Emergency emergency;
     private String logString;
     private int level;
 
-    public IncreaseContagionLevelResponse(boolean success, Emergency emergency, int level){
+    public IncreaseContagionLevelResponse(boolean success, String cardName, Emergency emergency, int level){
         this.success = success;
+        this.cardName = cardName;
         this.emergency = emergency;
         this.level = level;
         if(success){
             logString = "Il livello di contagio della " + emergency.getNameEmergency() + " é ora pari a " + level;
         }else{
-            logString = "Impossibile aumentare il livello di contagio della" + emergency.getNameEmergency();
+            logString = "Impossibile aumentare il livello di contagio di" + emergency.getNameEmergency();
         }
     }
 
@@ -32,6 +34,7 @@ public class IncreaseContagionLevelResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("cardName", cardName);
         res.addProperty("emergency", emergency.toString());
         res.addProperty("newLevel", level);
 
