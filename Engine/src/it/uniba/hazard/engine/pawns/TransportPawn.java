@@ -14,16 +14,18 @@ import java.util.List;
 public class TransportPawn implements PlayerPawn{
     private String objectID;
     private static int id = -1;
+    private int thisId;
     private ProductionGroup productionGroup;
     private Provisions payload;
-    private Location location;
+    //private Location location;
 
     public TransportPawn(ProductionGroup productionGroup, Location location){
         id++;
+        thisId = id;
         objectID = this.getClass().getName() + "_" + productionGroup.toString() + "_" + id;
         this.productionGroup = productionGroup;
         this.payload = new Provisions();
-        this.location = location;
+        //this.location = location;
     }
 
     public TransportPawn(ProductionGroup productionGroup, Provisions payload, Location location){
@@ -31,12 +33,12 @@ public class TransportPawn implements PlayerPawn{
         objectID = this.getClass().getName() + "_" + productionGroup.toString() + "_" + id;
         this.productionGroup = productionGroup;
         this.payload = payload;
-        this.location = location;
+        //this.location = location;
     }
 
-    public Location getLocation() {
+    /*public Location getLocation() {
         return location;
-    }
+    }*/
 
     public String getObjectID() {
         return objectID;
@@ -72,7 +74,7 @@ public class TransportPawn implements PlayerPawn{
 
     @Override
     public String toString() {
-        return productionGroup.toString() + "_" + id;
+        return productionGroup.toString() + "_" + thisId;
     }
 
     public class TransportPawnSerializer implements JsonSerializer<TransportPawn> {
