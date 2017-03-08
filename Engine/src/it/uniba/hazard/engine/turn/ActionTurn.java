@@ -125,7 +125,8 @@ public class ActionTurn implements PlayerTurn {
         Emergency emergencyStronghold = (Emergency) Repository.getFromRepository(emergencyStr);
         Location locationStronghold = (Location) Repository.getFromRepository(locationStr);
         Response resp = player.buildStronghold(gameState, emergencyStronghold, locationStronghold);
-        numCurrentActions++;
+        if (((BuildStrongholdResponse) resp).success())
+            numCurrentActions++;
         return resp;
     }
 
