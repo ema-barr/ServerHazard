@@ -14,13 +14,14 @@ public class TakeBonusCardResponse implements Response{
     private String logString;
 
 
-    public TakeBonusCardResponse(boolean success, String cardName){
+    public TakeBonusCardResponse(boolean success, String cardName, int numCard){
         this.success = success;
         this.cardName = cardName;
+        this.numCard = numCard;
         if(success){
-            logString = "E' stata pescata " + numCard + " carta bonus";
+            logString = "Numero carte bouns pescate: " + numCard;
         }else {
-            logString = "Impossibile pescare" + numCard + " carta bonus";
+            logString = "Impossibile pescare nuove carte bonus";
         }
     }
 
@@ -30,7 +31,7 @@ public class TakeBonusCardResponse implements Response{
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
         res.addProperty("cardName", cardName);
-        res.addProperty("TakeBonusCard", numCard);
+        res.addProperty("numCardBonusDrawn", numCard);
         res.addProperty("logString", logString);
         return res.toString();
     }

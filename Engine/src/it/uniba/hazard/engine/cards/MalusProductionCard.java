@@ -30,7 +30,6 @@ public class MalusProductionCard extends EventCard{
         numberProductionCards = gameState.getNumberOfProductionCards();
         //diminuisce di uno il numero di carte produzione
         gameState.setNumberOfProductionCards(numberProductionCards - 1);
-        System.out.println(new MalusProductionCardResponse(true, "MalusProductionCard",numberProductionCards-1).toJson());
         return new MalusProductionCardResponse(true, "MalusProductionCard", numberProductionCards-1);
     }
 

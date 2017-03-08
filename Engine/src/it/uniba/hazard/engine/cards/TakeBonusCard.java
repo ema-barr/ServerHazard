@@ -23,7 +23,8 @@ public class TakeBonusCard extends EventCard{
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
         gameState.getBonusCards(1);
-        return new TakeBonusCardResponse(true, "cardName");
+        System.out.println(new TakeBonusCardResponse(true, "cardName", 1).toJson());
+        return new TakeBonusCardResponse(true, "cardName",1);
     }
 
     public Response revertAction(GameState gameState){
