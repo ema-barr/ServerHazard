@@ -165,8 +165,11 @@ public class ProductionTurn implements PlayerTurn {
         Location newLocation = Repository.getLocationFromRepository(newLocationStr);
         TransportPawn tp = Repository.getTransportPawnFromRepository(pawnStr);
         if (pawns.get(tp) > 0) {
-            pawns.put(tp, pawns.get(tp)-1);
             resp = player.moveTransportPawn(gameState, tp, newLocation);
+            if (((MoveTransportPawnResponse) resp).success()) {
+                //Reduce the number of movements only if the movement has been executed
+                pawns.put(tp, pawns.get(tp)-1);
+            }
         } else {
             resp = new MoveTransportPawnResponse (false, tp, newLocation);
         }

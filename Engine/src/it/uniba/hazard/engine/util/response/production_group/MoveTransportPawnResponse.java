@@ -40,4 +40,8 @@ public class MoveTransportPawnResponse implements Response {
         res.addProperty("logString", logString);
         return res.toString();
     }
+
+    public boolean success() {
+        return success;
+    }
 }
