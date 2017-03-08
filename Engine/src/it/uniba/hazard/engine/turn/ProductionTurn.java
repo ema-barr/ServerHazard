@@ -86,7 +86,7 @@ public class ProductionTurn implements PlayerTurn {
             pawns.put(tp, numActions);
         }
         int numCurrentPawns = tps.size();
-
+        selectedCards.clear();
 
         if (numCurrentPawns < maxPawns) {
             productionCards = gameState.getProductionCards(numberOfCards);

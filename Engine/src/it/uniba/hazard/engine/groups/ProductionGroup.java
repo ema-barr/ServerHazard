@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.groups;
 
 import com.google.gson.*;
+import it.uniba.hazard.engine.exception.CannotMovePawnException;
 import it.uniba.hazard.engine.exception.MaxNumberOfTransportPawnsReachedException;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Provisions;
@@ -32,7 +33,7 @@ public class ProductionGroup {
         return maxTransportPawns;
     }
 
-    public void insertNewTransportPawn(GameState state, Location location){
+    /*public void insertNewTransportPawn(GameState state, Location location){
         int numTransportPawns = pawns.size();
         if (numTransportPawns < maxTransportPawns){
             TransportPawn pawn = new TransportPawn(this, location);
@@ -42,7 +43,7 @@ public class ProductionGroup {
             throw new MaxNumberOfTransportPawnsReachedException("Max number of transport pawns reached");
         }
 
-    }
+    }*/
 
     public InsertNewTransportPawnResponse insertNewTransportPawn(GameState state, Provisions payload, Location location){
         InsertNewTransportPawnResponse insertNewTransportPawnResponse;
@@ -92,8 +93,12 @@ public class ProductionGroup {
             }
         }
         if (found){
-            state.movePawn(transportPawn, location);
-            moveTransportPawnResponse = new MoveTransportPawnResponse(true, transportPawn, location);
+            try {
+                state.movePawn(transportPawn, location);
+                moveTransportPawnResponse = new MoveTransportPawnResponse(true, transportPawn, location);
+            } catch (CannotMovePawnException e) {
+                moveTransportPawnResponse = new MoveTransportPawnResponse(false, transportPawn, location, MoveTransportPawnResponse.LOCATION_OCCUPIED_LOG_STRING);
+            }
         } else {
             //throw new CannotMovePawnException("Invalid location");
             moveTransportPawnResponse = new MoveTransportPawnResponse(false, transportPawn, location);
