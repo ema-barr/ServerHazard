@@ -144,7 +144,7 @@ public class GameController {
                 String locationID = reqDataJ.get("destinationID").getAsString();
                 String pawnID = reqDataJ.get("pawnID").getAsString();
                 params = new String[3];
-                params[0] = "moveTransportPawn";
+                params[0] = "movePawn";
                 params[1] = pawnID;
                 params[2] = locationID;
                 ProductionTurn turn = (ProductionTurn) game.getTurns().getCurrentTurn();
