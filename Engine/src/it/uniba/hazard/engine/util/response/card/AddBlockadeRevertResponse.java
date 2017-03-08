@@ -1,26 +1,30 @@
 package it.uniba.hazard.engine.util.response.card;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.util.ArrayList;
 
 /**
  * Created by denny on 03/03/2017.
  */
 public class AddBlockadeRevertResponse implements Response{
     private boolean success;
-    private Location l1;
-    private Location l2;
+    private ArrayList<Location> locationsUnlocked;
     private String logString;
 
-    public AddBlockadeRevertResponse(boolean success, Location l1, Location l2){
-        this.l1 = l1;
-        this.l2 = l2;
+    public AddBlockadeRevertResponse(boolean success, ArrayList<Location> locationsUnlocked){
+        this.locationsUnlocked = locationsUnlocked;
         this.success = success;
         if(success){
-            logString = "Barriera rimossa tra " + l1.toString() + " e " + l2.toString();
+            logString = "Barriera rimossa tra ";
+            for (Location loc: locationsUnlocked){
+                logString += loc + " ";
+            }
         }else{
-            logString = "Impossibile rimuovere la barriera tra " + l1.toString() + " e " + l2.toString();
+            logString = "Impossibile rimuovere la barriera";
         }
     }
 
@@ -28,9 +32,12 @@ public class AddBlockadeRevertResponse implements Response{
     @Override
     public String toJson() {
         JsonObject res = new JsonObject();
+        JsonArray array = new JsonArray();
+        for (Location loc: locationsUnlocked){
+            array.add(loc.toString());
+        }
         res.addProperty("success", success);
-        res.addProperty("location 1", l1.toString());
-        res.addProperty("location 2", l2.toString());
+        res.add("locationsUnlocked", array);
         res.addProperty("logString", logString);
         return res.toString();
     }

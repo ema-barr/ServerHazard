@@ -16,7 +16,7 @@ public class AddBlockade extends EventCard{
 
     private String objectID;
     private Location l1;
-    private Location loc2;
+    private ArrayList<Location> locationsBlockade;
 
     public AddBlockade(String eventType) {
         super(eventType);
@@ -29,7 +29,7 @@ public class AddBlockade extends EventCard{
 
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
-        ArrayList<Location> locationsBlockade = new ArrayList<Location>();
+        locationsBlockade = new ArrayList<Location>();
         Set<Location> allLocations =  gameState.getMapLocations();
         ArrayList<Location> l = new ArrayList<Location>(allLocations);
 
@@ -50,13 +50,15 @@ public class AddBlockade extends EventCard{
             locationsBlockade.add(loc);
         }
 
-
+        System.out.println(new AddBlockadeResponse(true, "AddBlockade", locationsBlockade).toJson());
         return new AddBlockadeResponse(true, "AddBlockade", locationsBlockade);
     }
 
     public Response revertAction(GameState gameState) {
-
-        gameState.unblock(l1, loc2);
-        return new AddBlockadeRevertResponse(true,l1,loc2);
+        for (int i = 1; i< locationsBlockade.size(); i++){
+            Location loc = locationsBlockade.get(i);
+            gameState.unblock(l1, loc);
+        }
+        return new AddBlockadeRevertResponse(true,locationsBlockade);
     }
 }
