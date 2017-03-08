@@ -1,5 +1,6 @@
 package it.uniba.hazard.engine.util.response.action_group;
 
+import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.groups.ActionGroup;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.util.response.Response;
@@ -28,6 +29,11 @@ public class SolveEmergencyResponse implements Response{
 
     @Override
     public String toJson() {
-        return null;
+        JsonObject res = new JsonObject();
+        res.addProperty("success", success);
+        res.addProperty("emergencyToSolve", emergencyToSolve.toString());
+        res.addProperty("actionGroup", actionGroup.toString());
+        res.addProperty("logString", logString);
+        return res.toString();
     }
 }
