@@ -97,7 +97,7 @@ public class ProductionGroup {
                 state.movePawn(transportPawn, location);
                 moveTransportPawnResponse = new MoveTransportPawnResponse(true, transportPawn, location);
             } catch (CannotMovePawnException e) {
-                moveTransportPawnResponse = new MoveTransportPawnResponse(false, transportPawn, location, MoveTransportPawnResponse.LOCATION_OCCUPIED_LOG_STRING);
+                moveTransportPawnResponse = new MoveTransportPawnResponse(false, transportPawn, location, e);
             }
         } else {
             //throw new CannotMovePawnException("Invalid location");
