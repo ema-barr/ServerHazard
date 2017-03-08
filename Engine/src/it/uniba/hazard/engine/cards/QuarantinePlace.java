@@ -44,7 +44,7 @@ public class QuarantinePlace extends BonusCard{
             if(l[randomIndex].getEmergencyLevel(randomEmergency) != 0) {
                 //quarantena di un'emergenza in un determinato luogo
                 l[randomIndex].setQuarantined(true);
-                return new QuarantinePlaceResponse(true,randomEmergency,l[randomIndex]);
+                return new QuarantinePlaceResponse(true,"QuarantinePlace", randomEmergency,l[randomIndex]);
             }
         }
     }
