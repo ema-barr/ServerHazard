@@ -162,8 +162,8 @@ public class ProductionTurn implements PlayerTurn {
         // metodo per muovere le pedine
         state = StateTurn.MOVE_TRANSPORT_PAWN;
         Response resp;
-        Location newLocation = Repository.getLocationFromRepository(newLocationStr);
-        TransportPawn tp = Repository.getTransportPawnFromRepository(pawnStr);
+        Location newLocation = (Location) Repository.getFromRepository(newLocationStr);
+        TransportPawn tp = (TransportPawn) Repository.getFromRepository(pawnStr);
         if (pawns.get(tp) > 0) {
             resp = player.moveTransportPawn(gameState, tp, newLocation);
             if (((MoveTransportPawnResponse) resp).success()) {

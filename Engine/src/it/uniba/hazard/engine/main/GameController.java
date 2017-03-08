@@ -99,14 +99,14 @@ public class GameController {
             }
             case "getAdjacentLocations": {
                 String locationID = reqDataJ.get("locationID").getAsString();
-                Location l = Repository.getLocationFromRepository(locationID);
+                Location l = (Location) Repository.getFromRepository(locationID);
                 Set<Location> adjLocations = game.getState().getAdjacentLocations(l);
                 resp = new AdjacentLocationsResponse(adjLocations);
                 break;
             }
             case "getEmergencies": {
                 String locationID = reqDataJ.get("locationID").getAsString();
-                Location l = Repository.getLocationFromRepository(locationID);
+                Location l = (Location) Repository.getFromRepository(locationID);
                 List<Area> areas = game.getState().getAreas();
                 Area locArea = null;
                 for(Area a : areas) {
@@ -117,7 +117,7 @@ public class GameController {
             }
             case "getTransports": {
                 String locationID = reqDataJ.get("locationID").getAsString();
-                Location l = Repository.getLocationFromRepository(locationID);
+                Location l = (Location) Repository.getFromRepository(locationID);
                 Set<GamePawn> pawns = game.getState().getPawnsOnLocation(l);
                 List<TransportPawn> transportPawns = new ArrayList<>();
                 for (GamePawn p : pawns) {
@@ -129,7 +129,7 @@ public class GameController {
             }
             case "getStrongholdInfo": {
                 String locationID = reqDataJ.get("locationID").getAsString();
-                Location l = Repository.getLocationFromRepository(locationID);
+                Location l = (Location) Repository.getFromRepository(locationID);
                 List<Area> areas = game.getState().getAreas();
                 Area locArea = null;
                 for(Area a : areas) {

@@ -31,8 +31,7 @@ public class BonusProductionCard extends EventCard{
 
         //aumenta di uno il numero di carte produzione
         gameState.setNumberOfProductionCards(numberProductionCards + 1);
-
-        return new BonusProductionCardResponse(true,numberProductionCards+1);
+        return new BonusProductionCardResponse(true, "BonusProductionCard", numberProductionCards+1);
     }
 
     public Response revertAction(GameState gameState) {

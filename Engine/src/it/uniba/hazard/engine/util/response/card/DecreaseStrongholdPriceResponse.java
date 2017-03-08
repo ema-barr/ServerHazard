@@ -11,11 +11,12 @@ public class DecreaseStrongholdPriceResponse implements Response {
     private boolean success;
     private String logString;
     private int decreasePrice;
+    private String cardName;
 
-    public DecreaseStrongholdPriceResponse(boolean success, int decreasePrice){
+    public DecreaseStrongholdPriceResponse(boolean success, String cardName, int decreasePrice){
         this.success = success;
         this.decreasePrice = decreasePrice;
-
+        this.cardName = cardName;
         if(success){
             logString = "Il prezzo dei presidi è diminuito, ed è pari a " + decreasePrice;
         }else{
@@ -26,6 +27,7 @@ public class DecreaseStrongholdPriceResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("cardName", cardName);
         res.addProperty("strongholdPrice" , decreasePrice);
         res.addProperty("logString", logString);
         return res.toString();

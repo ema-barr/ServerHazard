@@ -58,14 +58,14 @@ public class ActionTurn implements PlayerTurn {
     }
 
     private Response moveActionPawn (GameState gameState, String locationStr) {
-        Location destination = Repository.getLocationFromRepository(locationStr);
+        Location destination = (Location) Repository.getFromRepository(locationStr);
         Response resp = player.moveActionPawn(gameState, destination);
         numCurrentActions++;
         return resp;
     }
 
     private Response takeResources (GameState gameState, String pawnStr) {
-        TransportPawn tp = Repository.getTransportPawnFromRepository(pawnStr);
+        TransportPawn tp = (TransportPawn) Repository.getFromRepository(pawnStr);
         Response resp = player.takeResources(gameState, tp);
         numCurrentActions++;
         return resp;

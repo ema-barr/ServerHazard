@@ -11,12 +11,14 @@ import it.uniba.hazard.engine.util.response.Response;
 public class CurePlaceResponse implements Response {
 
     public boolean success;
+    private String cardName;
     public Emergency emergency;
     public Location location;
     public String logString;
 
-    public CurePlaceResponse(boolean success, Emergency emergency, Location location){
+    public CurePlaceResponse(boolean success, String cardName, Emergency emergency, Location location){
         this.success = success;
+        this.cardName = cardName;
         this.emergency = emergency;
         this.location = location;
         if(success){
@@ -29,6 +31,7 @@ public class CurePlaceResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("cardName", cardName);
         res.addProperty("emergency", emergency.getNameEmergency());
         res.addProperty("location", location.toString());
         res.addProperty("logString", logString);

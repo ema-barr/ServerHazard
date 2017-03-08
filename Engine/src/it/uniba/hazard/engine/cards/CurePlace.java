@@ -52,7 +52,7 @@ public class CurePlace extends BonusCard{
                l[randomIndex].setEmergencyLevel(randomEmergency, 0);
 
 
-               return new CurePlaceResponse(true,randomEmergency,l[randomIndex]);
+               return new CurePlaceResponse(true, "CurePlace" ,randomEmergency,l[randomIndex]);
            }
        }
     }

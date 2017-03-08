@@ -7,6 +7,7 @@ import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.card.AddBlockadeResponse;
 import it.uniba.hazard.engine.util.response.card.AddBlockadeRevertResponse;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class AddBlockade extends EventCard{
 
     private String objectID;
     private Location l1;
-    private Location loc2;
+    private ArrayList<Location> locationsBlockade;
 
     public AddBlockade(String eventType) {
         super(eventType);
@@ -28,36 +29,36 @@ public class AddBlockade extends EventCard{
 
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
+        locationsBlockade = new ArrayList<Location>();
         Set<Location> allLocations =  gameState.getMapLocations();
-        Location[] l = new Location[allLocations.size()-1];
+        ArrayList<Location> l = new ArrayList<Location>(allLocations);
 
 
         int index = (int) (Math.random() * allLocations.size()-1);
 
-        //tutte le locazioni in un array
-        allLocations.toArray(l);
-
         //preso primo nodo
-        l1 = l[index];
+        l1 = l.get(index);
+        locationsBlockade.add(l1);
 
         //prese locazioni adiacenti al primo nodo
         Set<Location> l2 = gameState.getAdjacentLocations(l1);
-        Location[] locationSecondNode = new Location[l2.size()];
-        l2.toArray(locationSecondNode);
+        ArrayList<Location> locationSecondNode = new ArrayList<Location>(l2);
 
-        //indice casuale per il nodo adiacente
-        int randomIndex = new Random().nextInt(locationSecondNode.length-1);
+        for (Location loc: locationSecondNode){
+            //blocco sulla tratta
+            gameState.block(l1, loc);
+            locationsBlockade.add(loc);
+        }
 
-        //blocco sulla tratta
-        gameState.block(l1, locationSecondNode[randomIndex]);
-
-        loc2 = locationSecondNode[randomIndex];
-
-        return new AddBlockadeResponse(true,l1,loc2);
+        System.out.println(new AddBlockadeResponse(true, "AddBlockade", locationsBlockade).toJson());
+        return new AddBlockadeResponse(true, "AddBlockade", locationsBlockade);
     }
 
     public Response revertAction(GameState gameState) {
-        gameState.unblock(l1, loc2);
-        return new AddBlockadeRevertResponse(true,l1,loc2);
+        for (int i = 1; i< locationsBlockade.size(); i++){
+            Location loc = locationsBlockade.get(i);
+            gameState.unblock(l1, loc);
+        }
+        return new AddBlockadeRevertResponse(true,locationsBlockade);
     }
 }

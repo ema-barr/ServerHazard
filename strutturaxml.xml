@@ -109,23 +109,19 @@
             </actionTurn>
             <productionTurn>
                 <group>ProductionGroup1</group>
-                <ordNum>1</ordNum>
+                <ordNum>4</ordNum>
                 <numMovesPerTransportPawn>2</numMovesPerTransportPawn>
             </productionTurn>
             <eventTurn>
                 <numCardsToDraw>1</numCardsToDraw>
-                <ordNum>4</ordNum>
+                <ordNum>1</ordNum>
             </eventTurn>
         </turns>
         <cards>
             <eventCards>
                 <eventCard>
-                    <name>IncreaseContagionLevel</name>
+                    <name>TakeBonusCard</name>
                     <quantity>10</quantity>
-                </eventCard>
-                <eventCard>
-                    <name>IncreaseEmergencyPlace</name>
-                    <quantity>5</quantity>
                 </eventCard>
             </eventCards>
             <productionCards>

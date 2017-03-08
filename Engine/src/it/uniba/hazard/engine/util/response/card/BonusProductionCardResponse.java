@@ -9,11 +9,13 @@ import it.uniba.hazard.engine.util.response.Response;
 public class BonusProductionCardResponse implements Response {
 
     private boolean success;
+    private String cardName;
     private int numberProductionCards;
     private String logString;
 
-    public BonusProductionCardResponse(boolean success, int numberProductionCards) {
+    public BonusProductionCardResponse(boolean success, String cardName, int numberProductionCards) {
         this.success = success;
+        this.cardName = cardName;
         this.numberProductionCards = numberProductionCards;
         if(success){
             logString = "Il numero di carte produzione è aumentato di 1. Ora le carte da scegliere sono: " + numberProductionCards;
@@ -25,6 +27,7 @@ public class BonusProductionCardResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("cardName", cardName);
         res.addProperty("numberProductionCards", numberProductionCards);
         res.addProperty("logString", logString);
         return res.toString();
