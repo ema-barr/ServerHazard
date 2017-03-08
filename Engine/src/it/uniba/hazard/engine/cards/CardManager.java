@@ -60,7 +60,7 @@ public class CardManager<C> {
 
     private int numRandom(){
         Random random = new Random();
-        int number = random.nextInt(cards.size()-1);
+        int number = random.nextInt(cards.size());
         return number;
     }
 

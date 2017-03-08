@@ -301,7 +301,9 @@ public class GameState {
     }
 
     /**
-     * Returns a list of randomly selected production cards. Only locations without a transport pawn will be selected
+     * Returns a list of randomly selected production cards. Only locations without a transport pawn will be selected.
+     * Because of this, if there are not enough cards that fit the criteria less than n cards will be extracted
+     * (including zero).
      * @param n
      * @return
      */
