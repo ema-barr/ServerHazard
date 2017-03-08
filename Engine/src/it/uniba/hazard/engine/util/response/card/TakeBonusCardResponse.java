@@ -31,7 +31,7 @@ public class TakeBonusCardResponse implements Response{
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
         res.addProperty("cardName", cardName);
-        res.addProperty("numCardBonusDrawn", numCard);
+        res.addProperty("numCardsBonusDrawn", numCard);
         res.addProperty("logString", logString);
         return res.toString();
     }
