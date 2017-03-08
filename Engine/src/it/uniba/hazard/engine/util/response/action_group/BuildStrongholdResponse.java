@@ -44,4 +44,8 @@ public class BuildStrongholdResponse implements Response {
         res.addProperty("logString", logString);
         return res.toString();
     }
+
+    public boolean success() {
+        return success;
+    }
 }
