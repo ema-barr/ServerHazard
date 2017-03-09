@@ -4,6 +4,7 @@ import com.google.gson.*;
 import it.uniba.hazard.engine.exception.CannotTakeResourcesException;
 import it.uniba.hazard.engine.exception.EmergencyMismatchException;
 import it.uniba.hazard.engine.exception.InsufficientResourcesException;
+import it.uniba.hazard.engine.exception.StrongholdAlreadyPresentException;
 import it.uniba.hazard.engine.main.*;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.ActionPawn;
@@ -148,14 +149,19 @@ public class ActionGroup {
         int resQuantity = provisions.getQuantity(res);
         if (resQuantity - state.getCurrentStrongholdCost() <= 0) {
             //throw new InsufficientResourcesException("Not enough resources to execute the requested action.");
-            buildStrongholdResponse = new BuildStrongholdResponse(false, this, e , l);
+            buildStrongholdResponse = new BuildStrongholdResponse(false, this, e , l,
+                    new InsufficientResourcesException("Not enough resources to build the stronghold."));
         } else {
             //If there is, withdraw the resources from the group's deposit
             provisions.withdrawResource(res);
             provisions.addResource(res, resQuantity - state.getCurrentStrongholdCost());
             Stronghold s = new Stronghold(l, si);
-            state.placeStronghold(s);
-            buildStrongholdResponse = new BuildStrongholdResponse(true, this, e , l);
+            try {
+                state.placeStronghold(s);
+                buildStrongholdResponse = new BuildStrongholdResponse(true, this, e , l);
+            } catch (StrongholdAlreadyPresentException ex) {
+                buildStrongholdResponse = new BuildStrongholdResponse(false, this, e, l, ex);
+            }
         }
         return buildStrongholdResponse;
     }
