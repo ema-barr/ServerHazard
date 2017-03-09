@@ -33,18 +33,22 @@
         </script>
     </head>
     <body>
-		<p>Hazard Server Debug Client</p>
-		<form action="javascript:sendData(requestName.value, requestData.value)">
-			Request Name:
-			<input type="text" name="requestName" id="requestName" />
-			<br>
-			Request Data:
-			<textarea name="requestData" id="requestData">Insert JSON Request here</textarea>
-			<br>
-			<input type="submit" value="Send" />
-		</form>
-		<pre id="response"></pre>
-		<p id='connection'></p>
-        <ul id='messages'></ul>
+		<div style="float: left; position:fixed; height: 100%; width:50%">
+			<p>Hazard Server Debug Client</p>
+			<form action="javascript:sendData(requestName.value, requestData.value)">
+				Request Name:
+				<input type="text" name="requestName" id="requestName" />
+				<br>
+				Request Data:
+				<textarea style="width: 80%; height: 400px;" name="requestData" id="requestData">Insert JSON Request here</textarea>
+				<br>
+				<input type="submit" value="Send" />
+			</form>
+		</div>
+		<div style="float: right; width:50%">
+			<pre id="response"></pre>
+			<p id='connection'></p>
+			<ul id='messages'></ul>
+		</div>
     </body>
 </html>
