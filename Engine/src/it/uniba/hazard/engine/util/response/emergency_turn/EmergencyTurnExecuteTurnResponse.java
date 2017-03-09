@@ -23,10 +23,17 @@ public class EmergencyTurnExecuteTurnResponse implements Response {
         emergency = e;
         this.locations = locations;
 
-        if (success)
-            logString = "Inizio turno per l'emergenza " + emergency.getNameEmergency() + " eseguito correttamente.";
-        else
+        if (success) {
+            StringBuilder logTemp = new StringBuilder();
+            for (Location l : this.locations) {
+                logTemp.append(", " + l.toString());
+            }
+            int c = logTemp.lastIndexOf(",");
+            logTemp.setCharAt(c, '.');
+            logString = "Emergenza " + emergency.getNameEmergency() + " diffusa in " + logTemp.toString();
+        } else {
             logString = "Errore nell'esecuzione dell'inizio del turno dell'emergenza " + emergency.getNameEmergency() + ".";
+        }
     }
 
     @Override
