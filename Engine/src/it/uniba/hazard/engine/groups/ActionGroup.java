@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.groups;
 
 import com.google.gson.*;
+import it.uniba.hazard.engine.exception.CannotTakeResourcesException;
 import it.uniba.hazard.engine.exception.EmergencyMismatchException;
 import it.uniba.hazard.engine.exception.InsufficientResourcesException;
 import it.uniba.hazard.engine.main.*;
@@ -84,7 +85,12 @@ public class ActionGroup {
         for (Resource r : prov.getListResources()) {
             provisions.addResource(r, prov.getQuantity(r));
         }
-        takeResourceResponse = new TakeResourceResponse(true, tp, this);
+        try {
+            takeResourceResponse = new TakeResourceResponse(true, tp, this);
+        } catch (CannotTakeResourcesException e) {
+            takeResourceResponse = new TakeResourceResponse(false, tp, this);
+        }
+
         return takeResourceResponse;
     }
 

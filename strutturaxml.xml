@@ -9,7 +9,7 @@
                 </emergenciesToSolve>
                 <resourcesUsed>
                     <resource>Risorsa1</resource>
-                    <resource>Risorse2</resource>
+                    <resource>Risorsa2</resource>
                 </resourcesUsed>
                 <headquarters>
                     <headquarter>Location1</headquarter>
@@ -64,7 +64,7 @@
             </gravityLevels>
             <emergency>
                 <name>Malattia</name>
-                <resourceNeeded>Medicinale</resourceNeeded>
+                <resourceNeeded>Risorsa1</resourceNeeded>
                 <generalHazardIndicator>
                     <steps>
                         <step>
