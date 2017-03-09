@@ -10,6 +10,7 @@ import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.TransportPawn;
+import it.uniba.hazard.engine.util.response.NoActionAvailableResponse;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.action_group.*;
 import it.uniba.hazard.engine.util.response.action_turn.*;
@@ -200,7 +201,8 @@ public class ActionTurn implements PlayerTurn {
             }
         }
         else {
-            throw new NoActionsAvailableException("The maximum number of actions for this turn is reached");
+            //throw new NoActionsAvailableException("The maximum number of actions for this turn is reached");
+            response = new NoActionAvailableResponse();
         }
         return response;
     }
