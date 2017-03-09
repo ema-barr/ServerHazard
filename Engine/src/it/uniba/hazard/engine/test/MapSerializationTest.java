@@ -78,7 +78,7 @@ public class MapSerializationTest {
                 null
                 );
 
-        ActionPawn p = new ActionPawn(new ActionGroup(null, null, null, null, null, null, null));
+        ActionPawn p = new ActionPawn(new ActionGroup(null, null, null, null, null, null));
         map.placePawn(p, l1);
         Game g = new Game(gs, new TurnSequence(new ArrayList<Turn>()));
         System.out.println(map.toJson().toString());

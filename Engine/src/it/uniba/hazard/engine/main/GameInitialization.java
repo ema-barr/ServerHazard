@@ -1,10 +1,7 @@
 package it.uniba.hazard.engine.main;
 
 
-import it.uniba.hazard.engine.cards.BonusCard;
-import it.uniba.hazard.engine.cards.CardManager;
-import it.uniba.hazard.engine.cards.EventCard;
-import it.uniba.hazard.engine.cards.ProductionCard;
+import it.uniba.hazard.engine.cards.*;
 import it.uniba.hazard.engine.endgame.EndCondition;
 import it.uniba.hazard.engine.endgame.LossCondition;
 import it.uniba.hazard.engine.endgame.VictoryCondition;
@@ -19,6 +16,8 @@ import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.turn.EmergencyTurn;
 import it.uniba.hazard.engine.turn.EventTurn;
 import it.uniba.hazard.engine.turn.ProductionTurn;
+import it.uniba.hazard.engine.util.response.Response;
+import it.uniba.hazard.engine.util.response.card.TakeBonusCardResponse;
 import it.uniba.hazard.engine.util.xml_reader.*;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -137,6 +136,13 @@ public class GameInitialization {
 
         game.nextTurn();
         System.out.println("Turno di gioco: " + ts.getCurrentTurn());
+        /*Response r = ts.getCurrentTurn().executeTurn(gs);
+        System.out.println(r.toJson());
+        if(r.toJson().contains("IncreaseNumberAction")){
+            IncreaseNumberAction ina = new IncreaseNumberAction("IncreaseNumberAction");
+           ina.executeAction(gs,ts.getCurrentTurn());
+
+        }*/
 
         System.out.println("Inizializzazione completata");
     }

@@ -36,7 +36,7 @@ public class BonusProductionCard extends EventCard{
 
     public Response revertAction(GameState gameState) {
         gameState.setNumberOfProductionCards(numberProductionCards);
-        return new BonusProductionCardRevertResponse(true,numberProductionCards);
+        return null;
     }
 
     public String getObjectID(){

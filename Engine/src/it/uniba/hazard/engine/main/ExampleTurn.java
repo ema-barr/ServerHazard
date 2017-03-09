@@ -10,7 +10,7 @@ import java.util.Set;
  * Created by andrea_iovine on 26/12/2016.
  * Classe Turno esempio, per spiegare il meccanismo dei turni.
  */
-public class ExampleTurn implements Turn {
+/*public class ExampleTurn implements Turn {
     private int groupNumber;
     private GamePawn examplePiece;
 
@@ -42,4 +42,4 @@ public class ExampleTurn implements Turn {
         state.placePawn(examplePiece, selectedLocation);
         System.out.println("Put the pawn in location " + selectedLocation);
     }
-}
+}*/

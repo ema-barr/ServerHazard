@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * Created by isz_d on 21/01/2017.
  */
-public class DiffusionTest {
+/*public class DiffusionTest {
     public static void main(String[] args) {
         Emergency e = new Emergency("malattia");
         List<Emergency> emergencies = new ArrayList<>();
@@ -93,4 +93,4 @@ public class DiffusionTest {
             System.out.println(l.toString() + " " + l.getEmergencyLevel(e));
         }
     }
-}
+}*/

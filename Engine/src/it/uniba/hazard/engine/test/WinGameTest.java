@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Created by isz_d on 10/01/2017.
  */
-public class WinGameTest {
+/*public class WinGameTest {
     public static void main(String[] args) {
         Emergency e = new Emergency("malattia");
         List<Emergency> emergencies = new ArrayList<>();
@@ -90,4 +90,4 @@ public class WinGameTest {
         System.out.println(state.getCurrentState());
 
     }
-}
+}*/

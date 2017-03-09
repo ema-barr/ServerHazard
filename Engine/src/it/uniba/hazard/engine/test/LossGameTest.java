@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Created by isz_d on 10/01/2017.
  */
-public class LossGameTest {
+/*public class LossGameTest {
     public static void main(String[] args) {
         Emergency e = new Emergency("malattia");
         List<Emergency> emergencies = new ArrayList<>();
@@ -98,4 +98,4 @@ public class LossGameTest {
         System.out.println(state.getContagionRatio(e));
 
     }
-}
+}*/

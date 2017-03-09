@@ -4,6 +4,8 @@ import it.uniba.hazard.engine.groups.ActionGroup;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.turn.ActionTurn;
+import it.uniba.hazard.engine.turn.EventTurn;
+import it.uniba.hazard.engine.turn.PlayerTurn;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.card.IncreaseNumberActionResponse;
 
@@ -24,6 +26,7 @@ public class IncreaseNumberAction extends BonusCard{
 
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
+
         ActionTurn at = (ActionTurn) turn;
         int actionRemain = at.getRemainingActions();
         at.setNumActions(actionRemain+1);

@@ -142,8 +142,8 @@
             </productionCards>
             <bonusCards>
                 <bonusCard>
-                    <name>QuarantinePlace</name>
-                    <quantity>10</quantity>
+                    <name>IncreaseNumberAction</name>
+                    <quantity>1</quantity>
                 </bonusCard>
             </bonusCards>
         </cards>

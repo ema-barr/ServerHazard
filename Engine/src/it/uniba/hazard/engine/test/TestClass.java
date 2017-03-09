@@ -1,6 +1,6 @@
 package it.uniba.hazard.engine.test;
 
-import it.uniba.hazard.engine.main.ExampleTurn;
+//import it.uniba.hazard.engine.main.ExampleTurn;
 import it.uniba.hazard.engine.main.Game;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
@@ -17,7 +17,7 @@ import java.util.Scanner;
 /**
  * Created by andrea_iovine on 26/12/2016.
  */
-public class TestClass {
+/*public class TestClass {
     public static void main(String[] args) {
         Graph<Location, DefaultEdge> mapGraph = new SimpleGraph<Location, DefaultEdge>(DefaultEdge.class);
         Location l1 = new Location("bari");
@@ -54,4 +54,4 @@ public class TestClass {
             s.nextLine();
         }
     }
-}
+}*/

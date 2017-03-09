@@ -10,13 +10,15 @@ public class TakeBonusCardResponse implements Response{
 
     private boolean success;
     private String cardName;
+    private String cardExtract;
     private int numCard;
     private String logString;
 
 
-    public TakeBonusCardResponse(boolean success, String cardName, int numCard){
+    public TakeBonusCardResponse(boolean success, String cardName, String cardExtract, int numCard){
         this.success = success;
         this.cardName = cardName;
+        this.cardExtract = cardExtract;
         this.numCard = numCard;
         if(success){
             logString = "Numero carte bouns pescate: " + numCard;
@@ -31,6 +33,7 @@ public class TakeBonusCardResponse implements Response{
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
         res.addProperty("cardName", cardName);
+        res.addProperty("cardExtract", cardExtract);
         res.addProperty("numCardsBonusDrawn", numCard);
         res.addProperty("logString", logString);
         return res.toString();

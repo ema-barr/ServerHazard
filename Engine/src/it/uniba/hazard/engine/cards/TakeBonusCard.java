@@ -5,6 +5,8 @@ import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.card.TakeBonusCardResponse;
 
+import java.util.List;
+
 //Carta Evento: pesca una carta bonus
 public class TakeBonusCard extends EventCard{
 
@@ -22,8 +24,8 @@ public class TakeBonusCard extends EventCard{
 
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
-        gameState.getBonusCards(1);
-        return new TakeBonusCardResponse(true, "cardName",1);
+        List<BonusCard> bs = gameState.getBonusCards(1);
+        return new TakeBonusCardResponse(true, "TakeBonusCard",bs.get(0).bonusType,1);
     }
 
     public Response revertAction(GameState gameState){

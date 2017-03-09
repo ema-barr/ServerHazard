@@ -6,6 +6,7 @@ import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.card.QuarantinePlaceResponse;
+import it.uniba.hazard.engine.util.response.card.QuarantinePlaceRevertResponse;
 
 import java.util.List;
 import java.util.Random;
@@ -16,6 +17,7 @@ public class QuarantinePlace extends BonusCard{
 
     private String objectID;
     private Emergency randomEmergency;
+    private Location quarantineLocation;
 
 
 
@@ -39,10 +41,11 @@ public class QuarantinePlace extends BonusCard{
         listLocation.toArray(l);
 
         while(true){
-            int randomIndex = new Random().nextInt()*l.length-1;
+            int randomIndex = new Random().nextInt(l.length-1);
             //verifico che ci sia l'emergenza in quella location
             if(l[randomIndex].getEmergencyLevel(randomEmergency) != 0) {
                 //quarantena di un'emergenza in un determinato luogo
+                quarantineLocation= l[randomIndex];
                 l[randomIndex].setQuarantined(true);
                 return new QuarantinePlaceResponse(true,"QuarantinePlace", randomEmergency,l[randomIndex]);
             }
@@ -51,6 +54,7 @@ public class QuarantinePlace extends BonusCard{
 
     @Override
     public Response revertAction(GameState gameState) {
-        return null;
+        quarantineLocation.setQuarantined(false);
+        return new QuarantinePlaceRevertResponse(true,"QuarantinePlace",randomEmergency,quarantineLocation);
     }
 }

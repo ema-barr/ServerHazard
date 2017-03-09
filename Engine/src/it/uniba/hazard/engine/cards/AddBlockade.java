@@ -59,6 +59,6 @@ public class AddBlockade extends EventCard{
             Location loc = locationsBlockade.get(i);
             gameState.unblock(l1, loc);
         }
-        return new AddBlockadeRevertResponse(true,locationsBlockade);
+        return null;
     }
 }
