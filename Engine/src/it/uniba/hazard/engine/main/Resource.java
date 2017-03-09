@@ -18,6 +18,11 @@ public class Resource {
     }
 
     @Override
+    public boolean equals(Object o) {
+        return ((Resource) o).getObjectID().equals(objectID);
+    }
+
+    @Override
     public String toString() {
         return nameResource;
     }
