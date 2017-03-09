@@ -1,6 +1,8 @@
 package it.uniba.hazard.engine.groups;
 
 import com.google.gson.*;
+import it.uniba.hazard.engine.exception.EmergencyMismatchException;
+import it.uniba.hazard.engine.exception.InsufficientResourcesException;
 import it.uniba.hazard.engine.main.*;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.ActionPawn;
@@ -100,14 +102,16 @@ public class ActionGroup {
         //Check if the emergency can be solved by this group
         if (!emergencyToBeSolved.contains(toSolve)) {
             //throw new EmergencyMismatchException("This emergency cannot be solved by this group.");
-            solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this);
+            solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this,
+                    new EmergencyMismatchException("This emergency cannot be solved by this group."));
         }
         //Check if there is sufficient resources to solve the emergency
         Resource res = toSolve.getResourceNeeded();
         int resQuantity = provisions.getQuantity(res);
         if (resQuantity <= 0) {
             //throw new InsufficientResourcesException("Not enough resources to execute the requested action.");
-            solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this);
+            solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this,
+                    new InsufficientResourcesException("Not enough resources to execute the requested action."));
         } else {
             //Check if the emergency has a level greater than zero
             if (state.getLocationInMap(actionPawn).getEmergencyLevel(toSolve) > 0) {
