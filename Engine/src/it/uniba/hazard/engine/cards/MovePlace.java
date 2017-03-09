@@ -34,7 +34,7 @@ public class MovePlace extends BonusCard{
 
         Location[] allLocations = new Location[l.size()];
         l.toArray(allLocations);
-        int randomIndex = new Random().nextInt()*l.size()-1;
+        int randomIndex = new Random().nextInt(l.size()-1);
         at.getPlayer().moveActionPawn(gameState,allLocations[randomIndex]);
 
         return new MovePlaceResponse(true,at.getPlayer(),allLocations[randomIndex]);

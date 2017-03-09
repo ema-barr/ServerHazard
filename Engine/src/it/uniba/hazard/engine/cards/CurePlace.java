@@ -41,7 +41,7 @@ public class CurePlace extends BonusCard{
        listLocation.toArray(l);
 
        while(true){
-           int randomIndex = new Random().nextInt()*l.length-1;
+           int randomIndex = new Random().nextInt(l.length-1);
 
            //verifico che ci sia l'emergenza in quella location
            if(l[randomIndex].getEmergencyLevel(randomEmergency) != 0) {

@@ -26,7 +26,6 @@ public class IncreaseNumberAction extends BonusCard{
 
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
-
         ActionTurn at = (ActionTurn) turn;
         int actionRemain = at.getRemainingActions();
         at.setNumActions(actionRemain+1);

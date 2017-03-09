@@ -55,6 +55,6 @@ public class QuarantinePlace extends BonusCard{
     @Override
     public Response revertAction(GameState gameState) {
         quarantineLocation.setQuarantined(false);
-        return new QuarantinePlaceRevertResponse(true,"QuarantinePlace",randomEmergency,quarantineLocation);
+        return null;
     }
 }

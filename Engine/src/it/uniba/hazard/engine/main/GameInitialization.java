@@ -138,10 +138,10 @@ public class GameInitialization {
         System.out.println("Turno di gioco: " + ts.getCurrentTurn());
         /*Response r = ts.getCurrentTurn().executeTurn(gs);
         System.out.println(r.toJson());
-        if(r.toJson().contains("IncreaseNumberAction")){
-            IncreaseNumberAction ina = new IncreaseNumberAction("IncreaseNumberAction");
-           ina.executeAction(gs,ts.getCurrentTurn());
-
+        if(r.toJson().contains("CurePlace")){
+            CurePlace cp = new CurePlace("CurePlace");
+            Response r1=  cp.executeAction(gs,ts.getCurrentTurn());
+            System.out.println(r1.toJson());
         }*/
 
         System.out.println("Inizializzazione completata");
