@@ -53,21 +53,24 @@ public class ActionTurn implements PlayerTurn {
     private Response solveEmergency (GameState gameState, String emergencyStr) {
         Emergency e = (Emergency) Repository.getFromRepository(emergencyStr);
         Response resp = player.solveEmergency(gameState, e);
-        numCurrentActions++;
+        if (((SolveEmergencyResponse) resp).success())
+            numCurrentActions++;
         return resp;
     }
 
     private Response moveActionPawn (GameState gameState, String locationStr) {
         Location destination = (Location) Repository.getFromRepository(locationStr);
         Response resp = player.moveActionPawn(gameState, destination);
-        numCurrentActions++;
+        if (((ActionGroupMoveResponse) resp).success())
+            numCurrentActions++;
         return resp;
     }
 
     private Response takeResources (GameState gameState, String pawnStr) {
         TransportPawn tp = (TransportPawn) Repository.getFromRepository(pawnStr);
         Response resp = player.takeResources(gameState, tp);
-        numCurrentActions++;
+        if (((TakeResourceResponse) resp).success())
+            numCurrentActions++;
         return resp;
 
     }
@@ -122,7 +125,8 @@ public class ActionTurn implements PlayerTurn {
         Emergency emergencyStronghold = (Emergency) Repository.getFromRepository(emergencyStr);
         Location locationStronghold = (Location) Repository.getFromRepository(locationStr);
         Response resp = player.buildStronghold(gameState, emergencyStronghold, locationStronghold);
-        numCurrentActions++;
+        if (((BuildStrongholdResponse) resp).success())
+            numCurrentActions++;
         return resp;
     }
 
