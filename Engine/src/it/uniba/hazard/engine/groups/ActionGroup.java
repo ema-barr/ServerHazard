@@ -35,14 +35,14 @@ public class ActionGroup {
         } else {
             this.provisions = provisions;
         }
-        this.actionPawn = assignActionPawn();
+        //this.actionPawn = assignActionPawn();
         this.nameActionGroup = nameActionGroup;
         this.HQs = HQs;
         this.startingPoint = startingPoint;
     }
 
-    private ActionPawn assignActionPawn() {
-        ActionPawn actionPawn = new ActionPawn(this);
+    public ActionPawn assignActionPawn() {
+        this.actionPawn = new ActionPawn(this);
         return actionPawn;
     }
 

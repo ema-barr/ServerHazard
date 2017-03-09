@@ -123,7 +123,8 @@ public class TurnReader {
 
                 System.out.println("numOfActions: " + element.getElementsByTagName("numOfActions").item(0).getTextContent());
                 System.out.println("ordNum: " + element.getElementsByTagName("ordNum").item(0).getTextContent());
-                ActionTurn actionTurn = new ActionTurn(actionGroup, 1);
+                int numberOfActions = Integer.parseInt(element.getElementsByTagName("numOfActions").item(0).getTextContent());
+                ActionTurn actionTurn = new ActionTurn(actionGroup, numberOfActions);
                 actionTurns.add(actionTurn);
                 int ordNum = Integer.parseInt(element.getElementsByTagName("ordNum").item(0).getTextContent());
                 turnOrder.set(ordNum-1, (Turn) actionTurn);

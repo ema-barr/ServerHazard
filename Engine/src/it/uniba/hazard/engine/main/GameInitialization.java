@@ -14,6 +14,7 @@ import it.uniba.hazard.engine.groups.ProductionGroup;
 import it.uniba.hazard.engine.map.Area;
 import it.uniba.hazard.engine.map.GameMap;
 import it.uniba.hazard.engine.map.Location;
+import it.uniba.hazard.engine.pawns.ActionPawn;
 import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.turn.EmergencyTurn;
 import it.uniba.hazard.engine.turn.EventTurn;
@@ -123,6 +124,12 @@ public class GameInitialization {
                 victoryConditionsList, lossConditionsList, repository, maxGravityLevel, strongholdCost,
                 numOfProductionCards,ts);
         game = new Game(gs, ts);
+
+        //Assign action pawns to each action group
+        for (ActionGroup ag: actionGroupsList){
+            ActionPawn ap = ag.assignActionPawn();
+            gm.placePawn(ap, ag.getStartingPoint());
+        }
 
         //Setup
         Map<Emergency, Map<Integer, Integer>> setup = SetupReader.readSetup(pathXML);

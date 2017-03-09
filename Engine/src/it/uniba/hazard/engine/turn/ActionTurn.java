@@ -152,6 +152,7 @@ public class ActionTurn implements PlayerTurn {
 
     @Override
     public Response executeTurn(GameState gameState) {
+        numCurrentActions = 0;
         return new ActionTurnExecuteTurnResponse(true, player);
     }
 
