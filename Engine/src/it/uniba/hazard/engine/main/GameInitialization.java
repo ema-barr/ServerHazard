@@ -54,8 +54,7 @@ public class GameInitialization {
         //StrongholdInfos
         ArrayList<StrongholdInfo> strongholdInfosList = (ArrayList<StrongholdInfo>) StrongholdInfosReader.readStrongholdInfos(pathXML);
         for (StrongholdInfo strInfo: strongholdInfosList){
-            Repository.insertInRepository("Stronghold" + strInfo.getEmergency().getNameEmergency()
-                    + "_" + strInfo.getResourceNeeded().getNameResource(), strInfo);
+            Repository.insertInRepository("StrongholdInfo_" + strInfo.getEmergency().getNameEmergency(), strInfo);
         }
 
         //Map
@@ -71,11 +70,13 @@ public class GameInitialization {
 
         //Groups
         ArrayList<ActionGroup> actionGroupsList = (ArrayList<ActionGroup>) GroupReader.readActionGrooups(pathXML);
+        Repository.insertInRepository("actionGroupsList", actionGroupsList);
         for (ActionGroup ag: actionGroupsList){
             Repository.insertInRepository(ag.getObjectID(), ag);
         }
 
         ArrayList<ProductionGroup> productionGroupsList = (ArrayList<ProductionGroup>) GroupReader.readProductionGrooups(pathXML);
+        Repository.insertInRepository("productionGroupsList", productionGroupsList);
         for (ProductionGroup pg: productionGroupsList){
             Repository.insertInRepository(pg.getObjectID(), pg);
         }
