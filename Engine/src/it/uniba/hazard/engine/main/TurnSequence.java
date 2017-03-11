@@ -22,6 +22,10 @@ public class TurnSequence {
         }
     }
 
+    public List<Turn> getTurnOrder() {
+        return turnOrder;
+    }
+
     public Turn getCurrentTurn() {
         return turnOrder.get(currentTurnIndex - 1);
     }

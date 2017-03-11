@@ -117,6 +117,11 @@ public class ActionTurn implements PlayerTurn {
         return resp;
     }
 
+    public Response addBonusCard(GameState gameState, BonusCard bonusCard){
+        bonusCards.add(bonusCard);
+        return new AddBonusCardResponse(true, player);
+    }
+
     private Response deleteAllBonusCard (GameState gameState) {
         bonusCards.clear();
         return new DeleteAllBonusCardsResponse(true, player);
