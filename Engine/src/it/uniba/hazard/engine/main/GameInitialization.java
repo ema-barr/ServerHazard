@@ -2,7 +2,6 @@ package it.uniba.hazard.engine.main;
 
 
 import it.uniba.hazard.engine.cards.*;
-import it.uniba.hazard.engine.endgame.EndCondition;
 import it.uniba.hazard.engine.endgame.LossCondition;
 import it.uniba.hazard.engine.endgame.VictoryCondition;
 import it.uniba.hazard.engine.exception.InsufficientNumOfLocationsError;
@@ -16,13 +15,10 @@ import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.turn.EmergencyTurn;
 import it.uniba.hazard.engine.turn.EventTurn;
 import it.uniba.hazard.engine.turn.ProductionTurn;
-import it.uniba.hazard.engine.util.response.Response;
-import it.uniba.hazard.engine.util.response.card.TakeBonusCardResponse;
 import it.uniba.hazard.engine.util.xml_reader.*;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.graph.UndirectedGraphUnion;
 
 import java.util.*;
 
@@ -55,6 +51,12 @@ public class GameInitialization {
         int strongholdCost = EmergencyReader.readMaxGravityLevel(pathXML);
         int maxGravityLevel = EmergencyReader.readMaxGravityLevel(pathXML);
 
+        //StrongholdInfos
+        ArrayList<StrongholdInfo> strongholdInfosList = (ArrayList<StrongholdInfo>) StrongholdInfosReader.readStrongholdInfos(pathXML);
+        for (StrongholdInfo strInfo: strongholdInfosList){
+            Repository.insertInRepository("StrongholdInfo_" + strInfo.getEmergency().getNameEmergency(), strInfo);
+        }
+
         //Map
         ArrayList<Location> locationsList = (ArrayList<Location>) MapReader.readLocations(pathXML);
         for (Location loc: locationsList){
@@ -68,11 +70,13 @@ public class GameInitialization {
 
         //Groups
         ArrayList<ActionGroup> actionGroupsList = (ArrayList<ActionGroup>) GroupReader.readActionGrooups(pathXML);
+        Repository.insertInRepository("actionGroupsList", actionGroupsList);
         for (ActionGroup ag: actionGroupsList){
             Repository.insertInRepository(ag.getObjectID(), ag);
         }
 
         ArrayList<ProductionGroup> productionGroupsList = (ArrayList<ProductionGroup>) GroupReader.readProductionGrooups(pathXML);
+        Repository.insertInRepository("productionGroupsList", productionGroupsList);
         for (ProductionGroup pg: productionGroupsList){
             Repository.insertInRepository(pg.getObjectID(), pg);
         }
