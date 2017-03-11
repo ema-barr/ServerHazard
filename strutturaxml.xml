@@ -217,6 +217,12 @@
                 <type>ContagionPercentageLossCondition</type>
             </lossCondition>
         </endGame>
+        <strongholdInfos>
+            <strongholdInfo>
+                <emergency>Malattia</emergency>
+                <resourceNeeded>Risorsa</resourceNeeded>
+            </strongholdInfo>
+        </strongholdInfos>
         <setup>
             <emergencySetup>
                 <emergency>Malattia</emergency>
