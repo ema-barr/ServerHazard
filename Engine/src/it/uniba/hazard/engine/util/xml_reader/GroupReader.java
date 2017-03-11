@@ -43,11 +43,8 @@ public class GroupReader {
             if (actionGroupNodes != null && actionGroupNodes.getLength() > 0) {
                 for (int i = 0; i < actionGroupNodes.getLength(); i++) {
                     Node nNode = actionGroupNodes.item(i);
-                    System.out.println(nNode.getNodeName());
 
                     Element element = (Element) nNode;
-
-                    System.out.println("name: " + element.getElementsByTagName("name").item(0).getTextContent());
                     String name = element.getElementsByTagName("name").item(0).getTextContent();
                     Element emergenciesToSolveNode = (Element) element.getElementsByTagName("emergenciesToSolve").item(0);
                     NodeList emergenciesNodeList = emergenciesToSolveNode.getElementsByTagName("emergencyToSolve");
@@ -55,7 +52,6 @@ public class GroupReader {
 
                     for (int j = 0; j < emergenciesNodeList.getLength(); j++){
                         Element emergency = (Element) emergenciesNodeList.item(j);
-                        System.out.println("emergencyToSolve: " + element.getElementsByTagName("emergencyToSolve").item(0).getTextContent());
                         Emergency em = (Emergency) Repository.getFromRepository(Emergency.class.getName() + "_" + emergency.getTextContent());
                         emergenciesToSolve.add(em);
                     }
@@ -68,7 +64,6 @@ public class GroupReader {
                     if (resourceList != null && resourceList.getLength() > 0) {
                         for (int j = 0; j < resourceList.getLength(); j++) {
                             Element nRes = (Element) resourceList.item(j);
-                            System.out.println("resource: " + nRes.getTextContent());
 
                             Resource res = new Resource(nRes.getTextContent());
                             resources.add(res);
@@ -82,14 +77,12 @@ public class GroupReader {
                     if (hqList != null && hqList.getLength() > 0) {
                         for (int j = 0; j < hqList.getLength(); j++) {
                             Element nHQ = (Element) hqList.item(j);
-                            System.out.println("headquarter: " + nHQ.getTextContent());
 
                             Location hq = (Location) Repository.getFromRepository(Location.class.getName() + "_" + nHQ.getTextContent());
                             HQs.add(hq);
                         }
                     }
 
-                    System.out.println("starting point: " + element.getElementsByTagName("startingPoint").item(0).getTextContent() + "\n");
                     Location start = (Location) Repository.getFromRepository(Location.class.getName() + "_" +
                             element.getElementsByTagName("startingPoint").item(0).getTextContent());
                     actionGroup = new ActionGroup( emergenciesToSolve,resources, null, name, HQs, start);
@@ -122,13 +115,9 @@ public class GroupReader {
             NodeList productionGroupNodes = groupElem.getElementsByTagName("productionGroup");
             for (int i = 0; i < productionGroupNodes.getLength(); i++) {
                 Node nProductionGroup = productionGroupNodes.item(i);
-                System.out.println(nProductionGroup.getNodeName());
                 Element element = (Element) nProductionGroup;
 
-                System.out.println("name:" + element.getElementsByTagName("name").item(0).getTextContent());
                 String name = element.getElementsByTagName("name").item(0).getTextContent();
-                System.out.println("max transport pawns:" + element.getElementsByTagName("maxNumTransportPawns")
-                        .item(0).getTextContent() + "\n");
                 int maxTransportPawns = Integer.parseInt(element.getElementsByTagName("maxNumTransportPawns")
                         .item(0).getTextContent());
                 ArrayList<TransportPawn> transportPawns = new ArrayList<TransportPawn>(maxTransportPawns);

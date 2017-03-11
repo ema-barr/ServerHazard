@@ -33,8 +33,7 @@ public class EndGameReader {
 
             for (int i = 0; i< victCondList.getLength(); i++){
                 Element element = (Element) victCondList.item(i);
-                System.out.println("message: " + element.getElementsByTagName("victoryMessage").item(0).getTextContent());
-                System.out.println("type: " + element.getElementsByTagName("type").item(0).getTextContent());
+                String message = element.getElementsByTagName("victoryMessage").item(0).getTextContent();
                 String type = element.getElementsByTagName("type").item(0).getTextContent();
 
                 //TODO da rivedere
@@ -77,8 +76,7 @@ public class EndGameReader {
             NodeList lossCondList = endGameElem.getElementsByTagName("lossCondition");
             for (int i = 0; i< lossCondList.getLength(); i++){
                 Element element = (Element) lossCondList.item(i);
-                System.out.println("message: " + element.getElementsByTagName("lossMessage").item(0).getTextContent());
-                System.out.println("type: " + element.getElementsByTagName("type").item(0).getTextContent());
+                String message = element.getElementsByTagName("lossMessage").item(0).getTextContent();
                 String type = element.getElementsByTagName("type").item(0).getTextContent();
 
                 //TODO da rivedere

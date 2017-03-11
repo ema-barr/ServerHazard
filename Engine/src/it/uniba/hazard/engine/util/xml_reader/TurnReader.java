@@ -78,13 +78,11 @@ public class TurnReader {
             for(int i = 0; i < emergencyTurnsList.getLength(); i++){
                 Element element = (Element) emergencyTurnsList.item(i);
 
-                System.out.println("name: " + element.getElementsByTagName("name").item(0).getTextContent());
-                System.out.println("emergency: " + element.getElementsByTagName("emergency").item(0).getTextContent());
+                String name = element.getElementsByTagName("name").item(0).getTextContent();
                 Emergency emergency = (Emergency) Repository.getFromRepository(Emergency.class.getName() + "_" +
                         element.getElementsByTagName("emergency").item(0).getTextContent());
                 EmergencyTurn emergencyTurn = new EmergencyTurn(emergency);
                 emergencyTurns.add(emergencyTurn);
-                System.out.println("ordNum: " + element.getElementsByTagName("ordNum").item(0).getTextContent());
                 int ordNum = Integer.parseInt(element.getElementsByTagName("ordNum").item(0).getTextContent());
                 turnOrder.set(ordNum-1, (Turn) emergencyTurn);
             }
@@ -117,12 +115,9 @@ public class TurnReader {
             for(int i = 0; i < actionTurnsList.getLength(); i++){
                 Element element = (Element) actionTurnsList.item(i);
 
-                System.out.println("group: " + element.getElementsByTagName("group").item(0).getTextContent());
-                                ActionGroup actionGroup = (ActionGroup) Repository.getFromRepository(ActionGroup.class.getName() + "_" +
+                ActionGroup actionGroup = (ActionGroup) Repository.getFromRepository(ActionGroup.class.getName() + "_" +
                     element.getElementsByTagName("group").item(0).getTextContent());
 
-                System.out.println("numOfActions: " + element.getElementsByTagName("numOfActions").item(0).getTextContent());
-                System.out.println("ordNum: " + element.getElementsByTagName("ordNum").item(0).getTextContent());
                 int numberOfActions = Integer.parseInt(element.getElementsByTagName("numOfActions").item(0).getTextContent());
                 ActionTurn actionTurn = new ActionTurn(actionGroup, numberOfActions);
                 actionTurns.add(actionTurn);
@@ -151,8 +146,6 @@ public class TurnReader {
             Element gameElem = (Element) doc.getElementsByTagName("game").item(0);
             Element turnsElem = (Element) gameElem.getElementsByTagName("turns").item(0);
 
-            System.out.println("numOfProductionCards: " + turnsElem.getElementsByTagName("numOfProductionCards").item(0).getTextContent());
-
             NodeList productionTurnsList = turnsElem.getElementsByTagName("productionTurn");
 
             ArrayList<ProductionTurn> productionTurns = new ArrayList<ProductionTurn>();
@@ -160,12 +153,9 @@ public class TurnReader {
             for(int i = 0; i < productionTurnsList.getLength(); i++){
                 Element element = (Element) productionTurnsList.item(i);
 
-                System.out.println("group: " + element.getElementsByTagName("group").item(0).getTextContent());
                 ProductionGroup productionGroup = (ProductionGroup) Repository.getFromRepository(ProductionGroup.class.getName() + "_" +
                         element.getElementsByTagName("group").item(0).getTextContent());
 
-                System.out.println("ordNum: " + element.getElementsByTagName("ordNum").item(0).getTextContent());
-                System.out.println("numMovesPerTransportPawn: " + element.getElementsByTagName("numMovesPerTransportPawn").item(0).getTextContent());
                 int numMovesPerTransportPawn = Integer.parseInt(element.getElementsByTagName("numMovesPerTransportPawn").item(0).getTextContent());
                 ProductionTurn productionTurn = new ProductionTurn(productionGroup, NUMBER_OF_PRODUCTION_CARDS, productionGroup.getMaxTransportPawns(), numMovesPerTransportPawn, readNumOfProductionCards(path));
                 productionTurns.add(productionTurn);
@@ -224,8 +214,6 @@ public class TurnReader {
             for(int i = 0; i < eventTurnsList.getLength(); i++){
                 Element element = (Element) eventTurnsList.item(i);
 
-                System.out.println("numCardsToDraw: " + element.getElementsByTagName("numCardsToDraw").item(0).getTextContent());
-                System.out.println("ordNum: " + element.getElementsByTagName("ordNum").item(0).getTextContent());
                 int numCardsToDraw = Integer.parseInt(element.getElementsByTagName("numCardsToDraw").item(0).getTextContent());
                 int ordNum = Integer.parseInt(element.getElementsByTagName("ordNum").item(0).getTextContent());
                 EventTurn eventTurn = new EventTurn(numCardsToDraw, 0);
