@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.Stronghold;
+import it.uniba.hazard.engine.main.StrongholdInfo;
 
 import java.util.List;
 
@@ -13,7 +14,10 @@ import java.util.List;
 public class GetStrongholdInfoResponse implements Response {
     private JsonObject responseJson;
 
-    public GetStrongholdInfoResponse(List<Emergency> emergencies, List<Stronghold> strongholds, int currentStrongholdCost) {
+    public GetStrongholdInfoResponse(List<Emergency> emergencies,
+                                     List<Stronghold> strongholds,
+                                     int currentStrongholdCost,
+                                     List<StrongholdInfo> strongholdInfos) {
         responseJson = new JsonObject();
         responseJson.addProperty("currentStrongholdCost", currentStrongholdCost);
         JsonArray strongholdsJ = new JsonArray();
@@ -22,6 +26,11 @@ public class GetStrongholdInfoResponse implements Response {
             o.addProperty("emergency", e.getObjectID());
             o.addProperty("hasStronghold", isEmergencyCovered(e, strongholds));
             strongholdsJ.add(o);
+            for(StrongholdInfo s : strongholdInfos) {
+                if (s.getEmergency().equals(e)) {
+                    o.addProperty("strongholdResource", s.getResourceNeeded().getNameResource());
+                }
+            }
         }
         responseJson.add("strongholdsInArea", strongholdsJ);
     }

@@ -136,8 +136,12 @@ public class GameController {
                     if (a.contains(l)) locArea = a;
                 }
                 List<Stronghold> strongholds = locArea.getStrongholds();
+                List<StrongholdInfo> strongholdInfos = new ArrayList<>();
+                for (Emergency e : game.getState().getEmergencies()) {
+                    strongholdInfos.add((StrongholdInfo) Repository.getFromRepository("StrongholdInfo_" + e.getNameEmergency()));
+                }
                 resp = new GetStrongholdInfoResponse(game.getState().getEmergencies(),
-                        strongholds, game.getState().getCurrentStrongholdCost());
+                        strongholds, game.getState().getCurrentStrongholdCost(), strongholdInfos);
                 break;
             }
             case "moveTransportPawn": {

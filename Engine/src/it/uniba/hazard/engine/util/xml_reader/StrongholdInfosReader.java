@@ -29,7 +29,7 @@ public class StrongholdInfosReader {
 
             Element gameElem = (Element) doc.getElementsByTagName("game").item(0);
             Element strongholdInfos = (Element) gameElem.getElementsByTagName("strongholdInfos").item(0);
-            NodeList strongholdInfoList = strongholdInfos.getElementsByTagName("stronholdInfo");
+            NodeList strongholdInfoList = strongholdInfos.getElementsByTagName("strongholdInfo");
 
             ArrayList<StrongholdInfo> strongholdInfoArrayList = new ArrayList<StrongholdInfo>();
             for (int i =0; i < strongholdInfoList.getLength(); i++){

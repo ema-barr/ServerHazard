@@ -17,7 +17,7 @@ public class StrongholdTest {
         Emergency emergency = g.getState().getEmergencies().get(0);
         ActionTurn currentTurn = (ActionTurn) g.getTurns().getCurrentTurn();
         Provisions p = new Provisions();
-        p.addResource(new Resource("Risorsa1"), 1);
+        p.addResource(new Resource("Risorsa1"), 5);
         currentTurn.getPlayer().setProvisions(p);
         StrongholdInfo si = new StrongholdInfo(emergency, new Resource("Risorsa1"));
         Repository.insertInRepository("StrongholdInfo_" + emergency.getNameEmergency(), si);

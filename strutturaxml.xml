@@ -220,7 +220,11 @@
         <strongholdInfos>
             <strongholdInfo>
                 <emergency>Malattia</emergency>
-                <resourceNeeded>Risorsa</resourceNeeded>
+                <resourceNeeded>Risorsa1</resourceNeeded>
+            </strongholdInfo>
+            <strongholdInfo>
+                <emergency>Peste</emergency>
+                <resourceNeeded>Risorsa1</resourceNeeded>
             </strongholdInfo>
         </strongholdInfos>
         <setup>
