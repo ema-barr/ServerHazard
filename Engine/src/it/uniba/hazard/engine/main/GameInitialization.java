@@ -15,6 +15,7 @@ import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.turn.EmergencyTurn;
 import it.uniba.hazard.engine.turn.EventTurn;
 import it.uniba.hazard.engine.turn.ProductionTurn;
+import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.xml_reader.*;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -161,11 +162,12 @@ public class GameInitialization {
         System.out.println("Inizializzazione completata");
 
         System.out.println("Turno di gioco: " + ts.getCurrentTurn());
-        /*Response r = ts.getCurrentTurn().executeTurn(gs);
+       /* Response r = ts.getCurrentTurn().executeTurn(gs);
         System.out.println(r.toJson());
-        if(r.toJson().contains("CurePlace")){
-            CurePlace cp = new CurePlace("CurePlace");
-            Response r1=  cp.executeAction(gs,ts.getCurrentTurn());
+        if(r.toJson().contains("MovePlace")){
+            MovePlace mp = new MovePlace("MovePlace");
+            ts.setNextTurn();
+            Response r1=  mp.executeAction(gs,ts.getCurrentTurn());
             System.out.println(r1.toJson());
         }*/
 
