@@ -35,11 +35,13 @@ public class GameInitialization {
     }
 
     public void initialization(){
+        System.out.println("Avvio inizializzazione.");
         //Resources
         ArrayList<Resource> resourcesList = (ArrayList<Resource>) ResourceReader.readResources(pathXML);
         for(Resource res: resourcesList){
             Repository.insertInRepository(res.getObjectID(), res);
         }
+        System.out.println("- Risorse inizializzate con successo.");
 
         //Emergencies
         ArrayList<Emergency> emergenciesList = (ArrayList<Emergency>) EmergencyReader.readEmergencies(pathXML);
@@ -51,11 +53,15 @@ public class GameInitialization {
         int strongholdCost = EmergencyReader.readMaxGravityLevel(pathXML);
         int maxGravityLevel = EmergencyReader.readMaxGravityLevel(pathXML);
 
+        System.out.println("- Emergenze inizializzate con successo.");
+
         //StrongholdInfos
         ArrayList<StrongholdInfo> strongholdInfosList = (ArrayList<StrongholdInfo>) StrongholdInfosReader.readStrongholdInfos(pathXML);
         for (StrongholdInfo strInfo: strongholdInfosList){
             Repository.insertInRepository("StrongholdInfo_" + strInfo.getEmergency().getNameEmergency(), strInfo);
         }
+
+        System.out.println("- Informazioni sui presidi inizializzate con successo.");
 
         //Map
         ArrayList<Location> locationsList = (ArrayList<Location>) MapReader.readLocations(pathXML);
@@ -67,6 +73,7 @@ public class GameInitialization {
         UndirectedGraph<Location, DefaultEdge> graph = createGraph();
 
         ArrayList<Area> areasList = (ArrayList<Area>) MapReader.readAreas(pathXML);
+        System.out.println("- Mappa inizializzata con successo.");
 
         //Groups
         ArrayList<ActionGroup> actionGroupsList = (ArrayList<ActionGroup>) GroupReader.readActionGrooups(pathXML);
@@ -80,6 +87,8 @@ public class GameInitialization {
         for (ProductionGroup pg: productionGroupsList){
             Repository.insertInRepository(pg.getObjectID(), pg);
         }
+
+        System.out.println("- Gruppi inizializzati con successo.");
 
         //Cards
         CardManager<BonusCard> bonusCardManager = new CardManager<BonusCard>();
@@ -106,6 +115,8 @@ public class GameInitialization {
             productionCardManager.instanceCard(prodCard, quantity);
         }
 
+        System.out.println("- Carte inizializzate con successo.");
+
         //Turns
         TurnReader.createTurnOrder(pathXML);
         ArrayList<EmergencyTurn> emergencyTurnsList = (ArrayList<EmergencyTurn>) TurnReader.readEmergencyTurns(pathXML);
@@ -117,10 +128,15 @@ public class GameInitialization {
         TurnSequence ts = new TurnSequence(turnOrder);
         Repository.insertInRepository("turn_order", ts);
 
+        System.out.println("- Turni inizializzati con successo.");
+
         //EndGame
         ArrayList<VictoryCondition> victoryConditionsList = (ArrayList<VictoryCondition>)
         EndGameReader.readVictoryConditions(pathXML);
         ArrayList<LossCondition> lossConditionsList = (ArrayList<LossCondition>) EndGameReader.readLossConditions(pathXML);
+
+        System.out.println("- Condizioni di fine gioco inizializzate con successo.");
+
         //Creazione del gamestate
         GameMap gm = new GameMap(graph, areasList);
         gs = new GameState(gm, bonusCardManager, productionCardManager, eventCardManager, emergenciesList,
@@ -135,10 +151,15 @@ public class GameInitialization {
         }
 
         //Setup
+        System.out.println("- Avvio setup iniziale.");
         Map<Emergency, Map<Integer, Integer>> setup = SetupReader.readSetup(pathXML);
         doSetup(setup);
 
+        System.out.println("- Setup iniziale completato.");
+
         game.nextTurn();
+        System.out.println("Inizializzazione completata");
+
         System.out.println("Turno di gioco: " + ts.getCurrentTurn());
         /*Response r = ts.getCurrentTurn().executeTurn(gs);
         System.out.println(r.toJson());
@@ -148,7 +169,6 @@ public class GameInitialization {
             System.out.println(r1.toJson());
         }*/
 
-        System.out.println("Inizializzazione completata");
     }
 
     public Game getGame() {
@@ -200,7 +220,7 @@ public class GameInitialization {
                 throw new InsufficientNumOfLocationsError("The number of location where emergency " +
                         emergency.getNameEmergency() + " starts is greater than the number of possible locations");
             }
-            System.out.println(emergency.getNameEmergency() +" setup: complete.");
+            System.out.println("-- Setup " + emergency.getNameEmergency() +" completato.");
         }
 
 

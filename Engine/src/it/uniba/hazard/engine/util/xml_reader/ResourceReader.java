@@ -33,7 +33,6 @@ public class ResourceReader {
             NodeList resourceList = resElem.getElementsByTagName("name");
             for (int i = 0; i < resourceList.getLength(); i++) {
                 Element element = (Element) resourceList.item(i);
-                System.out.println("name:" + element.getTextContent());
                 Resource res = new Resource(element.getTextContent());
                 resources.add(res);
             }

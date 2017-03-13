@@ -34,9 +34,7 @@ public class EmergencyReader {
             NodeList emergenciesList = emergenciesElem.getElementsByTagName("emergency");
             for (int i = 0; i < emergenciesList.getLength(); i++) {
                 Element element = (Element) emergenciesList.item(i);
-                System.out.println("name:" + element.getElementsByTagName("name").item(0).getTextContent());
                 String name = element.getElementsByTagName("name").item(0).getTextContent();
-                System.out.println("resource needed:" + element.getElementsByTagName("resourceNeeded").item(0).getTextContent());
                 String resourceNeededString = element.getElementsByTagName("resourceNeeded").item(0).getTextContent();
                 Resource resourceNeeded = (Resource) Repository.getFromRepository(Resource.class.getName() + "_" + resourceNeededString);
 
@@ -48,9 +46,7 @@ public class EmergencyReader {
                 NodeList stepList = stepsElem.getElementsByTagName("step");
                 for (int j = 0; j < stepList.getLength(); j++){
                     Element stepNode = (Element) stepList.item(j);
-                    System.out.println("level:" + stepNode.getElementsByTagName("level").item(0).getTextContent());
                     int level = Integer.parseInt(stepNode.getElementsByTagName("level").item(0).getTextContent());
-                    System.out.println("led:" + stepNode.getElementsByTagName("led").item(0).getTextContent());
 
                     steps.add(level);
                 }
