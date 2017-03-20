@@ -15,9 +15,10 @@ import java.util.Set;
 public class MovePlace extends BonusCard{
 
     private String objectID;
+    private Location destination;
 
 
-    public MovePlace(String bonusType) {
+    public MovePlace(String bonusType, Location destination) {
         super(bonusType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
@@ -30,14 +31,9 @@ public class MovePlace extends BonusCard{
     public Response executeAction(GameState gameState, Turn turn) {
         ActionTurn at = (ActionTurn) turn;
 
-        Set<Location> l = gameState.getMapLocations();
+        at.getPlayer().moveActionPawn(gameState,destination);
 
-        Location[] allLocations = new Location[l.size()];
-        l.toArray(allLocations);
-        int randomIndex = new Random().nextInt(l.size()-1);
-        at.getPlayer().moveActionPawn(gameState,allLocations[randomIndex]);
-
-        return new MovePlaceResponse(true,at.getPlayer(),allLocations[randomIndex]);
+        return new MovePlaceResponse(true,at.getPlayer(),destination);
     }
 
     @Override
