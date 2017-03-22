@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hazard Mock Dashboard</title>
+    <script src='/socket.io/socket.io.js'></script>
+    <script>
+        function addMessage(message) {
+            messages = document.getElementById('log');
+            currentState = document.getElementById('currentState');
+            currentState.innerHTML = '';
+            log = message.logString;
+            state = message.state;
+            var text = document.createTextNode(log)
+            el = document.createElement('li');
+            el.appendChild(text);
+            messages.appendChild(el);
+            currentState.innerHTML = JSON.stringify(JSON.parse(state), null, 4);
+        }
+        var socket = io();
+
+        socket.on('welcome', function(data) {
+            // Respond with a message including this clients' id sent from the server
+            connection = document.getElementById('connection');
+            connection.innerHTML = 'Connesso';
+            socket.emit('init_dashboard', data);
+        });
+
+        socket.on('update', function(data) {
+            addMessage(data)
+        })
+    </script>
+</head>
+<body>
+    <div id="connection"></div>
+    <div id="log"></div>
+    <hr>
+    <pre id="currentState"></pre>
+
+</body>
+</html>

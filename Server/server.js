@@ -37,7 +37,7 @@ io.on('connection', function (socket) {
 
     socket.on('init_dashboard', function(data) {
         console.log('dashboard is connected');
-        clientSocketID = data.id;
+        dashboardSocketID = data.id;
     });
 
     socket.on('init_client', function(data) {
@@ -56,7 +56,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('nextTurn', function(data, callback) {
-        handleRequest('nextTurn', data, callback);
+        handleRequestAndNotifyDashboard('nextTurn', data, callback);
     });
 
     socket.on('moveActionPawn', function(data, callback) {
@@ -107,6 +107,24 @@ io.on('connection', function (socket) {
         handleRequest('chooseProductionCard', data, callback);
     });
 
+    function handleRequestAndNotifyDashboard(requestName, data, callback) {
+        console.log("Request received. Name: " + requestName + ", \nData:");
+        console.log(data);
+        var reqData = data;
+        //Add the request name to the JSON request data
+        reqData.requestName = requestName;
+        //Send the new request object to the game engine
+        io.sockets.connected[gameEngineSocketID].emit('request', reqData, function(response) {
+            logString = JSON.parse(response).logString;
+            stateRequest = {"requestName": "getState"};
+            io.sockets.connected[gameEngineSocketID].emit('request', stateRequest, function(getStateResponse) {
+                newResponse = {"logString": logString, "state": getStateResponse}
+                io.sockets.connected[dashboardSocketID].emit('update', newResponse)
+            });
+            callback(response);
+        });
+    }
+
     function handleRequest(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);
@@ -123,6 +141,11 @@ io.on('connection', function (socket) {
 app.get('/', function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.end(index);
+});
+
+app.get('/dashboard', function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(dashboard);
 });
 
 server.listen(port);
