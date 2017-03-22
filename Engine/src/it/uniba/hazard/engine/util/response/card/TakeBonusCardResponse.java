@@ -1,7 +1,11 @@
 package it.uniba.hazard.engine.util.response.card;
 
 import com.google.gson.JsonObject;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by denny on 03/03/2017.
@@ -20,8 +24,14 @@ public class TakeBonusCardResponse implements Response{
         this.cardName = cardName;
         this.cardExtract = cardExtract;
         this.numCard = numCard;
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if(success){
-            logString = "Numero carte bouns pescate: " + numCard;
+            Object[] messageArgs = {numCard};
+
+            formatter.applyPattern(messages.getString("TakeBonusCardResponse_success"));
+            logString = formatter.format(messageArgs);
         }else {
             logString = "Impossibile pescare nuove carte bonus";
         }

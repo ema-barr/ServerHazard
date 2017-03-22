@@ -2,8 +2,14 @@ package it.uniba.hazard.engine.util.response.action_group;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.groups.ActionGroup;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.io.File;
+import java.text.MessageFormat;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Created by isz_d on 25/02/2017.
@@ -19,8 +25,16 @@ public class ActionGroupMoveResponse implements Response {
         this.success = success;
         this.newLocation = newLocation;
         this.actionGroup = actionGroup;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if (success){
-            logString = "Il gruppo " + actionGroup.getNameActionGroup() + " si è spostato in " + newLocation.toString();
+            Object[] messageArgs = {actionGroup.getNameActionGroup(), newLocation.toString()};
+
+            formatter.applyPattern(messages.getString("ActionGroupMoveResponse_success"));
+            logString = formatter.format(messageArgs);
+
         } else {
             logString = "Non è possibile spostare il gruppo " + actionGroup.getNameActionGroup() + " in " + newLocation.toString();
         }

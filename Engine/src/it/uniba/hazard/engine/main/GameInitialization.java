@@ -21,6 +21,7 @@ import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
+import java.text.MessageFormat;
 import java.util.*;
 
 public class GameInitialization {
@@ -37,6 +38,16 @@ public class GameInitialization {
 
     public void initialization(){
         System.out.println("Avvio inizializzazione.");
+        //Language
+        Locale currentLocale = LanguageReader.readLanguage(pathXML);
+        ResourceBundle messages = ResourceBundle.getBundle("MessageBundle",
+                currentLocale);
+        MessageFormat formatter = new MessageFormat("");
+        formatter.setLocale(currentLocale);
+        Repository.insertInRepository("resourceBundle", messages);
+        Repository.insertInRepository("messageFormat", formatter);
+        System.out.println("- Lingua inizializzata con successo.");
+
         //Resources
         ArrayList<Resource> resourcesList = (ArrayList<Resource>) ResourceReader.readResources(pathXML);
         for(Resource res: resourcesList){

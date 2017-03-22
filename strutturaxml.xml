@@ -1,5 +1,9 @@
 ﻿<xml>
     <game>
+        <locale>
+            <language>it</language>
+            <country>IT</country>
+        </locale>
         <groups>
             <actionGroup>
                 <name>ActionGroup1</name>
