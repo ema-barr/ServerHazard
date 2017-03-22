@@ -1,5 +1,6 @@
 # ServerHazard
-##Per l'installazione
+
+## Per l'installazione
 - Installare git
 - Installare node.js
 - Andare nella cartella Server ed eseguire i comandi:
@@ -7,7 +8,8 @@
 npm install express
 npm install socket.io
 </pre>
-##Per l'avvio del sistema e dell'interfaccia di debug
+
+## Per l'avvio del sistema e dell'interfaccia di debug
 - Andare nella cartella Server ed eseguire il comando
 <pre>node server.js</pre>
 su Windows oppure
