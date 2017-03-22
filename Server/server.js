@@ -1,12 +1,18 @@
+var express = require("express");
 //Server nodejs
 var http = require('http'),
     fs = require('fs'),
     index = fs.readFileSync(__dirname + '/index.html');
+    dashboard = fs.readFileSync(__dirname + '/mockdash.html');
 
-var app = http.createServer(function(req, res) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.end(index);
-});
+
+
+//Server port
+var port = 6882;
+
+//Web server
+var app = express();
+var server = http.createServer(app);
 
 //Game Engine socket
 var gameEngineSocketID;
@@ -17,7 +23,7 @@ var clientSocketID;
 //Dashboard socket
 var dashboardSocketID;
 
-var io = require('socket.io').listen(app);
+var io = require('socket.io').listen(server);
 
 io.on('connection', function (socket) {
     socket.emit('welcome', { message: 'Welcome!', id: socket.id });
@@ -114,5 +120,11 @@ io.on('connection', function (socket) {
     }
 });
 
-app.listen(6882);
-console.log('Listening');
+app.get('/', function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(index);
+});
+
+server.listen(port);
+
+console.log('Server is listening on port ' + port);
