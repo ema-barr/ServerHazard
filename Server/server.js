@@ -52,82 +52,122 @@ io.on('connection', function (socket) {
     });
 
     socket.on('getState', function(data, callback) {
-        handleRequest('getState', data, callback);
+        handleStandardRequest('getState', data, callback);
     });
 
     socket.on('nextTurn', function(data, callback) {
-        handleRequestAndNotifyDashboard('nextTurn', data, callback);
+        handleNextTurn('nextTurn', data, callback);
     });
 
     socket.on('moveActionPawn', function(data, callback) {
-        handleRequest('moveActionPawn', data, callback);
+        handleStandardRequest('moveActionPawn', data, callback);
     });
 
     socket.on('solveEmergency', function(data, callback) {
-        handleRequest('solveEmergency', data, callback);
+        handleStandardRequest('solveEmergency', data, callback);
     });
 
     socket.on('takeResources', function(data, callback) {
-        handleRequest('takeResources', data, callback);
+        handleStandardRequest('takeResources', data, callback);
     });
 
     socket.on('useBonusCard', function(data, callback) {
-        handleRequest('useBonusCard', data, callback);
+        handleStandardRequest('useBonusCard', data, callback);
     });
 
     socket.on('buildStronghold', function(data, callback) {
-        handleRequest('buildStronghold', data, callback);
+        handleStandardRequest('buildStronghold', data, callback);
     });
 
     socket.on('getCurrentTurn', function(data, callback) {
-        handleRequest('getCurrentTurn', data, callback);
+        handleStandardRequest('getCurrentTurn', data, callback);
     });
 
     socket.on('getAdjacentLocations', function(data, callback) {
-        handleRequest('getAdjacentLocations', data, callback);
+        handleStandardRequest('getAdjacentLocations', data, callback);
     });
 
     socket.on('getEmergencies', function(data, callback) {
-        handleRequest('getEmergencies', data, callback);
+        handleStandardRequest('getEmergencies', data, callback);
     });
 
     socket.on('getTransports', function(data, callback) {
-        handleRequest('getTransports', data, callback);
+        handleStandardRequest('getTransports', data, callback);
     });
 
     socket.on('getStrongholdInfo', function(data, callback) {
-        handleRequest('getStrongholdInfo', data, callback);
+        handleStandardRequest('getStrongholdInfo', data, callback);
     });
 
     socket.on('moveTransportPawn', function(data, callback) {
-        handleRequest('moveTransportPawn', data, callback);
+        handleStandardRequest('moveTransportPawn', data, callback);
     });
 
     socket.on('chooseProductionCard', function(data, callback) {
-        handleRequest('chooseProductionCard', data, callback);
+        handleStandardRequest('chooseProductionCard', data, callback);
     });
+
+    function closePendingPopups() {
+        io.sockets.connected[dashboardSocketID].emit('closePopup');
+    }
 
     function handleRequestAndNotifyDashboard(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);
-        var reqData = data;
-        //Add the request name to the JSON request data
-        reqData.requestName = requestName;
-        //Send the new request object to the game engine
-        io.sockets.connected[gameEngineSocketID].emit('request', reqData, function(response) {
+        //Route the request to the appropriate method
+        request(requestName, data, function(response) {
             logString = JSON.parse(response).logString;
             stateRequest = {"requestName": "getState"};
-            io.sockets.connected[gameEngineSocketID].emit('request', stateRequest, function(getStateResponse) {
-                newResponse = {"logString": logString, "state": getStateResponse}
-                io.sockets.connected[dashboardSocketID].emit('update', newResponse)
+            //Request the state to send to the dashboard
+            request("getState", {}, function(getStateResponse) {
+                //Send the state to the dashboard
+                newResponse = {"logString": logString, "state": getStateResponse};
+                io.sockets.connected[dashboardSocketID].emit('update', newResponse);
+                callback(response)
+            })
+        });
+    }
+
+    function handleNextTurn(requestName, data, callback) {
+        //Close all pending popup messages
+        closePendingPopups()
+        console.log("Request received. Name: " + requestName + ", \nData:");
+        console.log(data);
+        //Route the next turn request to the appropriate method
+        request(requestName, data, function(response) {
+            logString = JSON.parse(response).logString;
+            stateRequest = {"requestName": "getState"};
+            //Request the new game state that will be sent to the dashboard
+            request("getState", {}, function(getStateResponse) {
+                currentTurn = JSON.parse(getStateResponse).currentTurn.type;
+                dashboardResponse = {"logString": logString, "state": getStateResponse};
+                onNewTurn(currentTurn, dashboardResponse)
             });
             callback(response);
         });
     }
 
-    function handleRequest(requestName, data, callback) {
+
+    function onNewTurn(currentTurn, dashboardResponse) {
+        if (currentTurn === "EventTurn") {
+            //If it is an event turn, send a popup message to the dashboard
+            io.sockets.connected[dashboardSocketID].emit('popupMessage', {"logString": logString}, function() {
+                //Send the new state to the dashboard
+                io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
+            })
+        } else {
+            //Send the new state to the dashboard
+            io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
+        }
+    }
+
+    function handleStandardRequest(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);
+        request(requestName, data, callback);
+    }
+
+    function request(requestName, data, callback) {
         var reqData = data;
         //Add the request name to the JSON request data
         reqData.requestName = requestName;
