@@ -27,10 +27,7 @@ public class GameController {
         String[] params;
         switch (requestName) {
             case "nextTurn": {
-                game.getTurns().setNextTurn();
-                currentTurn =  game.getTurns().getCurrentTurn();
-                currentTurn.executeTurn(game.getState());
-                resp = currentTurn.executeTurn(game.getState());
+                resp = game.nextTurn();
                 break;
             }
             case "getState": {

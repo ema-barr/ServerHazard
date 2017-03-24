@@ -26,10 +26,12 @@ public class Game {
         this.controller = controller;
     }
 
-    public void nextTurn() {
+    public Response nextTurn() {
         turns.setNextTurn();
         Turn currentTurn = turns.getCurrentTurn();
-        currentTurn.executeTurn(state);
+        Response response = currentTurn.executeTurn(state);
+        state.evaluateEndConditions();
+        return response;
     }
 
     public TurnSequence getTurns() {
