@@ -56,27 +56,27 @@ io.on('connection', function (socket) {
     });
 
     socket.on('nextTurn', function(data, callback) {
-        handleNextTurn('nextTurn', data, callback);
+        handleRequestAndNotifyDashboard('nextTurn', data, callback);
     });
 
     socket.on('moveActionPawn', function(data, callback) {
-        handleStandardRequest('moveActionPawn', data, callback);
+        handleRequestAndNotifyDashboard('moveActionPawn', data, callback);
     });
 
     socket.on('solveEmergency', function(data, callback) {
-        handleStandardRequest('solveEmergency', data, callback);
+        handleRequestAndNotifyDashboard('solveEmergency', data, callback);
     });
 
     socket.on('takeResources', function(data, callback) {
-        handleStandardRequest('takeResources', data, callback);
+        handleRequestAndNotifyDashboard('takeResources', data, callback);
     });
 
     socket.on('useBonusCard', function(data, callback) {
-        handleStandardRequest('useBonusCard', data, callback);
+        handleRequestAndNotifyDashboard('useBonusCard', data, callback);
     });
 
     socket.on('buildStronghold', function(data, callback) {
-        handleStandardRequest('buildStronghold', data, callback);
+        handleRequestAndNotifyDashboard('buildStronghold', data, callback);
     });
 
     socket.on('getCurrentTurn', function(data, callback) {
@@ -100,11 +100,11 @@ io.on('connection', function (socket) {
     });
 
     socket.on('moveTransportPawn', function(data, callback) {
-        handleStandardRequest('moveTransportPawn', data, callback);
+        handleRequestAndNotifyDashboard('moveTransportPawn', data, callback);
     });
 
     socket.on('chooseProductionCard', function(data, callback) {
-        handleStandardRequest('chooseProductionCard', data, callback);
+        handleRequestAndNotifyDashboard('chooseProductionCard', data, callback);
     });
 
     function closePendingPopups() {
@@ -116,12 +116,15 @@ io.on('connection', function (socket) {
         console.log(data);
         //Route the request to the appropriate method
         request(requestName, data, function(response) {
-            logString = JSON.parse(response).logString;
+            responseJ = JSON.parse(response);
+            logString = responseJ.logString;
+            success = responseJ.success;
             stateRequest = {"requestName": "getState"};
             //Request the state to send to the dashboard
             request("getState", {}, function(getStateResponse) {
                 //Send the state to the dashboard
-                newResponse = {"logString": logString, "state": getStateResponse};
+                newResponse = {"success": success, "logString": logString};
+                newResponse.state = JSON.parse(getStateResponse)
                 io.sockets.connected[dashboardSocketID].emit('update', newResponse);
                 callback(response)
             })
@@ -130,18 +133,20 @@ io.on('connection', function (socket) {
 
     function handleNextTurn(requestName, data, callback) {
         //Close all pending popup messages
-        closePendingPopups()
+        closePendingPopups();
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);
         //Route the next turn request to the appropriate method
         request(requestName, data, function(response) {
-            logString = JSON.parse(response).logString;
+            responseJ = JSON.parse(response);
+            logString = responseJ.logString;
+            success = responseJ.success;
             stateRequest = {"requestName": "getState"};
             //Request the new game state that will be sent to the dashboard
             request("getState", {}, function(getStateResponse) {
                 currentTurn = JSON.parse(getStateResponse).currentTurn.type;
-                dashboardResponse = {"logString": logString, "state": getStateResponse};
-                onNewTurn(currentTurn, dashboardResponse)
+                newResponse = {"success": success, "logString": logString, "state": getStateResponse};
+                onNewTurn(currentTurn, newResponse)
             });
             callback(response);
         });
@@ -155,6 +160,18 @@ io.on('connection', function (socket) {
                 //Send the new state to the dashboard
                 io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
             })
+        } else if (currentTurn === "ProductionTurn") {
+            //Get the state of the Production Turn
+            request("getCurrentTurn", {}, function(turnResponse) {
+                turnResponseJ = JSON.parse(turnResponse);
+                if (turnResponseJ.state === "CHOOSE_PRODUCTION_CARDS") {
+                    //If the production group must choose the cards, the dashboard must show them in a popup
+                    io.sockets.connected[dashboardSocketID].emit('productionCards', turnResponseJ.cards, function() {
+                        //Send the new state to the dashboard
+                        io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
+                    })
+                }
+            });
         } else {
             //Send the new state to the dashboard
             io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)

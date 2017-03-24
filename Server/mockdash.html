@@ -11,16 +11,16 @@
             currentState.innerHTML = '';
             log = message.logString;
             state = message.state;
-            var text = document.createTextNode(log)
+            var text = document.createTextNode(log);
             el = document.createElement('li');
             el.appendChild(text);
             messages.appendChild(el);
-            currentState.innerHTML = JSON.stringify(JSON.parse(state), null, 4);
+            currentState.innerHTML = JSON.stringify(state, null, 4);
         }
 
         function popupMessage(message) {
             popup = document.getElementById("popup");
-            popup.innerHTML = message.logString;
+            popup.innerHTML = message;
             popup.style["display"] = "block";
         }
 
@@ -29,6 +29,19 @@
             popup.style["display"] = "none";
         }
         var socket = io();
+
+        function handleUpdate(data) {
+            hidePopup();
+            currentTurn = data.state.currentTurn;
+            if (currentTurn.type === "EventTurn") {
+                popupMessage(data.logString)
+            } else if (currentTurn.type === "ProductionTurn") {
+                if (currentTurn.state === "CHOOSE_PRODUCTION_CARDS") {
+                    popupMessage(JSON.stringify(currentTurn.cards))
+                }
+            }
+
+        }
 
         socket.on('welcome', function(data) {
             // Respond with a message including this clients' id sent from the server
@@ -39,11 +52,16 @@
 
         socket.on('update', function(data, callback) {
             addMessage(data);
+            handleUpdate(data);
             callback();
         });
 
         socket.on('popupMessage', function(data, callback) {
             popupMessage(data);
+            callback()
+        });
+
+        socket.on('productionCards', function(data, callback) {
             callback()
         });
 
