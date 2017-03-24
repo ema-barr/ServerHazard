@@ -2,8 +2,12 @@ package it.uniba.hazard.engine.util.response.action_group;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.groups.ActionGroup;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by emanu on 25/02/2017.
@@ -20,11 +24,18 @@ public class TakeResourceResponse implements Response {
         this.success = success;
         this.transportPawn = transportPawn;
         this.actionGroup = actionGroup;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if (success){
-            logString = "Il gruppo " + actionGroup.getNameActionGroup() + " ha raccolto risorse da " + transportPawn.toString();
+            Object[] messageArgs = {actionGroup.getNameActionGroup(), transportPawn.toString()};
+            formatter.applyPattern(messages.getString("TakeResourceResponse_success"));
+            logString = formatter.format(messageArgs);
         } else {
-            logString = "Il gruppo " + actionGroup.getNameActionGroup() + " non è riuscito a raccogliere risorse da " +
-                    transportPawn.toString();
+            Object[] messageArgs = {actionGroup.getNameActionGroup(), transportPawn.toString()};
+            formatter.applyPattern(messages.getString("TakeResourceResponse_failure"));
+            logString = formatter.format(messageArgs);
         }
     }
 
