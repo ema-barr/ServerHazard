@@ -56,6 +56,12 @@
             callback();
         });
 
+        socket.on('chooseProductionCard', function(data, callback) {
+            addMessage(data);
+            handleUpdate(data);
+            callback();
+        });
+
         socket.on('popupMessage', function(data, callback) {
             popupMessage(data);
             callback()

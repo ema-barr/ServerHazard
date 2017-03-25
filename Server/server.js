@@ -104,7 +104,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('chooseProductionCard', function(data, callback) {
-        handleRequestAndNotifyDashboard('chooseProductionCard', data, callback);
+        handleChooseProductionCard('chooseProductionCard', data, callback);
     });
 
     function closePendingPopups() {
@@ -121,16 +121,54 @@ io.on('connection', function (socket) {
             success = responseJ.success;
             stateRequest = {"requestName": "getState"};
             //Request the state to send to the dashboard
+            sendUpdateToDashboard(success, logString, function() {
+                callback(response);
+            });
+            /*
             request("getState", {}, function(getStateResponse) {
                 //Send the state to the dashboard
                 newResponse = {"success": success, "logString": logString};
                 newResponse.state = JSON.parse(getStateResponse)
                 io.sockets.connected[dashboardSocketID].emit('update', newResponse);
                 callback(response)
-            })
+            })*/
         });
     }
 
+    function sendUpdateToDashboard(success, logString, callback) {
+        //Request the state to send to the dashboard
+        request("getState", {}, function(getStateResponse) {
+            //Send the state to the dashboard
+            newResponse = {"success": success, "logString": logString};
+            newResponse.state = JSON.parse(getStateResponse);
+            io.sockets.connected[dashboardSocketID].emit('update', newResponse);
+            callback();
+        })
+    }
+
+    function handleChooseProductionCard(requestName, data, callback) {
+        dataJ = data;
+        cardIndex = dataJ.cardIndex;
+        handleStandardRequest("chooseProductionCard", data, function(response) {
+            responseJ = JSON.parse(response);
+            success = responseJ.success;
+            logString = responseJ.logString;
+            request("getState", {}, function(getStateResponse) {
+                stateResponseJ = JSON.parse(getStateResponse);
+                currentTurnJ = stateResponseJ.currentTurn;
+                //If the production cards have been selected, notify the device so it can show the production group
+                //interface.
+                if (currentTurnJ.state === "MOVE_TRANSPORT_PAWN") {
+                    io.sockets.connected[clientSocketID].emit('productionStateChanged', {})
+                }
+                newResponse = {"success": success, "logString": logString, "cardIndex":cardIndex};
+                newResponse.state = stateResponseJ;
+                io.sockets.connected[dashboardSocketID].emit('chooseProductionCard', newResponse);
+            });
+            callback(response);
+        });
+    }
+    /*
     function handleNextTurn(requestName, data, callback) {
         //Close all pending popup messages
         closePendingPopups();
@@ -177,7 +215,7 @@ io.on('connection', function (socket) {
             io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
         }
     }
-
+    */
     function handleStandardRequest(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);

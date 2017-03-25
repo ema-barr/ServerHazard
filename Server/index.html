@@ -23,6 +23,10 @@
 				connection.innerHTML = 'Connesso';
 				socket.emit('init_client', data);
             });
+
+            socket.on("productionStateChanged", function(data) {
+                alert("Received productionStateChanged");
+			});
 			
 			function sendData(actionName, target) {
 				socket.emit(actionName, JSON.parse(target), function(response) {
