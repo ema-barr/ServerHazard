@@ -36,7 +36,9 @@ public class ActionGroupMoveResponse implements Response {
             logString = formatter.format(messageArgs);
 
         } else {
-            logString = "Non è possibile spostare il gruppo " + actionGroup.getNameActionGroup() + " in " + newLocation.toString();
+            Object[] messageArgs = {actionGroup.getNameActionGroup(), newLocation.toString()};
+            formatter.applyPattern(messages.getString("ActionGroupMoveResponse_failure"));
+            logString = formatter.format(messageArgs);
         }
 
     }

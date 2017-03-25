@@ -2,9 +2,12 @@ package it.uniba.hazard.engine.util.response.action_turn;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.groups.ActionGroup;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
 
 import javax.swing.*;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by maccn on 03/03/2017.
@@ -21,10 +24,18 @@ public class SetBonusCardsResponse implements Response {
         this.actionGroup = actionGroup;
         this.numCards = numCards;
 
-        if (success)
-            logString = "Il gruppo " + this.actionGroup.getNameActionGroup() + " ha pescato " + this.numCards + " carte bonus.";
-        else
-            logString = "Il gruppo " + this.actionGroup.getNameActionGroup() + " non può pescare le carte bonus.";
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
+        if (success) {
+            Object[] messageArgs = {this.actionGroup.getNameActionGroup(), this.numCards};
+            formatter.applyPattern(messages.getString("SetBonusCardsResponse_success"));
+            logString = formatter.format(messageArgs);
+        } else {
+            Object[] messageArgs = {this.actionGroup.getNameActionGroup()};
+            formatter.applyPattern(messages.getString("SetBonusCardsResponse_failure"));
+            logString = formatter.format(messageArgs);
+        }
 
     }
 

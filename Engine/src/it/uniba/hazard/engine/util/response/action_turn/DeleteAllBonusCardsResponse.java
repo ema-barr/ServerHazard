@@ -2,7 +2,11 @@ package it.uniba.hazard.engine.util.response.action_turn;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.groups.ActionGroup;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by maccn on 03/03/2017.
@@ -17,10 +21,18 @@ public class DeleteAllBonusCardsResponse implements Response {
         this.success = success;
         actionGroup = group;
 
-        if (success)
-            logString = "Il gruppo " + actionGroup.getNameActionGroup() + " ha scartato tutte le carte bonus.";
-        else
-            logString = "Il gruppo " + actionGroup.getNameActionGroup() + "non può scartare le carte bonus";
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
+        if (success) {
+            Object[] messageArgs = {actionGroup.getNameActionGroup()};
+            formatter.applyPattern(messages.getString("DeleteAllBonusCardsResponse_success"));
+            logString = formatter.format(messageArgs);
+        } else {
+            Object[] messageArgs = {actionGroup.getNameActionGroup()};
+            formatter.applyPattern(messages.getString("DeleteAllBonusCardsResponse_failure"));
+            logString = formatter.format(messageArgs);
+        }
     }
 
     @Override

@@ -33,7 +33,7 @@ public class TakeBonusCardResponse implements Response{
             formatter.applyPattern(messages.getString("TakeBonusCardResponse_success"));
             logString = formatter.format(messageArgs);
         }else {
-            logString = "Impossibile pescare nuove carte bonus";
+            logString = messages.getString("TakeBonusCardResponse_failure");
         }
     }
 
