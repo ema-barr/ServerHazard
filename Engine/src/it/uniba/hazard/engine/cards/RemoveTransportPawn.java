@@ -13,7 +13,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-//Carta Evento: Rimozione pedina trasporto
+/**
+ * Remove the transport pawn from one place.
+ */
 public class RemoveTransportPawn extends EventCard{
 
     private String objectID;
@@ -24,10 +26,20 @@ public class RemoveTransportPawn extends EventCard{
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
+    /**
+     *
+     * @return identification of objectID.
+     */
     public String getObjectID() {
         return objectID;
     }
 
+    /**
+     * Remove transport pawn from one place choosen random.
+     * @param gameState State of the game
+     * @param turn Turn of the game
+     * @return the response of RemoveTransportPawn
+     */
     @Override
     public Response executeAction(GameState gameState,Turn turn) {
         Set<Map.Entry<GamePawn,Location>> allPawns = gameState.getAllPawns().entrySet();
@@ -48,6 +60,11 @@ public class RemoveTransportPawn extends EventCard{
         }
     }
 
+    /**
+     * Deletes the effect of the card: RemoveTransportPawn.
+     * @param gameState State of the game
+     * @return null
+     */
     @Override
     public Response revertAction(GameState gameState) {
         return null;

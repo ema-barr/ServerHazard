@@ -2,7 +2,6 @@ package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
-import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
@@ -12,7 +11,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-//Carta bonus: cura istantanea per un determinato luogo(nazione, città ecc...).
+/**
+ * Cure complete for one place.
+ * @author Donato
+ */
 public class CurePlace extends BonusCard{
 
     private String objectID;
@@ -25,11 +27,20 @@ public class CurePlace extends BonusCard{
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
+    /**
+     *
+     * @return identification of objectID
+     */
     public String getObjectID() {
         return objectID;
     }
 
-
+    /**
+     * Cures one place choosen random.
+     * @param gameState State of the game
+     * @param turn Turn of the game
+     * @return the response of CurePlace
+     */
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
        List<Emergency> listEmergency =  gameState.getEmergencies();
@@ -57,6 +68,11 @@ public class CurePlace extends BonusCard{
        }
     }
 
+    /**
+     * Deletes the effect of the card: CurePlace.
+     * @param gameState State of the game
+     * @return null;
+     */
     public Response revertAction(GameState gameState){
         return null;
     }

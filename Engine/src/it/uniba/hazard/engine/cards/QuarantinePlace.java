@@ -6,13 +6,15 @@ import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.card.QuarantinePlaceResponse;
-import it.uniba.hazard.engine.util.response.card.QuarantinePlaceRevertResponse;
 
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-//Carta Bonus: Quarantena in un determinato luogo. L'emergenza in questo luogo può solo diminuire o rimanere costante.
+/**
+ * Quarantine in one place.
+ * @author Donato
+ */
 public class QuarantinePlace extends BonusCard{
 
     private String objectID;
@@ -26,10 +28,20 @@ public class QuarantinePlace extends BonusCard{
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
+    /**
+     *
+     * @return identification of objectID.
+     */
     public String getObjectID() {
         return objectID;
     }
 
+    /**
+     * Put one place choose random in quarantine.
+     * @param gameState State of the game
+     * @param turn Turn of the game
+     * @return the response of QuarantinePlace
+     */
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
         List<Emergency> listEmergency =  gameState.getEmergencies();
@@ -52,6 +64,11 @@ public class QuarantinePlace extends BonusCard{
         }
     }
 
+    /**
+     * Deletes the effects of Quarantine in 'quarantineLocation'.
+     * @param gameState State of the game
+     * @return null
+     */
     @Override
     public Response revertAction(GameState gameState) {
         quarantineLocation.setQuarantined(false);

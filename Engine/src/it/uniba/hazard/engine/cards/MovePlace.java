@@ -7,11 +7,11 @@ import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.card.MovePlaceResponse;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
-//Carta Bonus: spostamento tra location
+/**
+ * Allows to move one pawn from one location to another.
+ * @author Donato
+ */
 public class MovePlace extends BonusCard{
 
     private String objectID;
@@ -21,12 +21,23 @@ public class MovePlace extends BonusCard{
     public MovePlace(String bonusType, Location destination) {
         super(bonusType);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
+        this.destination = destination;
     }
 
+    /**
+     *
+     * @return identification of objectID
+     */
     public String getObjectID() {
         return objectID;
     }
 
+    /**
+     * Move the pawn to 'destination'.
+     * @param gameState State of the game
+     * @param turn Turn of the game
+     * @return
+     */
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
         ActionTurn at = (ActionTurn) turn;
@@ -36,6 +47,11 @@ public class MovePlace extends BonusCard{
         return new MovePlaceResponse(true,at.getPlayer(),destination);
     }
 
+    /**
+     * Deletes the effect of the card: MovePlace.
+     * @param gameState State of the game
+     * @return null
+     */
     @Override
     public Response revertAction(GameState gameState) {
         return null;

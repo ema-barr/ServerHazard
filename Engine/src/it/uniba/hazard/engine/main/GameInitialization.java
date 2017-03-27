@@ -162,14 +162,15 @@ public class GameInitialization {
         System.out.println("Inizializzazione completata");
 
         System.out.println("Turno di gioco: " + ts.getCurrentTurn());
-       /* Response r = ts.getCurrentTurn().executeTurn(gs);
+        Response r = ts.getCurrentTurn().executeTurn(gs);
         System.out.println(r.toJson());
         if(r.toJson().contains("MovePlace")){
-            MovePlace mp = new MovePlace("MovePlace");
+
+           // MovePlace mp = new MovePlace("MovePlace",Destination);
             ts.setNextTurn();
-            Response r1=  mp.executeAction(gs,ts.getCurrentTurn());
-            System.out.println(r1.toJson());
-        }*/
+            //Response r1=  mp.executeAction(gs,ts.getCurrentTurn());
+           // System.out.println(r1.toJson());
+        }
 
     }
 

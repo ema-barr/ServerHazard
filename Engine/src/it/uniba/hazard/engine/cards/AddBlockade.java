@@ -5,13 +5,15 @@ import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.card.AddBlockadeResponse;
-import it.uniba.hazard.engine.util.response.card.AddBlockadeRevertResponse;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Set;
 
-//Carta Evento: aggiunta barriera su una tratta.
+
+/**
+ * Set the Blockade between location
+ * @author Donato
+ */
 public class AddBlockade extends EventCard{
 
     private String objectID;
@@ -23,10 +25,20 @@ public class AddBlockade extends EventCard{
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
+    /**
+     *
+     * @return identification of the ObjectID
+     */
     public String getObjectID() {
         return objectID;
     }
 
+    /**
+     * performs the block between location choosen random
+     * @param gameState State of the game
+     * @param turn Turn of the game
+     * @return the response of AddBlockade
+     */
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
         locationsBlockade = new ArrayList<Location>();
@@ -54,6 +66,11 @@ public class AddBlockade extends EventCard{
         return new AddBlockadeResponse(true, "AddBlockade", locationsBlockade);
     }
 
+    /**
+     * Deletes the effect of the card: AddBlockade
+     * @param gameState State of the game
+     * @return null
+     */
     public Response revertAction(GameState gameState) {
         for (int i = 1; i< locationsBlockade.size(); i++){
             Location loc = locationsBlockade.get(i);

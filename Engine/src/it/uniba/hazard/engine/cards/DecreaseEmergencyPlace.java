@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-//Carta Evento: Diminuzione dell'emergenza in un luogo(nazione, città ecc...).
+/**
+ * Decrease the emergency in one place.
+ * @author Donato
+ */
 public class DecreaseEmergencyPlace extends EventCard{
 
     private String objectID;
@@ -24,10 +27,20 @@ public class DecreaseEmergencyPlace extends EventCard{
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
+    /**
+     *
+     * @return identification of objectID
+     */
     public String getObjectID() {
         return objectID;
     }
 
+    /**
+     * Decrease the emergency in one place choosen random.
+     * @param gameState State of the game
+     * @param turn Turn of the game
+     * @return the response of DecreaseEmergencyPlace
+     */
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
         List<Emergency> listEmergency =  gameState.getEmergencies();
@@ -51,6 +64,11 @@ public class DecreaseEmergencyPlace extends EventCard{
         }
     }
 
+    /**
+     * Deletes the effect of the card: DecreaseEmergencyPlace.
+     * @param gameState State of the game
+     * @return null
+     */
     @Override
     public Response revertAction(GameState gameState) {
         return null;

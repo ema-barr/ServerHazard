@@ -3,7 +3,6 @@ package it.uniba.hazard.engine.cards;
 import it.uniba.hazard.engine.exception.NoClassExist;
 import it.uniba.hazard.engine.map.Location;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -11,6 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+
+/**
+ * Manager of the cards.
+ * @param <C> Type of the card.
+ */
 public class CardManager<C> {
 
     public List<C> cards = new ArrayList<C>();
@@ -24,8 +28,11 @@ public class CardManager<C> {
         this.cards = cards;
     }
 
-    //restituisce una numero di carte random
-    //It may return less than numberCards cards if there are no sufficient cards
+    /**
+     * List of cards extracted.
+     * @param numberCards number of cards
+     * @return cards extracted
+     */
     public List<C> getCards(int numberCards){
         resetCards();
         List<C> extractCards = new ArrayList<C>();
@@ -39,7 +46,12 @@ public class CardManager<C> {
         return  extractCards;
     }
 
-    //It may return less than numberCards cards if there are no sufficient cards
+    /**
+     * List of production cards extracted.
+     * @param locationTransportPawns location of transport pawns
+     * @param numberCards number of cards
+     * @return production cards extracted
+     */
     public List<C> getProductionCards(List<Location> locationTransportPawns, int numberCards){
         resetProductionCards();
         List<C> extractedCards = new ArrayList<C>();
@@ -64,11 +76,20 @@ public class CardManager<C> {
         return number;
     }
 
+    /**
+     * Instance production cards.
+     * @param pc Production card
+     * @param quantity number of cards
+     */
     public void instanceCard(ProductionCard pc, int quantity){
         instanceProductionCards.put(pc,quantity);
     }
 
-    //metodo per istanziare le carte dall'xml
+    /**
+     * Instance the cards from xml.
+     * @param name name of the card
+     * @param quantity number of cards
+     */
     public void instanceCard(String name, int quantity){
         try {
             try {

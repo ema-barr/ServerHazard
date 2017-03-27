@@ -5,7 +5,10 @@ import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.card.DefaultCardResponse;
 
-//Carta Evento: non scaturisce nessun evento.
+/**
+ * Default Card. It Haven't action.
+ * @author Donato
+ */
 public class DefaultCard extends EventCard{
 
     private String objectID;
@@ -15,6 +18,10 @@ public class DefaultCard extends EventCard{
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
+    /**
+     *
+     * @return identification of objectID
+     */
     public String getObjectID() {
         return objectID;
     }
@@ -24,6 +31,11 @@ public class DefaultCard extends EventCard{
         return new DefaultCardResponse(true, "DefaultCard");
     }
 
+    /**
+     * Deletes the effect of the card: DefaultCard.
+     * @param gameState State of the game
+     * @return null
+     */
     public Response revertAction(GameState gameState){
         return null;
     }

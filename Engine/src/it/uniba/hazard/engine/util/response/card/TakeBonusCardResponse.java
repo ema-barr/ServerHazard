@@ -21,7 +21,7 @@ public class TakeBonusCardResponse implements Response{
         this.cardExtract = cardExtract;
         this.numCard = numCard;
         if(success){
-            logString = "Numero carte bouns pescate: " + numCard;
+            logString = "Numero carte bonus pescate: " + numCard;
         }else {
             logString = "Impossibile pescare nuove carte bonus";
         }

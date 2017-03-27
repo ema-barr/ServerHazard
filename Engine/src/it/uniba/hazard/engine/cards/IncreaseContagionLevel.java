@@ -2,7 +2,6 @@ package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.Emergency;
 import it.uniba.hazard.engine.main.GameState;
-import it.uniba.hazard.engine.main.GeneralHazardIndicator;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.card.IncreaseContagionLevelResponse;
@@ -10,7 +9,10 @@ import it.uniba.hazard.engine.util.response.card.IncreaseContagionLevelResponse;
 import java.util.List;
 import java.util.Random;
 
-//Carta Evento: aumenta il livello di contagio.
+/**
+ * Increase the level of the infection
+ * @author Donato
+ */
 public class IncreaseContagionLevel extends EventCard{
 
     private String objectID;
@@ -22,11 +24,20 @@ public class IncreaseContagionLevel extends EventCard{
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
+    /**
+     *
+     * @return identification of objectID
+     */
     public String getObjectID() {
         return objectID;
     }
 
-    //aumentare livello di contagio di una determinata emergenza
+    /**
+     * Increase the infection choosen random.
+     * @param gameState State of the game
+     * @param turn Turn of the game
+     * @return the response of IncreaseEmergencyPlace
+     */
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
         List<Emergency> listEmergency = gameState.getEmergencies();
@@ -37,7 +48,11 @@ public class IncreaseContagionLevel extends EventCard{
         return new IncreaseContagionLevelResponse(true,"IncreaseContagionLevel", randomEmergency, level);
     }
 
-
+    /**
+     * Deletes the effect of the card: IncreaseContagionLevel.
+     * @param gameState State of the game
+     * @return null
+     */
     public Response revertAction(GameState gameState){
         return null;
     }

@@ -9,7 +9,10 @@ import it.uniba.hazard.engine.util.response.card.IncreaseEmergencyPlaceResponse;
 
 import java.util.*;
 
-//Carta Evento: aumento dell'emergenza in un luogo(nazione,città ecc...).
+/**
+ * Increase the emergency in one place.
+ * @author Donato
+ */
 public class IncreaseEmergencyPlace extends EventCard{
 
     private String objectID;
@@ -21,10 +24,20 @@ public class IncreaseEmergencyPlace extends EventCard{
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
+    /**
+     *
+     * @return identification of objectID
+     */
     public String getObjectID(){
         return objectID;
     }
 
+    /**
+     * Increase the emergency in one place choosen random.
+     * @param gameState State of the game
+     * @param turn Turn of the game
+     * @return the response of IncreaseEmergencyPlace
+     */
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
         List<Emergency> listEmergency =  gameState.getEmergencies();
@@ -50,6 +63,11 @@ public class IncreaseEmergencyPlace extends EventCard{
         }
     }
 
+    /**
+     * Deletes the effect of the card: IncreaseEmergencyPlace.
+     * @param gameState State of the game
+     * @return null
+     */
     @Override
     public Response revertAction(GameState gameState) {
         return null;

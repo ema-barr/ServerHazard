@@ -1,17 +1,15 @@
 package it.uniba.hazard.engine.cards;
 
 import it.uniba.hazard.engine.main.GameState;
-import it.uniba.hazard.engine.main.Resource;
 import it.uniba.hazard.engine.main.Turn;
-import it.uniba.hazard.engine.map.GameMap;
-import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.response.card.BonusProductionCardResponse;
-import it.uniba.hazard.engine.util.response.card.BonusProductionCardRevertResponse;
 
-import java.util.Dictionary;
 
-//Carta evento: Bonus sulla produzione
+/**
+ * Bonus Card on the production.
+ * @author Donato
+ */
 public class BonusProductionCard extends EventCard{
 
     private String objectID;
@@ -23,8 +21,12 @@ public class BonusProductionCard extends EventCard{
     }
 
 
-
-
+    /**
+     * Increases the number of production cards of one unit.
+     * @param gameState State of the game
+     * @param turn Turn of the game
+     * @return the response of BonusProductionCard
+     */
     @Override
     public Response executeAction(GameState gameState, Turn turn) {
         numberProductionCards = gameState.getNumberOfProductionCards();
@@ -34,11 +36,20 @@ public class BonusProductionCard extends EventCard{
         return new BonusProductionCardResponse(true, "BonusProductionCard", numberProductionCards+1);
     }
 
+    /**
+     * Deletes the effects of the card: BonusProductionCard.
+     * @param gameState State of the game
+     * @return null
+     */
     public Response revertAction(GameState gameState) {
         gameState.setNumberOfProductionCards(numberProductionCards);
         return null;
     }
 
+    /**
+     *
+     * @return identification of the objectID
+     */
     public String getObjectID(){
         return objectID;
     }
