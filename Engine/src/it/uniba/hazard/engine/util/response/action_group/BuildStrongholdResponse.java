@@ -5,8 +5,12 @@ import it.uniba.hazard.engine.exception.InsufficientResourcesException;
 import it.uniba.hazard.engine.exception.StrongholdAlreadyPresentException;
 import it.uniba.hazard.engine.groups.ActionGroup;
 import it.uniba.hazard.engine.main.Emergency;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by emanu on 25/02/2017.
@@ -29,12 +33,18 @@ public class BuildStrongholdResponse implements Response {
         this.emergency = emergency;
         this.location = location;
         this.actionGroup = actionGroup;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if (success){
-            logString = "Presidio costruito in " + location.toString() + " per l'emergenza "
-                    + emergency.toString() + " da " + actionGroup.getNameActionGroup();
+            Object[] messageArgs = {location.toString(), emergency.toString(), actionGroup.getNameActionGroup()};
+            formatter.applyPattern(messages.getString("BuildStrongholdResponse_success"));
+            logString = formatter.format(messageArgs);
         } else {
-            logString = "Non è stato possibile costruire il presidio per l'emergenza " + emergency.toString() +
-                    " in " + location.toString();
+            Object[] messageArgs = {emergency.toString(), location.toString()};
+            formatter.applyPattern(messages.getString("BuildStrongholdResponse_failure"));
+            logString = formatter.format(messageArgs);
         }
     }
     public BuildStrongholdResponse(boolean success,

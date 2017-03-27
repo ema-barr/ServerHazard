@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hazard Mock Dashboard</title>
+    <script src='/socket.io/socket.io.js'></script>
+    <script>
+        function addMessage(message) {
+            messages = document.getElementById('log');
+            currentState = document.getElementById('currentState');
+            currentState.innerHTML = '';
+            log = message.logString;
+            state = message.state;
+            var text = document.createTextNode(log);
+            el = document.createElement('li');
+            el.appendChild(text);
+            messages.appendChild(el);
+            currentState.innerHTML = JSON.stringify(state, null, 4);
+        }
+
+        function popupMessage(message) {
+            popup = document.getElementById("popup");
+            popup.innerHTML = message;
+            popup.style["display"] = "block";
+        }
+
+        function hidePopup() {
+            popup = document.getElementById("popup");
+            popup.style["display"] = "none";
+        }
+        var socket = io();
+
+        function handleUpdate(data) {
+            hidePopup();
+            currentTurn = data.state.currentTurn;
+            if (currentTurn.type === "EventTurn") {
+                popupMessage(data.logString)
+            } else if (currentTurn.type === "ProductionTurn") {
+                if (currentTurn.state === "CHOOSE_PRODUCTION_CARDS") {
+                    popupMessage(JSON.stringify(currentTurn.cards))
+                }
+            }
+
+        }
+
+        socket.on('welcome', function(data) {
+            // Respond with a message including this clients' id sent from the server
+            connection = document.getElementById('connection');
+            connection.innerHTML = 'Connesso';
+            socket.emit('init_dashboard', data);
+        });
+
+        socket.on('update', function(data, callback) {
+            addMessage(data);
+            handleUpdate(data);
+            callback();
+        });
+
+        socket.on('chooseProductionCard', function(data, callback) {
+            addMessage(data);
+            handleUpdate(data);
+            callback();
+        });
+
+        socket.on('popupMessage', function(data, callback) {
+            popupMessage(data);
+            callback()
+        });
+
+        socket.on('productionCards', function(data, callback) {
+            callback()
+        });
+
+        socket.on('closePopup', function() {
+            hidePopup();
+        });
+    </script>
+</head>
+<body>
+    <div id="connection"></div>
+    <div id="log"></div>
+    <hr>
+    <pre id="currentState"></pre>
+    <div id="popup" style="position:fixed; display:none; left:25%; top:20%; width:50%; height:30%; background-color: #dddddd;"></div>
+
+</body>
+</html>
