@@ -67,7 +67,7 @@ public class AddBlockade extends EventCard{
     }
 
     /**
-     * Deletes the effect of the card: 'AddBlockade'
+     * Deletes the effect of the card: AddBlockade
      * @param gameState State of the game
      * @return null
      */
