@@ -2,7 +2,11 @@ package it.uniba.hazard.engine.util.response.production_turn;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.groups.ProductionGroup;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by maccn on 06/03/2017.
@@ -18,10 +22,18 @@ public class ChooseProductionCardResponse implements Response {
         this.success = success;
         productionGroup = group;
 
-        if (success)
-            logString = "La scelta della carta produzione del gruppo " + productionGroup.toString() + " è stata effettuata correttamente.";
-        else
-            logString = "Impossibile effettuare la scelta della carta produzione per il gruppo " + productionGroup.toString() + ".";
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
+        if (success) {
+            Object[] messageArgs = {productionGroup.toString()};
+            formatter.applyPattern(messages.getString("ChooseProductionCardResponse_success"));
+            logString = formatter.format(messageArgs);
+        } else {
+            Object[] messageArgs = {productionGroup.toString()};
+            formatter.applyPattern(messages.getString("ChooseProductionCardResponse_failure"));
+            logString = formatter.format(messageArgs);
+        }
     }
 
 

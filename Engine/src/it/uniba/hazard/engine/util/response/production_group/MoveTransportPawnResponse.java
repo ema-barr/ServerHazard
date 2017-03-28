@@ -3,9 +3,13 @@ package it.uniba.hazard.engine.util.response.production_group;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.exception.CannotMovePawnException;
 import it.uniba.hazard.engine.groups.ProductionGroup;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by emanu on 25/02/2017.
@@ -26,10 +30,18 @@ public class MoveTransportPawnResponse implements Response {
         this.transportPawn = transportPawn;
         this.productionGroup = transportPawn.getProductionGroup();
         this.newLocation = newLocation;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if (success){
-            logString = transportPawn.toString() + " si è spostato in " + newLocation.toString();
+            Object[] messageArgs = {transportPawn.toString(), newLocation.toString()};
+            formatter.applyPattern(messages.getString("MoveTransportPawnResponse_success"));
+            logString = formatter.format(messageArgs);
         } else {
-            logString = "Non è stato possibile spostare " + transportPawn.toString() + " in " + newLocation.toString();
+            Object[] messageArgs = {transportPawn.toString(), newLocation.toString()};
+            formatter.applyPattern(messages.getString("MoveTransportPawnResponse_failure"));
+            logString = formatter.format(messageArgs);
         }
     }
 

@@ -3,9 +3,13 @@ package it.uniba.hazard.engine.util.response.production_group;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.groups.ProductionGroup;
 import it.uniba.hazard.engine.main.Provisions;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by emanu on 25/02/2017.
@@ -24,12 +28,18 @@ public class InsertNewTransportPawnResponse implements Response{
         this.location = location;
         this.transportPawn = transportPawn;
         this.productionGroup = transportPawn.getProductionGroup();
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if (success){
-            logString = "Creato " + transportPawn.toString() + " per il gruppo " + productionGroup.toString() + " in " +
-                    location.toString();
+            Object[] messageArgs = {transportPawn.toString(), productionGroup.toString(), location.toString()};
+            formatter.applyPattern(messages.getString("InsertNewTransportPawnResponse_success"));
+            logString = formatter.format(messageArgs);
         } else {
-            logString = "Non è possibile creare " + transportPawn.toString() + " per il gruppo " + productionGroup.toString()+
-                    " in " + location.toString();
+            Object[] messageArgs = {transportPawn.toString(), productionGroup.toString(), location.toString()};
+            formatter.applyPattern(messages.getString("InsertNewTransportPawnResponse_failure"));
+            logString = formatter.format(messageArgs);
         }
     }
 

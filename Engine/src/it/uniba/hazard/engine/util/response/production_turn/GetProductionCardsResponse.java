@@ -3,9 +3,12 @@ package it.uniba.hazard.engine.util.response.production_turn;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.cards.ProductionCard;
 import it.uniba.hazard.engine.groups.ProductionGroup;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by maccn on 03/03/2017.
@@ -23,10 +26,18 @@ public class GetProductionCardsResponse implements Response {
         productionCards = cards;
         productionGroup = group;
 
-        if (success)
-            logString = "Il gruppo " + productionGroup.toString() + " ha " + productionCards.size() + " carte bonus.";
-        else
-            logString = "Impossibile ricevere le carte produzione dal gruppo " + productionGroup.toString() + ".";
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
+        if (success) {
+            Object[] messageArgs = {productionGroup.toString(), productionCards.size()};
+            formatter.applyPattern(messages.getString("GetProductionCardsResponse_success"));
+            logString = formatter.format(messageArgs);
+        } else {
+            Object[] messageArgs = {productionGroup.toString()};
+            formatter.applyPattern(messages.getString("GetProductionCardsResponse_failure"));
+            logString = formatter.format(messageArgs);
+        }
     }
 
     @Override

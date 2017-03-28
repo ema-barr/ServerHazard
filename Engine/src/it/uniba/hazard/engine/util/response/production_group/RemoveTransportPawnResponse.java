@@ -2,8 +2,12 @@ package it.uniba.hazard.engine.util.response.production_group;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.groups.ProductionGroup;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by emanu on 25/02/2017.
@@ -19,12 +23,18 @@ public class RemoveTransportPawnResponse implements Response{
         this.success = success;
         this.transportPawn = transportPawn;
         this.productionGroup = transportPawn.getProductionGroup();
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if (success){
-            logString = "Rimosso " + transportPawn.toString() + " del gruppo " + productionGroup.toString()
-                    + " con successo";
+            Object[] messageArgs = {transportPawn.toString(), productionGroup.toString()};
+            formatter.applyPattern(messages.getString("RemoveTransportPawnResponse2_success"));
+            logString = formatter.format(messageArgs);
         } else {
-            logString = "Non è stato possibile rimuovere " + transportPawn.toString() + " del gruppo " +
-                    productionGroup.toString();
+            Object[] messageArgs = {transportPawn.toString(), productionGroup.toString()};
+            formatter.applyPattern(messages.getString("RemoveTransportPawnResponse2_failure"));
+            logString = formatter.format(messageArgs);
         }
 
     }

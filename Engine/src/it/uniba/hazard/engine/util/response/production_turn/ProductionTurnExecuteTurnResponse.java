@@ -4,9 +4,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.cards.ProductionCard;
 import it.uniba.hazard.engine.groups.ProductionGroup;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by maccn on 03/03/2017.
@@ -23,10 +26,18 @@ public class ProductionTurnExecuteTurnResponse implements Response {
         productionGroup = group;
         this.productionCards = productionCards;
 
-        if (success)
-            logString = "Il gruppo " + productionGroup.toString() + " ha pescato le carte produzione.";
-        else
-            logString = "Il gruppo " + productionGroup.toString() + " ha raggiunto il numero massimo di pedine trasporto.";
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
+        if (success) {
+            Object[] messageArgs = {productionGroup.toString()};
+            formatter.applyPattern(messages.getString("ProductionTurnExecuteTurnResponse_success"));
+            logString = formatter.format(messageArgs);
+        } else {
+            Object[] messageArgs = {productionGroup.toString()};
+            formatter.applyPattern(messages.getString("ProductionTurnExecuteTurnResponse_failure"));
+            logString = formatter.format(messageArgs);
+        }
     }
 
     @Override

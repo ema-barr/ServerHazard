@@ -3,9 +3,12 @@ package it.uniba.hazard.engine.util.response.event_turn;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by maccn on 03/03/2017.
@@ -20,10 +23,16 @@ public class EventTurnExecuteTurnResponse implements Response {
         this.success = success;
         this.responses = responses;
 
-        if (success)
-            logString = "Attivate " + responses.size() + " carte evento.";
-        else
-            logString = "Impossibile attivare le carte evento.";
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
+        if (success) {
+            Object[] messageArgs = {responses.size()};
+            formatter.applyPattern(messages.getString("EventTurnExecuteTurnResponse_success"));
+            logString = formatter.format(messageArgs);
+        } else {
+            logString = messages.getString("EventTurnExecuteTurnResponse_failure");
+        }
     }
 
     @Override
