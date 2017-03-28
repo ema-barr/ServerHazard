@@ -2,8 +2,12 @@ package it.uniba.hazard.engine.util.response.card;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.main.Emergency;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by denny on 03/03/2017.
@@ -21,10 +25,18 @@ public class QuarantinePlaceResponse implements Response {
         this.cardName = cardName;
         this.emergency = emergency;
         this.location = location;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if(success){
-            logString = location.toString() + " é stata messa in quarantena per la " + emergency.getNameEmergency();
+            Object[] messageArgs = {location.toString(), emergency.getNameEmergency()};
+            formatter.applyPattern(messages.getString("QuarantinePlaceResponse_success"));
+            logString = formatter.format(messageArgs);
         }else {
-            logString = "Impossibile mettere in quarantena " + location.toString() + " per la " + emergency.getNameEmergency();
+            Object[] messageArgs = {location.toString(), emergency.getNameEmergency()};
+            formatter.applyPattern(messages.getString("QuarantinePlaceResponse_failure"));
+            logString = formatter.format(messageArgs);
         }
 
     }

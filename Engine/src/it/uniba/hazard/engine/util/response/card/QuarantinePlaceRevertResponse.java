@@ -2,8 +2,12 @@ package it.uniba.hazard.engine.util.response.card;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.main.Emergency;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by denny on 09/03/2017.
@@ -21,10 +25,18 @@ public class QuarantinePlaceRevertResponse implements Response {
         this.cardName = cardName;
         this.emergency = emergency;
         this.location = location;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if(success){
-            logString = location.toString() + " non é più in quarantena per la " + emergency.getNameEmergency();
+            Object[] messageArgs = {location.toString(), emergency.getNameEmergency()};
+            formatter.applyPattern(messages.getString("QuarantinePlaceRevertResponse_success"));
+            logString = formatter.format(messageArgs);
         }else {
-            logString = "Impossibile eliminare la quarantena a " + location.toString() + " per la " + emergency.getNameEmergency();
+            Object[] messageArgs = {location.toString(), emergency.getNameEmergency()};
+            formatter.applyPattern(messages.getString("QuarantinePlaceRevertResponse_failure"));
+            logString = formatter.format(messageArgs);
         }
 
     }

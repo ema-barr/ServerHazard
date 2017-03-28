@@ -2,7 +2,11 @@ package it.uniba.hazard.engine.util.response.card;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.main.Emergency;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by denny on 03/03/2017.
@@ -20,10 +24,18 @@ public class IncreaseContagionLevelResponse implements Response {
         this.cardName = cardName;
         this.emergency = emergency;
         this.level = level;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if(success){
-            logString = "Il livello di contagio della " + emergency.getNameEmergency() + " é ora pari a " + level;
+            Object[] messageArgs = {emergency.getNameEmergency(), level};
+            formatter.applyPattern(messages.getString("IncreaseContagionLevelResponse_success"));
+            logString = formatter.format(messageArgs);
         }else{
-            logString = "Impossibile aumentare il livello di contagio di" + emergency.getNameEmergency();
+            Object[] messageArgs = {emergency.getNameEmergency()};
+            formatter.applyPattern(messages.getString("IncreaseContagionLevelResponse_failure"));
+            logString = formatter.format(messageArgs);
         }
     }
 

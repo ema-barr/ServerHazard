@@ -1,9 +1,13 @@
 package it.uniba.hazard.engine.util.response.card;
 
 import com.google.gson.JsonObject;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.pawns.TransportPawn;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by denny on 03/03/2017.
@@ -19,10 +23,18 @@ public class RemoveTransportPawnResponse implements Response{
         this.success = success;
         this.tp = tp;
         this.location = location;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if(success){
-            logString = "La pedina " + tp.toString() + " é stata rimossa da " + location.toString();
+            Object[] messageArgs = {tp.toString(), location.toString()};
+            formatter.applyPattern(messages.getString("RemoveTransportPawnResponse1_success"));
+            logString = formatter.format(messageArgs);
         }else{
-            logString = "Impossibile rimuovere la pedina " + tp.toString() + " da " + location.toString();
+            Object[] messageArgs = {tp.toString(), location.toString()};
+            formatter.applyPattern(messages.getString("RemoveTransportPawnResponse1_failure"));
+            logString = formatter.format(messageArgs);
         }
     }
 

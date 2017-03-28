@@ -2,7 +2,11 @@ package it.uniba.hazard.engine.util.response.card;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.groups.ActionGroup;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by MANU on 08/03/2017.
@@ -19,10 +23,18 @@ public class IncreaseNumberActionResponse implements Response{
         this.cardName = cardName;
         this.player = player;
         this.newNumberActions = newNumberActions;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if(success){
-            logString = "Ora il gruppo azione " + player.toString() + " ha un numero di mosse pari a: " + newNumberActions;
+            Object[] messageArgs = {player.toString(), newNumberActions};
+            formatter.applyPattern(messages.getString("IncreaseNumberActionResponse_success"));
+            logString = formatter.format(messageArgs);
         } else {
-            logString = "Impossibile incrementare il numero di mosse del gruppo azione " + player.toString();
+            Object[] messageArgs = {player.toString()};
+            formatter.applyPattern(messages.getString("IncreaseNumberActionResponse_failure"));
+            logString = formatter.format(messageArgs);
         }
     }
 

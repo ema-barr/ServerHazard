@@ -1,7 +1,11 @@
 package it.uniba.hazard.engine.util.response.card;
 
 import com.google.gson.JsonObject;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by MANU on 08/03/2017.
@@ -14,10 +18,14 @@ public class DefaultCardResponse implements Response {
     public DefaultCardResponse(boolean success, String cardName){
         this.success = success;
         this.cardName = cardName;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if (success){
-            logString = "Non accade nulla";
+            logString = messages.getString("DefaultCardResponse_success");
         } else {
-            logString = "Errore generato da DefaultCard";
+            logString = messages.getString("DefaultCardResponse_failure");
         }
     }
 

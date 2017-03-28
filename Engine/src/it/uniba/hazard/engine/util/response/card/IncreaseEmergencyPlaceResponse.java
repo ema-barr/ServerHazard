@@ -2,8 +2,12 @@ package it.uniba.hazard.engine.util.response.card;
 
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.main.Emergency;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by denny on 03/03/2017.
@@ -23,10 +27,19 @@ public class IncreaseEmergencyPlaceResponse implements Response{
         this.emergency = emergency;
         this.location = location;
         this.levelEmergency = levelEmergency;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if(success){
-            logString = "Il livello d'emergenza di " + emergency.getNameEmergency() + " é aumentato di 1 ed ora é pari a " + levelEmergency + " in " + location.toString();
+            Object[] messageArgs = {emergency.getNameEmergency(), levelEmergency, location.toString()};
+            formatter.applyPattern(messages.getString("IncreaseEmergencyPlaceResponse_success"));
+            logString = formatter.format(messageArgs);
+
         }else {
-            logString = "Impossibile aumentare il livello d'emergenza di " + emergency.getNameEmergency() + " a " + location.toString();
+            Object[] messageArgs = {emergency.getNameEmergency(), location.toString()};
+            formatter.applyPattern(messages.getString("IncreaseEmergencyPlaceResponse_failure"));
+            logString = formatter.format(messageArgs);
         }
     }
     @Override

@@ -1,7 +1,11 @@
 package it.uniba.hazard.engine.util.response.card;
 
 import com.google.gson.JsonObject;
+import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by denny on 03/03/2017.
@@ -17,10 +21,16 @@ public class DecreaseStrongholdPriceResponse implements Response {
         this.success = success;
         this.decreasePrice = decreasePrice;
         this.cardName = cardName;
+
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
+
         if(success){
-            logString = "Il prezzo dei presidi è diminuito, ed è pari a " + decreasePrice;
+            Object[] messageArgs = {decreasePrice};
+            formatter.applyPattern(messages.getString("DecreaseStrongholdPriceResponse_success"));
+            logString = formatter.format(messageArgs);
         }else{
-            logString = "Impossibile diminuire il prezzo dei presidi";
+            logString = messages.getString("DecreaseStrongholdPriceResponse_failure");
         }
     }
     @Override
