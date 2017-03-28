@@ -124,7 +124,7 @@
         <cards>
             <eventCards>
                 <eventCard>
-                    <name>TakeBonusCard</name>
+                    <name>AddBlockade</name>
                     <quantity>10</quantity>
                 </eventCard>
             </eventCards>
@@ -145,10 +145,6 @@
                 </productionCard>
             </productionCards>
             <bonusCards>
-                <bonusCard>
-                    <name>MovePlace</name>
-                    <quantity>1</quantity>
-                </bonusCard>
             </bonusCards>
         </cards>
         <map>
