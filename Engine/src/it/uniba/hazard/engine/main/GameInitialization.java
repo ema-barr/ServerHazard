@@ -104,27 +104,26 @@ public class GameInitialization {
 
         //Cards
         CardManager<BonusCard> bonusCardManager = new CardManager<BonusCard>();
-        HashMap<String, Integer> bonusCardsMap = (HashMap<String, Integer>) CardReader.readBonusCards(pathXML);
-        Set<String> bonusCardMapKeys = bonusCardsMap.keySet();
+        List<List<Card>> bonusCardsMap = XmlCardsReader.readBonusCards(pathXML);
+        /*Set<String> bonusCardMapKeys = bonusCardsMap.keySet();
         for (String str: bonusCardMapKeys){
             int quantity = bonusCardsMap.get(str);
             bonusCardManager.instanceCard(str, quantity);
+        }*/
+        for (List<Card> list :  bonusCardsMap) {
+            bonusCardManager.instanceCardsNew(list);
         }
 
         CardManager<EventCard> eventCardManager = new CardManager<EventCard>();
-        HashMap<String, Integer> eventCardsMap = (HashMap<String, Integer>) CardReader.readEventCards(pathXML);
-        Set<String> eventCardMapKeys = eventCardsMap.keySet();
-        for (String str: eventCardMapKeys){
-            int quantity = eventCardsMap.get(str);
-            eventCardManager.instanceCard(str, quantity);
+        List<List<Card>> eventCardsMap = XmlCardsReader.readEventCards(pathXML);
+        for (List<Card> list :  eventCardsMap) {
+            eventCardManager.instanceCardsNew(list);
         }
 
         CardManager<ProductionCard> productionCardManager = new CardManager<ProductionCard>();
-        HashMap<ProductionCard, Integer> prodCardMap = (HashMap<ProductionCard, Integer>) CardReader.readProductionCards(pathXML);
-        Set<ProductionCard> prodCardKeyset = prodCardMap.keySet();
-        for (ProductionCard prodCard: prodCardKeyset){
-            int quantity = prodCardMap.get(prodCard);
-            productionCardManager.instanceCard(prodCard, quantity);
+        List<List<Card>> prodCardMap = XmlCardsReader.readProductionCards(pathXML);
+        for (List<Card> list :  prodCardMap) {
+            productionCardManager.instanceCardsNew(list);
         }
 
         System.out.println("- Carte inizializzate con successo.");

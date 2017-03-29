@@ -115,6 +115,16 @@ public class CardManager<C> {
         }
     }
 
+    /**
+     * Adds the specified cards to the list of cards.
+     * @param cards list of cards to add
+     */
+    public void instanceCardsNew(List<Card> cards) {
+        for (Card c : cards) {
+            instanceCards.add((C) c);
+        }
+    }
+
     private void resetCards() {
         cards = new ArrayList<C>();
         for(C c : instanceCards) {
