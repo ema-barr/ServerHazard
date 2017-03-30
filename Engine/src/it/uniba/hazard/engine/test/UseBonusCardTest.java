@@ -24,6 +24,8 @@ public class UseBonusCardTest {
         String[] params2 = {"useBonusCard", "0"};
         Response response = currentTurn.runCommand(g.getState(), params2);
         System.out.println(response.toJson());
+        //Trigger a new turn to test bonus card revert
+        currentTurn.executeTurn(g.getState());
     }
 
 }

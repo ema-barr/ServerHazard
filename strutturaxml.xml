@@ -145,6 +145,14 @@
                 </productionCard>
             </productionCards>
             <bonusCards>
+                <bonusCard>
+                    <name>MovePlace</name>
+                    <quantity>1</quantity>
+                </bonusCard>
+                <bonusCard>
+                    <name>QuarantinePlace</name>
+                    <quantity>1</quantity>
+                </bonusCard>
             </bonusCards>
         </cards>
         <map>
