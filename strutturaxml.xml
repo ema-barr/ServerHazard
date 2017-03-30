@@ -148,7 +148,6 @@
                 <bonusCard>
                     <name>MovePlace</name>
                     <quantity>1</quantity>
-                    <location>Location1</location>
                 </bonusCard>
                 <bonusCard>
                     <name>QuarantinePlace</name>

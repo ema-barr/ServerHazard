@@ -19,13 +19,13 @@ public class PlaceCardReader implements ICardReader {
         List<Card> result = new ArrayList<>();
         String name = e.getElementsByTagName("name").item(0).getTextContent();
         int quantity = Integer.parseInt(e.getElementsByTagName("quantity").item(0).getTextContent());
-        String locationName = e.getElementsByTagName("location").item(0).getTextContent();
 
-        String locationID = Location.class.getName() + "_" + locationName;
-        Location l = (Location) Repository.getFromRepository(locationID);
+        List<Location> locations = (List<Location>) Repository.getFromRepository("locationsList");
 
-        for (int i = 0; i < quantity; i++) {
-            result.add(new MovePlace("MovePlace", l));
+        for (Location l : locations) {
+            for (int i = 0; i < quantity; i++) {
+                result.add(new MovePlace("MovePlace", l));
+            }
         }
         return result;
     }
