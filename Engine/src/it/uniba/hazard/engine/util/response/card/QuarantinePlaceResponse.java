@@ -20,10 +20,9 @@ public class QuarantinePlaceResponse implements Response {
     private Location location;
     private String logString;
 
-    public QuarantinePlaceResponse(boolean success, String cardName, Emergency emergency, Location location){
+    public QuarantinePlaceResponse(boolean success, String cardName, Location location){
         this.success = success;
         this.cardName = cardName;
-        this.emergency = emergency;
         this.location = location;
 
         MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
@@ -47,7 +46,6 @@ public class QuarantinePlaceResponse implements Response {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
         res.addProperty("cardName", cardName);
-        res.addProperty("emergency", emergency.toString());
         res.addProperty("location", location.toString());
         res.addProperty("logString", logString);
         return res.toString();

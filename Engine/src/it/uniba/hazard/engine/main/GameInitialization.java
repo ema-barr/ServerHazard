@@ -174,12 +174,11 @@ public class GameInitialization {
         System.out.println("Turno di gioco: " + ts.getCurrentTurn());
         Response r = ts.getCurrentTurn().executeTurn(gs);
         System.out.println(r.toJson());
-        if(r.toJson().contains("MovePlace")){
+        if(r.toJson().contains("QuarantinePlace")){
 
-           // MovePlace mp = new MovePlace("MovePlace",Destination);
-            ts.setNextTurn();
-            //Response r1=  mp.executeAction(gs,ts.getCurrentTurn());
-           // System.out.println(r1.toJson());
+           QuarantinePlace qp = new QuarantinePlace("QuarantinePlace");
+           Response r1=  qp.executeAction(gs,ts.getCurrentTurn());
+           System.out.println(r1.toJson());
         }
 
     }
