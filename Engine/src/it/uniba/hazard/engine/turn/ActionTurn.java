@@ -17,6 +17,7 @@ import it.uniba.hazard.engine.util.response.action_turn.*;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -40,11 +41,15 @@ public class ActionTurn implements PlayerTurn {
     // numero di azioni eseguite
     private int numCurrentActions = 0;
 
+    // List of activated cards
+    private List<BonusCard> activatedCards;
+
     // costruttori
     public ActionTurn (ActionGroup pl, int na) {
         player = pl;
         numActions = na;
         bonusCards = new ArrayList<>();
+        activatedCards = new ArrayList<>();
     }
 
     public ActionGroup getPlayer() {
@@ -96,6 +101,10 @@ public class ActionTurn implements PlayerTurn {
     private Response useBonusCard (GameState gameState, String cardStr) {
         int numCard = Integer.valueOf(cardStr);
         Response resp = bonusCards.get(numCard).executeAction(gameState, this);
+        //Add the selected card to the activated cards list
+        activatedCards.add(bonusCards.get(numCard));
+        //Discard the used card
+        bonusCards.remove(numCard);
         return resp;
     }
 
@@ -159,7 +168,17 @@ public class ActionTurn implements PlayerTurn {
     @Override
     public Response executeTurn(GameState gameState) {
         numCurrentActions = 0;
+        revertAllActivatedCards(gameState);
         return new ActionTurnExecuteTurnResponse(true, player);
+    }
+
+    private void revertAllActivatedCards(GameState state) {
+        Iterator it = activatedCards.iterator();
+        while (it.hasNext()) {
+            BonusCard c = (BonusCard) it.next();
+            c.revertAction(state);
+        }
+        activatedCards.removeAll(activatedCards);
     }
 
     @Override

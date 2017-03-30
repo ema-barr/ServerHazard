@@ -150,6 +150,10 @@
                     <quantity>1</quantity>
                     <location>Location1</location>
                 </bonusCard>
+                <bonusCard>
+                    <name>QuarantinePlace</name>
+                    <quantity>1</quantity>
+                </bonusCard>
             </bonusCards>
         </cards>
         <map>
