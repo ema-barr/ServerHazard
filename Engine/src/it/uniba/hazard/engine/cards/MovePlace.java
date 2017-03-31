@@ -33,27 +33,11 @@ public class MovePlace extends BonusCard{
     }
 
     /**
-     * Move the pawn to 'destination'.
-     * @param gameState State of the game
-     * @param turn Turn of the game
-     * @return
+     *
+     * @return instance of MovePlace
      */
-    @Override
-    public Response executeAction(GameState gameState, Turn turn) {
-        ActionTurn at = (ActionTurn) turn;
-
-        at.getPlayer().moveActionPawn(gameState,destination);
-
-        return new MovePlaceResponse(true,at.getPlayer(),destination);
+    public MovePlaceInstance getMovePlace(){
+        return new MovePlaceInstance(bonusType,destination);
     }
 
-    /**
-     * Deletes the effect of the card: MovePlace.
-     * @param gameState State of the game
-     * @return null
-     */
-    @Override
-    public Response revertAction(GameState gameState) {
-        return null;
-    }
 }

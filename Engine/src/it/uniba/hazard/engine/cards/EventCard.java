@@ -5,7 +5,7 @@ import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.util.response.Response;
 
 /**
- * Superclass of the EventCard
+ * Superclass of the EventCard.
  * @author Donato
  */
 public class EventCard implements Card {

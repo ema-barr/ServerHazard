@@ -16,25 +16,24 @@ public class CurePlaceResponse implements Response {
 
     public boolean success;
     private String cardName;
-    public Emergency emergency;
     public Location location;
     public String logString;
 
-    public CurePlaceResponse(boolean success, String cardName, Emergency emergency, Location location){
+    public CurePlaceResponse(boolean success, String cardName, Location location){
         this.success = success;
         this.cardName = cardName;
-        this.emergency = emergency;
+
         this.location = location;
 
         MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
         ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
 
         if(success){
-            Object[] messageArgs = {emergency.getNameEmergency(), location.toString()};
+            Object[] messageArgs = {location.toString()};
             formatter.applyPattern(messages.getString("CurePlaceResponse_success"));
             logString = formatter.format(messageArgs);
         }else {
-            Object[] messageArgs = {emergency.getNameEmergency(), location.toString()};
+            Object[] messageArgs = {location.toString()};
             formatter.applyPattern(messages.getString("CurePlaceResponse_failure"));
             logString = formatter.format(messageArgs);
         }
@@ -44,7 +43,6 @@ public class CurePlaceResponse implements Response {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
         res.addProperty("cardName", cardName);
-        res.addProperty("emergency", emergency.getNameEmergency());
         res.addProperty("location", location.toString());
         res.addProperty("logString", logString);
         return res.toString();

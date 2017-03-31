@@ -1,17 +1,5 @@
 package it.uniba.hazard.engine.cards;
 
-import it.uniba.hazard.engine.main.Emergency;
-import it.uniba.hazard.engine.main.GameState;
-import it.uniba.hazard.engine.main.Turn;
-import it.uniba.hazard.engine.map.Location;
-import it.uniba.hazard.engine.pawns.ActionPawn;
-import it.uniba.hazard.engine.turn.ActionTurn;
-import it.uniba.hazard.engine.util.response.Response;
-import it.uniba.hazard.engine.util.response.card.QuarantinePlaceResponse;
-
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 /**
  * Quarantine in one place.
@@ -20,7 +8,7 @@ import java.util.Set;
 public class QuarantinePlace extends BonusCard{
 
     private String objectID;
-    private Location quarantineLocation;
+
 
 
 
@@ -38,29 +26,11 @@ public class QuarantinePlace extends BonusCard{
     }
 
     /**
-     * The location of action pawn has put in quarantine.
-     * @param gameState State of the game
-     * @param turn Turn of the game
-     * @return the response of QuarantinePlace
+     *
+     * @return instance of QuarantinePlace
      */
-    @Override
-    public Response executeAction(GameState gameState, Turn turn) {
-        ActionTurn at = (ActionTurn) turn;
-        ActionPawn ap = at.getPlayer().getActionPawn();
-        quarantineLocation = gameState.getLocationInMap(ap);
-        quarantineLocation.setQuarantined(true);
-        return new QuarantinePlaceResponse(true,"QuarantinePlace",quarantineLocation);
-
+    public QuarantinePlaceInstance getQuarantinePlace(){
+        return  new QuarantinePlaceInstance(bonusType);
     }
 
-    /**
-     * Deletes the effects of Quarantine in 'quarantineLocation'.
-     * @param gameState State of the game
-     * @return null
-     */
-    @Override
-    public Response revertAction(GameState gameState) {
-        quarantineLocation.setQuarantined(false);
-        return null;
-    }
 }
