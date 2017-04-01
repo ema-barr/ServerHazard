@@ -10,6 +10,7 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
+ * Instances QuarantinePlaceResponse.
  * @author Donato
  */
 public class QuarantinePlaceResponse implements Response {
