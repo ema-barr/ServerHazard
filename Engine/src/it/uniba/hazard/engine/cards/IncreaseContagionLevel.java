@@ -27,7 +27,7 @@ public class IncreaseContagionLevel extends EventCard{
      *
      * @return instance of IncreaseContagionLevel
      */
-    public IncreaseContagionLevelInstance getIncreaseContagionLevel(){
+    public IncreaseContagionLevelInstance getInstance(){
         return new IncreaseContagionLevelInstance(eventType);
     }
 

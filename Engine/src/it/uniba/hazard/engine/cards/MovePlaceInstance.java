@@ -11,14 +11,14 @@ import it.uniba.hazard.engine.util.response.card.MovePlaceResponse;
  * Instances MovePlace.
  * @author Donato
  */
-public class MovePlaceInstance extends BonusCard{
-
+public class MovePlaceInstance implements BonusCardInstance{
+    public String bonusType;
     private String objectID;
     private Location destination;
 
 
     public MovePlaceInstance(String bonusType, Location destination) {
-        super(bonusType);
+        this.bonusType = bonusType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
         this.destination = destination;
     }

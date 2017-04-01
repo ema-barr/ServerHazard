@@ -16,13 +16,13 @@ import java.util.Set;
  * Instances RemoveTransportPawn.
  * @author Donato
  */
-public class RemoveTransportPawnInstance extends EventCard {
-
+public class RemoveTransportPawnInstance implements EventCardInstance {
+    public String eventType;
     private String objectID;
 
 
     public RemoveTransportPawnInstance(String eventType) {
-        super(eventType);
+        this.eventType = eventType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

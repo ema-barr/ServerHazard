@@ -36,7 +36,7 @@ public class MovePlace extends BonusCard{
      *
      * @return instance of MovePlace
      */
-    public MovePlaceInstance getMovePlace(){
+    public MovePlaceInstance getInstance(){
         return new MovePlaceInstance(bonusType,destination);
     }
 

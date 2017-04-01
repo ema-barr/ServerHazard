@@ -15,13 +15,13 @@ import java.util.List;
  * Instances TakeBonusCard.
  * @author Donato
  */
-public class TakeBonusCardInstance extends EventCard {
-
+public class TakeBonusCardInstance implements EventCardInstance {
+    public String eventType;
     private String objectID;
 
 
     public TakeBonusCardInstance(String eventType) {
-        super(eventType);
+        this.eventType = eventType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

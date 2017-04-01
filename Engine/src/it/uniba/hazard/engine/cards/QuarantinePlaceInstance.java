@@ -12,15 +12,15 @@ import it.uniba.hazard.engine.util.response.card.QuarantinePlaceResponse;
  * Instances QuarantinePlace.
  * @author Donato
  */
-public class QuarantinePlaceInstance extends BonusCard {
-
+public class QuarantinePlaceInstance implements BonusCardInstance {
+    public String bonusType;
     private String objectID;
     private Location quarantineLocation;
 
 
 
     public QuarantinePlaceInstance(String bonusType) {
-        super(bonusType);
+        this.bonusType = bonusType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

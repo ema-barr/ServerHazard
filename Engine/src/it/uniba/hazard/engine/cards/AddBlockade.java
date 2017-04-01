@@ -25,7 +25,7 @@ public class AddBlockade extends EventCard{
      *
      * @return instance of AddBlockade
      */
-    public AddBlockadeInstance getAddBlockade(){
+    public AddBlockadeInstance getInstance(){
         return new AddBlockadeInstance(eventType);
     }
 

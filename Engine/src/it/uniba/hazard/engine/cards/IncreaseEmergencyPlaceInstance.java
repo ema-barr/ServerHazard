@@ -13,14 +13,14 @@ import java.util.*;
  * Instances IncreaseEmergencyPlace.
  * @author Donato
  */
-public class IncreaseEmergencyPlaceInstance extends EventCard {
-
+public class IncreaseEmergencyPlaceInstance implements EventCardInstance {
+    public String eventType;
     private String objectID;
     private Emergency randomEmergency;
 
 
     public IncreaseEmergencyPlaceInstance(String eventType) {
-        super(eventType);
+        this.eventType = eventType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

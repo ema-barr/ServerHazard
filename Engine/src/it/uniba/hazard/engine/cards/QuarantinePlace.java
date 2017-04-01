@@ -29,7 +29,7 @@ public class QuarantinePlace extends BonusCard{
      *
      * @return instance of QuarantinePlace
      */
-    public QuarantinePlaceInstance getQuarantinePlace(){
+    public QuarantinePlaceInstance getInstance(){
         return  new QuarantinePlaceInstance(bonusType);
     }
 

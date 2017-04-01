@@ -24,7 +24,7 @@ public class DefaultCard extends EventCard {
      *
      * @return instance of DefaultCard
      */
-    public DefaultCardInstance getDefaultCard(){
+    public DefaultCardInstance getInstance(){
         return new DefaultCardInstance(eventType);
     }
 }

@@ -29,7 +29,7 @@ public class MalusProductionCard extends EventCard{
      *
      * @return instance of MalusProductionCard
      */
-    public MalusProductionCardInstance getMalusProductionCard(){
+    public MalusProductionCardInstance getInstance(){
         return new MalusProductionCardInstance(eventType);
     }
 

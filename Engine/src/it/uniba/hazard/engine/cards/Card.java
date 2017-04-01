@@ -9,8 +9,9 @@ import it.uniba.hazard.engine.util.response.Response;
  * @author Donato
  */
 public interface Card {
-    Response executeAction(GameState gameState, Turn turn);
-    Response revertAction(GameState gameState);
+    @Deprecated
+    Response executeAction(GameState gameState, Turn turn); // DEPRECATED
+    @Deprecated
+    Response revertAction(GameState gameState); // DEPRECATED
     String getObjectID();
-
 }

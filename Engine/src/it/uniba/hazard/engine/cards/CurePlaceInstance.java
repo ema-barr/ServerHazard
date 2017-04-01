@@ -14,14 +14,13 @@ import java.util.Set;
 /**
  * Instances CurePlace.
  */
-public class CurePlaceInstance extends BonusCard {
+public class CurePlaceInstance implements BonusCardInstance {
 
     private String objectID;
-
-
+    public String bonusType;
 
     public CurePlaceInstance(String bonusType) {
-        super(bonusType);
+        this.bonusType = bonusType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

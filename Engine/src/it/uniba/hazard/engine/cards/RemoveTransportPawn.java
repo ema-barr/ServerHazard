@@ -27,7 +27,7 @@ public class RemoveTransportPawn extends EventCard{
      *
      * @return instance of RemoveTransportPawn
      */
-    public RemoveTransportPawnInstance getRemoveTransportPawnInstance(){
+    public RemoveTransportPawnInstance getInstance(){
         return new RemoveTransportPawnInstance(eventType);
     }
 

@@ -2,6 +2,7 @@ package it.uniba.hazard.engine.turn;
 
 import it.uniba.hazard.engine.cards.BonusCard;
 import com.google.gson.*;
+import it.uniba.hazard.engine.cards.BonusCardInstance;
 import it.uniba.hazard.engine.cards.Card;
 import it.uniba.hazard.engine.exception.NoActionsAvailableException;
 import it.uniba.hazard.engine.groups.ActionGroup;
@@ -42,7 +43,7 @@ public class ActionTurn implements PlayerTurn {
     private int numCurrentActions = 0;
 
     // List of activated cards
-    private List<BonusCard> activatedCards;
+    private List<BonusCardInstance> activatedCards;
 
     // costruttori
     public ActionTurn (ActionGroup pl, int na) {
@@ -100,9 +101,10 @@ public class ActionTurn implements PlayerTurn {
 
     private Response useBonusCard (GameState gameState, String cardStr) {
         int numCard = Integer.valueOf(cardStr);
-        Response resp = bonusCards.get(numCard).executeAction(gameState, this);
+        BonusCardInstance cardInstance = bonusCards.get(numCard).getInstance();
+        Response resp = cardInstance.executeAction(gameState, this);
         //Add the selected card to the activated cards list
-        activatedCards.add(bonusCards.get(numCard));
+        activatedCards.add(cardInstance);
         //Discard the used card
         bonusCards.remove(numCard);
         return resp;

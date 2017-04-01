@@ -13,14 +13,15 @@ import java.util.Set;
  * Instances AddBlockade.
  * @author Donato
  */
-public class AddBlockadeInstance extends EventCard{
+public class AddBlockadeInstance implements EventCardInstance{
 
     private String objectID;
     private Location l1;
     private ArrayList<Location> locationsBlockade;
+    public String eventType;
 
     public AddBlockadeInstance(String eventType) {
-        super(eventType);
+        this.eventType = eventType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

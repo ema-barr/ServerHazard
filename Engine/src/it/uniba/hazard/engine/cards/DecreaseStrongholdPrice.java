@@ -26,7 +26,7 @@ public class DecreaseStrongholdPrice extends EventCard{
      *
      * @return instance of DecreaseStrongholdPrice
      */
-    public DecreaseStrongholdPriceInstance getDecreaseStrongholdPrice(){
+    public DecreaseStrongholdPriceInstance getInstance(){
         return new DecreaseStrongholdPriceInstance(eventType);
     }
 

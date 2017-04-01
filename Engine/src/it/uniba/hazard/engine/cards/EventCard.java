@@ -8,7 +8,7 @@ import it.uniba.hazard.engine.util.response.Response;
  * Superclass of the EventCard.
  * @author Donato
  */
-public class EventCard implements Card {
+public abstract class EventCard implements Card {
 
     public String eventType;
 
@@ -24,6 +24,7 @@ public class EventCard implements Card {
      * @return the Response of the Card
      */
     @Override
+    @Deprecated
     public Response executeAction(GameState gameState, Turn turn) {
         return null;
     }
@@ -34,6 +35,7 @@ public class EventCard implements Card {
      * @return null
      */
     @Override
+    @Deprecated
     public Response revertAction(GameState gameState) {
         return null;
     }
@@ -47,5 +49,9 @@ public class EventCard implements Card {
         return null;
     }
 
-
+    /**
+     * Returns a new instantiation of the card
+     * @return
+     */
+    public abstract EventCardInstance getInstance();
 }

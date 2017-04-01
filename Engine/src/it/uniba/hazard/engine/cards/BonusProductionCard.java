@@ -26,7 +26,7 @@ public class BonusProductionCard extends EventCard{
      *
      * @return instance of BonusProductionCard
      */
-    public BonusProductionCardInstance getBonusProductionCard(){
+    public BonusProductionCardInstance getInstance(){
         return new BonusProductionCardInstance(eventType);
     }
 

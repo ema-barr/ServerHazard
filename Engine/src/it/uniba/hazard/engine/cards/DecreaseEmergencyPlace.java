@@ -26,7 +26,7 @@ public class DecreaseEmergencyPlace extends EventCard{
      *
      * @return instance of DecreaseEmergencyPlace
      */
-   public DecreaseEmergencyPlaceInstance getDecreaseEmergencyPlace(){
+   public DecreaseEmergencyPlaceInstance getInstance(){
        return new DecreaseEmergencyPlaceInstance(eventType);
    }
 }

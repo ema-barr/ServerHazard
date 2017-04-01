@@ -9,12 +9,12 @@ import it.uniba.hazard.engine.util.response.card.DecreaseStrongholdPriceResponse
  * Instances DecreaseStrongholdPrice.
  * @author Donato.
  */
-public class DecreaseStrongholdPriceInstance extends EventCard {
-
+public class DecreaseStrongholdPriceInstance implements EventCardInstance {
+    public String eventType;
     private String objectID;
 
     public DecreaseStrongholdPriceInstance(String eventType) {
-        super(eventType);
+        this.eventType = eventType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

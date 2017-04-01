@@ -27,7 +27,7 @@ public class TakeBonusCard extends EventCard{
      *
      * @return instance of TakeBonusCard
      */
-    public TakeBonusCardInstance getTakeBonusCard(){
+    public TakeBonusCardInstance getInstance(){
         return new TakeBonusCardInstance(eventType);
     }
 

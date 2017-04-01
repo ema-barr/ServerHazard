@@ -29,7 +29,7 @@ public class CurePlace extends BonusCard{
      *
      * @return instance of CurePlace
      */
-    public CurePlaceInstance getCurePlace(){
+    public CurePlaceInstance getInstance(){
         return new CurePlaceInstance(bonusType);
     }
 }

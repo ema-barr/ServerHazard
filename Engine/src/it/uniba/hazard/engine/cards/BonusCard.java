@@ -12,7 +12,7 @@ import it.uniba.hazard.engine.util.response.Response;
  * Superclass of BonusCard
  * @author Donato
  */
-public class BonusCard implements Card {
+public abstract class BonusCard implements Card {
 
     public String bonusType;
 
@@ -30,6 +30,7 @@ public class BonusCard implements Card {
      * @return the Response of the card
      */
     @Override
+    @Deprecated
     public Response executeAction(GameState gameState, Turn turn) {
         return null;
     }
@@ -40,6 +41,7 @@ public class BonusCard implements Card {
      * @return null
      */
     @Override
+    @Deprecated
     public Response revertAction(GameState gameState) {
         return null;
     }
@@ -62,5 +64,11 @@ public class BonusCard implements Card {
         gb.registerTypeAdapter(BonusCard.class, new CardSerializer());
         return gb.create().toJsonTree(this);
     }
+
+    /**
+     * Returns a new instantiation of the card
+     * @return
+     */
+    public abstract BonusCardInstance getInstance();
 
 }

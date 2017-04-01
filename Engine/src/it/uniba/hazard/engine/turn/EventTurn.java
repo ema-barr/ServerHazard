@@ -3,6 +3,7 @@ package it.uniba.hazard.engine.turn;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.uniba.hazard.engine.cards.EventCard;
+import it.uniba.hazard.engine.cards.EventCardInstance;
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.util.response.Response;
@@ -21,7 +22,7 @@ public class EventTurn implements Turn {
     private List<EventCard> eventCards;
 
     // Lista di carte attivate
-    private List<EventCard> activatedCards;
+    private List<EventCardInstance> activatedCards;
 
     // numero di carte evento da richiedere
     private int numberOfCards;
@@ -56,8 +57,9 @@ public class EventTurn implements Turn {
             eventCards = gameState.getEventCards(numberOfCards);
             for (EventCard e : eventCards) {
                 // attiva gli effetti della carta evento
-                responses.add(e.executeAction(gameState, this));
-                activatedCards.add(e);
+                EventCardInstance cardInstance = e.getInstance();
+                responses.add(cardInstance.executeAction(gameState, this));
+                activatedCards.add(cardInstance);
             }
         }
 

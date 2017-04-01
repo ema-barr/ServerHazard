@@ -9,12 +9,12 @@ import it.uniba.hazard.engine.util.response.card.DefaultCardResponse;
  * Instances DefaultCard.
  * @author Donato
  */
-public class DefaultCardInstance extends EventCard{
-
+public class DefaultCardInstance implements EventCardInstance{
+    private String eventType;
     private String objectID;
 
     public DefaultCardInstance(String eventType) {
-        super(eventType);
+        this.eventType = eventType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

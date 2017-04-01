@@ -15,15 +15,15 @@ import java.util.Set;
  * Instances DecreaseEmergencyPlace.
  * @author Donato
  */
-public class DecreaseEmergencyPlaceInstance extends EventCard{
-
+public class DecreaseEmergencyPlaceInstance implements EventCardInstance{
+    public String eventType;
     private String objectID;
     private int currentEmergencyLevel;
     private Emergency randomEmergency;
 
 
     public DecreaseEmergencyPlaceInstance(String eventType) {
-        super(eventType);
+        this.eventType = eventType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

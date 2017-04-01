@@ -9,13 +9,14 @@ import it.uniba.hazard.engine.util.response.card.BonusProductionCardResponse;
  * Instance BonusProductionCard.
  * @author Donato
  */
-public class BonusProductionCardInstance extends EventCard{
+public class BonusProductionCardInstance implements EventCardInstance{
 
     private String objectID;
     private int numberProductionCards;
+    public String eventType;
 
     public BonusProductionCardInstance(String eventType) {
-        super(eventType);
+        this.eventType = eventType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

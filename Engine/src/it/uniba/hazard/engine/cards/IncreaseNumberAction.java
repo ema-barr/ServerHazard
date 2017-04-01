@@ -28,7 +28,7 @@ public class IncreaseNumberAction extends BonusCard{
      *
      * @return instance of IncreaseNumberAction
      */
-    public IncreaseNumberActionInstance getIncreaseNumberAction(){
+    public IncreaseNumberActionInstance getInstance(){
         return new IncreaseNumberActionInstance(bonusType);
     }
 

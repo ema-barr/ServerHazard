@@ -13,14 +13,13 @@ import java.util.Random;
  * Instance IncreaseContagionLevel.
  * @author Donato
  */
-public class IncreaseContagionLevelInstance extends EventCard {
-
+public class IncreaseContagionLevelInstance implements EventCardInstance {
     private String objectID;
     private Emergency randomEmergency;
-
+    public String eventType;
 
     public IncreaseContagionLevelInstance(String eventType) {
-        super(eventType);
+        this.eventType = eventType;
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
