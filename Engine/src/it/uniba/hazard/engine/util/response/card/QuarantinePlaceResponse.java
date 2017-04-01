@@ -10,13 +10,12 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
- * Created by denny on 03/03/2017.
+ * @author Donato
  */
 public class QuarantinePlaceResponse implements Response {
 
     private boolean success;
     private String cardName;
-    private Emergency emergency;
     private Location location;
     private String logString;
 
@@ -29,11 +28,11 @@ public class QuarantinePlaceResponse implements Response {
         ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
 
         if(success){
-            Object[] messageArgs = {location.toString(), emergency.getNameEmergency()};
+            Object[] messageArgs = {location.toString()};
             formatter.applyPattern(messages.getString("QuarantinePlaceResponse_success"));
             logString = formatter.format(messageArgs);
         }else {
-            Object[] messageArgs = {location.toString(), emergency.getNameEmergency()};
+            Object[] messageArgs = {location.toString()};
             formatter.applyPattern(messages.getString("QuarantinePlaceResponse_failure"));
             logString = formatter.format(messageArgs);
         }
