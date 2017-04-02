@@ -177,7 +177,7 @@ public class ActionTurn implements PlayerTurn {
     private void revertAllActivatedCards(GameState state) {
         Iterator it = activatedCards.iterator();
         while (it.hasNext()) {
-            BonusCard c = (BonusCard) it.next();
+            BonusCardInstance c = (BonusCardInstance) it.next();
             c.revertAction(state);
         }
         activatedCards.removeAll(activatedCards);
