@@ -106,11 +106,7 @@ io.on('connection', function (socket) {
     socket.on('chooseProductionCard', function(data, callback) {
         handleChooseProductionCard('chooseProductionCard', data, callback);
     });
-
-    function closePendingPopups() {
-        io.sockets.connected[dashboardSocketID].emit('closePopup');
-    }
-
+    
     function handleRequestAndNotifyDashboard(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);
@@ -135,13 +131,20 @@ io.on('connection', function (socket) {
         });
     }
 
+    function sendMessage(socketID, messageName, data) {
+        if (io.sockets.connected[socketID] != undefined) {
+            io.sockets.connected[socketID].emit(messageName, data);
+        }
+    }
+
     function sendUpdateToDashboard(success, logString, callback) {
         //Request the state to send to the dashboard
         request("getState", {}, function(getStateResponse) {
             //Send the state to the dashboard
             newResponse = {"success": success, "logString": logString};
             newResponse.state = JSON.parse(getStateResponse);
-            io.sockets.connected[dashboardSocketID].emit('update', newResponse);
+            //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
+            sendMessage(dashboardSocketID, 'update', newResponse);
             callback();
         })
     }
@@ -159,11 +162,11 @@ io.on('connection', function (socket) {
                 //If the production cards have been selected, notify the device so it can show the production group
                 //interface.
                 if (currentTurnJ.state === "MOVE_TRANSPORT_PAWN") {
-                    io.sockets.connected[clientSocketID].emit('productionStateChanged', {})
+                    sendMessage(clientSocketID, 'productionStateChanged', {});
                 }
                 newResponse = {"success": success, "logString": logString, "cardIndex":cardIndex};
                 newResponse.state = stateResponseJ;
-                io.sockets.connected[dashboardSocketID].emit('chooseProductionCard', newResponse);
+                sendMessage(dashboardSocketID, 'chooseProductionCard', newResponse);
             });
             callback(response);
         });
