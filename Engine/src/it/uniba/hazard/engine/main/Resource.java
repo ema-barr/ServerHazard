@@ -1,5 +1,9 @@
 package it.uniba.hazard.engine.main;
 
+import com.google.gson.*;
+
+import java.lang.reflect.Type;
+
 public class Resource {
     private String objectID;
     private String nameResource;
@@ -25,5 +29,22 @@ public class Resource {
     @Override
     public String toString() {
         return nameResource;
+    }
+
+    public JsonElement toJson() {
+        GsonBuilder gb = new GsonBuilder();
+        gb.registerTypeAdapter(Resource.class, new ResourceSerializer());
+        return gb.create().toJsonTree(this);
+    }
+
+    public class ResourceSerializer implements JsonSerializer<Resource> {
+
+        @Override
+        public JsonElement serialize(Resource resource, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject result = new JsonObject();
+            result.addProperty("objectID", objectID);
+            result.addProperty("name", nameResource);
+            return result;
+        }
     }
 }
