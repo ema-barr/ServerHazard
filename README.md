@@ -7,6 +7,8 @@
 <pre>
 npm install express
 npm install socket.io
+npm install fs
+npm install xmldom
 </pre>
 
 ## Per l'avvio del sistema e dell'interfaccia di debug
