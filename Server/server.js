@@ -145,6 +145,10 @@ io.on('connection', function (socket) {
             newResponse.state = JSON.parse(getStateResponse);
             //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
             sendMessage(dashboardSocketID, 'update', newResponse);
+            
+            var commandToSend = arduinoLedCommand(newResponse.state);
+            //TODO send command to board
+
             callback();
         })
     }
@@ -246,6 +250,121 @@ app.get('/dashboard', function (req, res) {
     res.end(dashboard);
 });
 
-server.listen(port);
+fs = require('fs');
+var xmlConfiguration = fs.readFileSync('./configuration.xml', 'utf8');
+var DOMParser = require('xmldom').DOMParser;
 
+setupGlobalVariables(xmlConfiguration);
+
+function setupGlobalVariables(xmlConfigurationFile) {
+    gravityLevelsArray = setupGravityLevels(xmlConfigurationFile);
+    ledEmergencyMap = setupLedEmergencyMap(xmlConfigurationFile);
+    setupBoardSettings(xmlConfigurationFile);
+}
+
+function setupGravityLevels(xmlConfigurationFile) {
+    var parser = new DOMParser();
+    var xmlParser = parser.parseFromString(xmlConfigurationFile, "text/xml");
+
+    var gravityLevels = xmlParser.getElementsByTagName("gravityLevels")[0];
+    var levels = gravityLevels.getElementsByTagName("level");
+    var gravityLevelsArray = [];
+    for (var i = 0; i < levels.length; i++) {
+            var colorCode = levels[i].getElementsByTagName("colorCode")[0].textContent;
+            gravityLevelsArray.push(colorCode);
+    }
+
+    return gravityLevelsArray;
+}
+
+function setupLedEmergencyMap(xmlConfigurationFile) {
+    var parser = new DOMParser();
+    var xmlParser = parser.parseFromString(xmlConfigurationFile, "text/xml");
+    var areas = xmlParser.getElementsByTagName("area");
+    var locations = [];
+
+    for (var i = 0; i < areas.length; i++) {
+        locations.push(areas[i].getElementsByTagName("location")[0]);
+    }
+
+    var ledEmergencyMap = [[]];
+    for (var i = 0; i < locations.length; i++) {
+        var locationName = locations[i].getElementsByTagName("name")[0].textContent;
+        var emergencyArray = [];
+        var leds = locations[i].getElementsByTagName("leds")[0].getElementsByTagName("led");
+        
+        var number = "";
+        var emergency = "";
+        for (var j = 0; j < leds.length; j++) {
+            number = leds[j].getElementsByTagName("number")[0].textContent;
+            emergency = leds[j].getElementsByTagName("emergency")[0].textContent;
+            emergencyArray[emergency] = number;
+            emergencyArray;
+        }
+        ledEmergencyMap[locationName] = emergencyArray;
+    }
+
+    return ledEmergencyMap;
+}
+
+function setupBoardSettings(xmlConfigurationFile) {
+    var parser = new DOMParser();
+    var xmlParser = parser.parseFromString(xmlConfigurationFile, "text/xml");
+    var configuration =  xmlParser.getElementsByTagName("arduinoBoardSettings")[0];
+    ipBoard = configuration.getElementsByTagName("ip")[0].textContent;
+    ledNumber = configuration.getElementsByTagName("ledNumber")[0].textContent;
+    commandCode = configuration.getElementsByTagName("commandCode")[0].textContent;
+    ledCommandCode = configuration.getElementsByTagName("ledCommandCode")[0].textContent;
+    soundCommandCode = configuration.getElementsByTagName("soundCommandCode")[0].textContent;
+}
+
+function arduinoLedCommand(gameState) {
+    //var json = JSON.parse(gameState);
+
+    //get the location list from JSON
+    var locations = gameState['gameState']['gameMap']['locations'];
+
+    /*
+    create a dictionary with 2 key:
+    first key is location name (contain a dictionary),
+    second key is emergency name and contain the emergency level
+    */
+    var mapLocationLedColor = {};
+
+    //extract location list
+    for(var i = 0; i < locations.length; i++) {
+
+        var loc =  locations[i]['emergencyLevels'];
+        var tempDictionary = {}; //just for simplify code, can be deleted
+
+        //in dhe location insert the pair emergency_name : emergency_level
+        for (var j = 0; j < loc.length; j++) {
+            tempDictionary[loc[j]['emergency']] = loc[j]['level'];
+        }
+
+        mapLocationLedColor[locations[i]['name']] = tempDictionary;
+    }
+
+    //initialization string to send at arduino
+    var ledCommandArdino =  commandCode + ledCommandCode;
+    for(var i = 0; i < ledNumber; i++) {
+        ledCommandArdino += "0";
+    }
+    ledCommandArdino += commandCode;
+
+
+    //set led colors using map association and emergency
+    for(var loc in mapLocationLedColor){
+        for (var emergency in mapLocationLedColor[loc]){
+            //change default value in the ledCommandArdino if exist the led in the map
+            if(ledMap[loc][emergency]){
+                ledCommandArdino[ledEmergencyMap[loc][emergency]] = mapLocationLedColor[loc][emergency];
+            }
+        }
+    }
+
+    return ledCommandArdino;
+}
+
+server.listen(port);
 console.log('Server is listening on port ' + port);
