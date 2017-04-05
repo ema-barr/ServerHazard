@@ -251,15 +251,23 @@ app.get('/dashboard', function (req, res) {
 });
 
 fs = require('fs');
-var xmlConfiguration = fs.readFileSync('./configuration.xml', 'utf8');
-var DOMParser = require('xmldom').DOMParser;
+try {
+	var xmlConfiguration = fs.readFileSync('./configuration.xml', 'utf8');
+	var DOMParser = require('xmldom').DOMParser;
+} catch(err) {
+	console.log("Configuration file not found.");
+	var xmlConfiguration = null;
+}
 
 setupGlobalVariables(xmlConfiguration);
 
 function setupGlobalVariables(xmlConfigurationFile) {
-    gravityLevelsArray = setupGravityLevels(xmlConfigurationFile);
-    ledEmergencyMap = setupLedEmergencyMap(xmlConfigurationFile);
-    setupBoardSettings(xmlConfigurationFile);
+	if (xmlConfiguration != null) {
+		console.log("Setting up global game variables...");
+	    gravityLevelsArray = setupGravityLevels(xmlConfigurationFile);
+	    ledEmergencyMap = setupLedEmergencyMap(xmlConfigurationFile);
+	    setupBoardSettings(xmlConfigurationFile);
+	}
 }
 
 function setupGravityLevels(xmlConfigurationFile) {
