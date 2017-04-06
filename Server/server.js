@@ -146,7 +146,7 @@ io.on('connection', function (socket) {
             //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
             sendMessage(dashboardSocketID, 'update', newResponse);
             
-            var commandToSend = arduinoLedCommand(newResponse.state);
+            //var commandToSend = arduinoLedCommand(newResponse.state);
             //TODO send command to board
 
             callback();
