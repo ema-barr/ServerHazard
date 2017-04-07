@@ -15,10 +15,14 @@ import it.uniba.hazard.engine.util.response.Response;
 public abstract class BonusCard implements Card {
 
     public String bonusType;
+    public String name;
+    public String description;
 
-    public BonusCard(String bonusType) {
+    public BonusCard(String bonusType, String name, String description) {
 
         this.bonusType = bonusType;
+        this.name = name;
+        this.description = description;
 
     }
 
@@ -53,6 +57,14 @@ public abstract class BonusCard implements Card {
     @Override
     public String getObjectID() {
         return null;
+    }
+
+    public String getNameCard(){
+        return name;
+    }
+
+    public String getDescription(){
+        return description;
     }
 
     /**

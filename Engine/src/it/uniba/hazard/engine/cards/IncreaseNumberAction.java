@@ -11,8 +11,8 @@ public class IncreaseNumberAction extends BonusCard{
     private String objectID;
 
 
-    public IncreaseNumberAction(String bonusType) {
-        super(bonusType);
+    public IncreaseNumberAction(String bonusType, String name, String description) {
+        super(bonusType,name,description);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

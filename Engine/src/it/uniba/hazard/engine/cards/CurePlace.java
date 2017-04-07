@@ -12,8 +12,8 @@ public class CurePlace extends BonusCard{
 
 
 
-    public CurePlace(String bonusType) {
-        super(bonusType);
+    public CurePlace(String bonusType, String name, String description) {
+        super(bonusType,name,description);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 

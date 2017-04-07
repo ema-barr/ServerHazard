@@ -12,8 +12,8 @@ public class QuarantinePlace extends BonusCard{
 
 
 
-    public QuarantinePlace(String bonusType) {
-        super(bonusType);
+    public QuarantinePlace(String bonusType,String name, String description) {
+        super(bonusType,name,description);
         this.objectID = this.getClass().getSuperclass().getName() + "_" + this.getClass().getName();
     }
 
