@@ -62,8 +62,8 @@ public class AddBlockadeInstance implements EventCardInstance{
             locationsBlockade.add(loc);
         }
 
-        System.out.println(new AddBlockadeResponse(true, "AddBlockade", locationsBlockade).toJson());
-        return new AddBlockadeResponse(true, "AddBlockade", locationsBlockade);
+        System.out.println(new AddBlockadeResponse(true, "AddBlockade", locationsBlockade, l1).toJson());
+        return new AddBlockadeResponse(true, "AddBlockade", locationsBlockade, l1);
     }
 
     /**

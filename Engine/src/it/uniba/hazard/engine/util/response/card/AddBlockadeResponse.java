@@ -7,7 +7,7 @@ import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.util.response.Response;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -16,10 +16,12 @@ import java.util.ResourceBundle;
 public class AddBlockadeResponse implements Response{
     private boolean success;
     private String cardName;
-    private ArrayList<Location> locationsBlockade;
+    private Location closedLocation;
+    private List<Location> locationsBlockade;
     private String logString;
 
-    public AddBlockadeResponse(boolean success, String cardName, ArrayList<Location> locationsBlockade){
+    public AddBlockadeResponse(boolean success, String cardName, List<Location> locationsBlockade, Location closedLocation){
+        this.closedLocation = closedLocation;
         this.locationsBlockade = locationsBlockade;
         this.cardName = cardName;
         this.success = success;
@@ -28,12 +30,7 @@ public class AddBlockadeResponse implements Response{
         ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
 
         if(success){
-            String locsStr = "";
-            for (Location loc : locationsBlockade){
-                locsStr += loc.toString() + " ";
-            }
-
-            Object[] messageArgs = {locsStr};
+            Object[] messageArgs = {closedLocation.toString()};
             formatter.applyPattern(messages.getString("AddBlockadeResponse_success"));
             logString = formatter.format(messageArgs);
         }else{
