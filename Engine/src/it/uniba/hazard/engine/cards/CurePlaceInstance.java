@@ -33,7 +33,7 @@ public class CurePlaceInstance implements BonusCardInstance {
     }
 
     /**
-     * Cures one place choosen random.
+     * Cures the place where the current action group resides.
      * @param gameState State of the game
      * @param turn Turn of the game
      * @return the response of CurePlace

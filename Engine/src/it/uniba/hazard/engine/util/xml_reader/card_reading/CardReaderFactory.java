@@ -12,7 +12,10 @@ public class CardReaderFactory {
     static {
         //Initialize the reader factory mapping
         readers = new HashMap<String, ICardReader>();
-
+        //Standard bonus card creators
+        readers.put("CurePlace", new BonusCardReader());
+        readers.put("IncreaseNumberAction", new BonusCardReader());
+        readers.put("QuarantinePlace", new BonusCardReader());
         //Here will be added all the non-standard card creators.
         readers.put("MovePlace", new PlaceCardReader());
         readers.put("ProductionCard", new ProductionCardReader());
