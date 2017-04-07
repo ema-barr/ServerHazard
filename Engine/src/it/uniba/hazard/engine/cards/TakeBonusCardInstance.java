@@ -54,7 +54,7 @@ public class TakeBonusCardInstance implements EventCardInstance {
                 }
             }
         }
-        return new TakeBonusCardResponse(true, "TakeBonusCard",bs.get(0).bonusType,1);
+        return new TakeBonusCardResponse(true, "TakeBonusCard",bs.get(0),1);
     }
 
     /**

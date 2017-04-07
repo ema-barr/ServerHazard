@@ -1,6 +1,7 @@
 package it.uniba.hazard.engine.util.response.card;
 
 import com.google.gson.JsonObject;
+import it.uniba.hazard.engine.cards.BonusCard;
 import it.uniba.hazard.engine.main.Repository;
 import it.uniba.hazard.engine.util.response.Response;
 
@@ -14,12 +15,12 @@ public class TakeBonusCardResponse implements Response{
 
     private boolean success;
     private String cardName;
-    private String cardExtract;
+    private BonusCard cardExtract;
     private int numCard;
     private String logString;
 
 
-    public TakeBonusCardResponse(boolean success, String cardName, String cardExtract, int numCard){
+    public TakeBonusCardResponse(boolean success, String cardName, BonusCard cardExtract, int numCard){
         this.success = success;
         this.cardName = cardName;
         this.cardExtract = cardExtract;
@@ -28,7 +29,7 @@ public class TakeBonusCardResponse implements Response{
         ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
 
         if(success){
-            Object[] messageArgs = {numCard};
+            Object[] messageArgs = {cardExtract.toString()};
 
             formatter.applyPattern(messages.getString("TakeBonusCardResponse_success"));
             logString = formatter.format(messageArgs);
@@ -43,7 +44,7 @@ public class TakeBonusCardResponse implements Response{
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
         res.addProperty("cardName", cardName);
-        res.addProperty("cardExtract", cardExtract);
+        res.addProperty("cardExtract", cardExtract.toString());
         res.addProperty("numCardsBonusDrawn", numCard);
         res.addProperty("logString", logString);
         return res.toString();
