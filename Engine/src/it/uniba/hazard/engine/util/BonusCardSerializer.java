@@ -17,7 +17,9 @@ public class BonusCardSerializer implements JsonSerializer<BonusCard> {
     public JsonElement serialize(BonusCard bonusCard, Type type, JsonSerializationContext jsonSerializationContext) {
         JsonObject result = new JsonObject();
         result.addProperty("objectID", bonusCard.getObjectID());
-        result.addProperty("name", bonusCard.getBonusType());
+        result.addProperty("nameClass", bonusCard.getBonusType());
+        result.addProperty("nameCard", bonusCard.getNameCard());
+        result.addProperty("description", bonusCard.getDescription());
         return result;
     }
 }

@@ -35,6 +35,14 @@ public abstract class BonusCard implements Card {
         return this.bonusType;
     }
 
+    public String getNameCard(){
+        return this.name;
+    }
+
+    public String getDescription(){
+        return this.description;
+    }
+
 
     /**
      * performs the effect of the card.
@@ -68,13 +76,7 @@ public abstract class BonusCard implements Card {
         return null;
     }
 
-    public String getNameCard(){
-        return name;
-    }
 
-    public String getDescription(){
-        return description;
-    }
 
     /**
      * Build the json object.

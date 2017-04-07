@@ -14,6 +14,5 @@ public interface Card {
     @Deprecated
     Response revertAction(GameState gameState); // DEPRECATED
     String getObjectID();
-    String getNameCard();
-    String getDescription();
+
 }
