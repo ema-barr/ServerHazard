@@ -53,7 +53,7 @@ public class Emergency {
         public JsonElement serialize(Emergency emergency, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject result = new JsonObject();
             result.addProperty("name", nameEmergency);
-            result.addProperty("resourceNeeded", resourceNeeded.getObjectID());
+            result.add("resourceNeeded", resourceNeeded.toJson());
             result.addProperty("objectID", objectID);
             result.add("generalHazardIndicator", generalHazardIndicator.toJson());
             return result;

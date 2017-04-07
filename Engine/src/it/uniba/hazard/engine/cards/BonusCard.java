@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 
 import it.uniba.hazard.engine.main.GameState;
 import it.uniba.hazard.engine.main.Turn;
+import it.uniba.hazard.engine.util.BonusCardSerializer;
 import it.uniba.hazard.engine.util.CardSerializer;
 import it.uniba.hazard.engine.util.response.Response;
 
@@ -24,6 +25,14 @@ public abstract class BonusCard implements Card {
         this.name = name;
         this.description = description;
 
+    }
+
+    /**
+     * Returns the name of the bonus card.
+     * @return name of the bonus card
+     */
+    public String getBonusType() {
+        return this.bonusType;
     }
 
 
@@ -73,7 +82,7 @@ public abstract class BonusCard implements Card {
      */
     public JsonElement toJson() {
         GsonBuilder gb = new GsonBuilder();
-        gb.registerTypeAdapter(BonusCard.class, new CardSerializer());
+        gb.registerTypeAdapter(BonusCard.class, new BonusCardSerializer());
         return gb.create().toJsonTree(this);
     }
 

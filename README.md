@@ -3,10 +3,9 @@
 ## Per l'installazione
 - Installare git
 - Installare node.js
-- Andare nella cartella Server ed eseguire i comandi:
+- Andare nella cartella Server ed eseguire il comando:
 <pre>
-npm install express
-npm install socket.io
+npm install 
 </pre>
 
 ## Per l'avvio del sistema e dell'interfaccia di debug
