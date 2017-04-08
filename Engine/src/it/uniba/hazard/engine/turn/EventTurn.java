@@ -69,7 +69,7 @@ public class EventTurn implements Turn {
     // annulla l'effetto degli eventi del turno precedente
     private void revertEventCards (GameState gameState) {
         if (!activatedCards.isEmpty()) {
-            for (EventCard e : eventCards) {
+            for (EventCardInstance e : activatedCards) {
                 e.revertAction(gameState);
             }
         }
