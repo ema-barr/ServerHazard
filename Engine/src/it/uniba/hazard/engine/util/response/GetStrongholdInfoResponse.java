@@ -23,7 +23,8 @@ public class GetStrongholdInfoResponse implements Response {
         JsonArray strongholdsJ = new JsonArray();
         for(Emergency e : emergencies) {
             JsonObject o = new JsonObject();
-            o.addProperty("emergency", e.getObjectID());
+            o.addProperty("emergencyID", e.getObjectID());
+            o.addProperty("emergencyName", e.getNameEmergency());
             o.addProperty("hasStronghold", isEmergencyCovered(e, strongholds));
             strongholdsJ.add(o);
             for(StrongholdInfo s : strongholdInfos) {
