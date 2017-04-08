@@ -229,10 +229,12 @@
             <strongholdInfo>
                 <emergency>Malattia</emergency>
                 <resourceNeeded>Risorsa1</resourceNeeded>
+                <strongholdName>Ospedale</strongholdName>
             </strongholdInfo>
             <strongholdInfo>
                 <emergency>Peste</emergency>
                 <resourceNeeded>Risorsa1</resourceNeeded>
+                <strongholdName>Lazzaretto</strongholdName>
             </strongholdInfo>
         </strongholdInfos>
         <setup>

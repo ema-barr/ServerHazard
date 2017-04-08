@@ -29,6 +29,7 @@ public class GetStrongholdInfoResponse implements Response {
             strongholdsJ.add(o);
             for(StrongholdInfo s : strongholdInfos) {
                 if (s.getEmergency().equals(e)) {
+                    o.addProperty("strongholdName", s.getStrongholdName());
                     o.addProperty("strongholdResource", s.getResourceNeeded().getNameResource());
                 }
             }

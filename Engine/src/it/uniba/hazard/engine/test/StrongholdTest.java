@@ -19,7 +19,7 @@ public class StrongholdTest {
         Provisions p = new Provisions();
         p.addResource(new Resource("Risorsa1"), 5);
         currentTurn.getPlayer().setProvisions(p);
-        StrongholdInfo si = new StrongholdInfo(emergency, new Resource("Risorsa1"));
+        StrongholdInfo si = new StrongholdInfo(emergency, new Resource("Risorsa1"), "Prova");
         Repository.insertInRepository("StrongholdInfo_" + emergency.getNameEmergency(), si);
         String[] params = {"buildStronghold", emergency.getObjectID(), Location.class.getName() + "_Location2"};
         Response response = currentTurn.runCommand(g.getState(), params);

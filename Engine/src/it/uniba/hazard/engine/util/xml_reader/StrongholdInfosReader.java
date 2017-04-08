@@ -41,7 +41,9 @@ public class StrongholdInfosReader {
                 String resNeeded = strongholdInfo.getElementsByTagName("resourceNeeded").item(0).getTextContent();
                 Resource res = (Resource) Repository.getFromRepository(Resource.class.getName() + "_" + resNeeded);
 
-                StrongholdInfo strInfo = new StrongholdInfo(em, res);
+                String strongholdName = strongholdInfo.getElementsByTagName("strongholdName").item(0).getTextContent();
+
+                StrongholdInfo strInfo = new StrongholdInfo(em, res, strongholdName);
                 strongholdInfoArrayList.add(strInfo);
             }
             return strongholdInfoArrayList;
