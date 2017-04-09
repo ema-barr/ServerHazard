@@ -9,7 +9,7 @@
             messages = document.getElementById('log');
             currentState = document.getElementById('currentState');
             currentState.innerHTML = '';
-            log = message.logString;
+            log = message.response.logString;
             state = message.state;
             var text = document.createTextNode(log);
             el = document.createElement('li');
@@ -53,7 +53,6 @@
         socket.on('update', function(data, callback) {
             addMessage(data);
             handleUpdate(data);
-            callback();
         });
 
         socket.on('chooseProductionCard', function(data, callback) {

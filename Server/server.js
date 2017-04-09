@@ -117,17 +117,9 @@ io.on('connection', function (socket) {
             success = responseJ.success;
             stateRequest = {"requestName": "getState"};
             //Request the state to send to the dashboard
-            sendUpdateToDashboard(success, logString, function() {
+            sendUpdateToDashboard(response, function() {
                 callback(response);
             });
-            /*
-            request("getState", {}, function(getStateResponse) {
-                //Send the state to the dashboard
-                newResponse = {"success": success, "logString": logString};
-                newResponse.state = JSON.parse(getStateResponse)
-                io.sockets.connected[dashboardSocketID].emit('update', newResponse);
-                callback(response)
-            })*/
         });
     }
 
@@ -137,12 +129,14 @@ io.on('connection', function (socket) {
         }
     }
 
-    function sendUpdateToDashboard(success, logString, callback) {
+    function sendUpdateToDashboard(response, callback) {
         //Request the state to send to the dashboard
         request("getState", {}, function(getStateResponse) {
             //Send the state to the dashboard
-            newResponse = {"success": success, "logString": logString};
+            newResponse = {"prova": "test"};
             newResponse.state = JSON.parse(getStateResponse);
+            newResponse.response = JSON.parse(response);
+            console.log(newResponse)
             //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
             sendMessage(dashboardSocketID, 'update', newResponse);
             
