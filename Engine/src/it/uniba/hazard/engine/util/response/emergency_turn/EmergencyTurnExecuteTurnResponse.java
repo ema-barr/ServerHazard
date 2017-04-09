@@ -52,6 +52,7 @@ public class EmergencyTurnExecuteTurnResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "EMERGENCY_TURN_START");
         res.addProperty("emergency", emergency.toString());
         JsonArray diffusedLocationsJson = new JsonArray();
         for (Location l : locations) {

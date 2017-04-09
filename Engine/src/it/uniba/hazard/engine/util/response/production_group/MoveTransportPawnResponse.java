@@ -57,6 +57,7 @@ public class MoveTransportPawnResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "PRODUCTION_GROUP_MOVE_TRANSPORT_PAWN");
         res.addProperty("newLocation", newLocation.toString());
         res.addProperty("transportPawn", transportPawn.toString());
         res.addProperty("productionGroup", productionGroup.toString());

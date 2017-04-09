@@ -37,6 +37,7 @@ public class BonusProductionCardRevertResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "EVENT_CARD_BONUS_PRODUCTION_CARD_REVERT");
         res.addProperty("numberProductionCards", numberProductionCards);
         res.addProperty("logString", logString);
         return res.toString();

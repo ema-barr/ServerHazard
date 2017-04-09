@@ -37,6 +37,7 @@ public class MalusProductionCardResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "EVENT_CARD_MALUS_PRODUCTION_CARD");
         res.addProperty("cardName", cardName);
         res.addProperty("numberProductionCards", numberProductionCards);
         res.addProperty("logString", logString);

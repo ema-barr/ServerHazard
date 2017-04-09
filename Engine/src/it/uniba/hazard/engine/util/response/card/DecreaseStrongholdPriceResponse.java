@@ -37,6 +37,7 @@ public class DecreaseStrongholdPriceResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "EVENT_CARD_DECREASE_STRONGHOLD_PRICE");
         res.addProperty("cardName", cardName);
         res.addProperty("strongholdPrice" , decreasePrice);
         res.addProperty("logString", logString);

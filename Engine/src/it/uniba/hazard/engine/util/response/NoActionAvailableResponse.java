@@ -10,6 +10,7 @@ public class NoActionAvailableResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", false);
+        res.addProperty("actionName", "ACTION_TURN_NO_MORE_ACTIONS");
         res.addProperty("logString", "Non è possibile compiere altre azioni.");
         return res.toString();
     }

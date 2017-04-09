@@ -47,6 +47,7 @@ public class ActionGroupMoveResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "ACTION_GROUP_MOVE");
         res.addProperty("newLocation", newLocation.toString());
         res.addProperty("actionGroup", actionGroup.getNameActionGroup());
         res.addProperty("logString", logString);

@@ -44,6 +44,7 @@ public class GetProductionCardsResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "PRODUCTION_GROUP_GET_PRODUCTION_CARDS");
         res.addProperty("productionGroup", productionGroup.toString());
         res.addProperty("productionCards", productionCards.toString());
         res.addProperty("logString", logString);

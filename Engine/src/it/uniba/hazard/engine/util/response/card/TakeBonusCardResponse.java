@@ -43,6 +43,7 @@ public class TakeBonusCardResponse implements Response{
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "EVENT_CARD_TAKE_BONUS_CARD");
         res.addProperty("cardName", cardName);
         res.addProperty("cardExtract", cardExtract.toString());
         res.addProperty("numCardsBonusDrawn", numCard);

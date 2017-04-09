@@ -48,6 +48,7 @@ public class InsertNewTransportPawnResponse implements Response{
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "PRODUCTION_GROUP_INSERT_TRANSPORT_PAWN");
         res.addProperty("location", location.toString());
         res.addProperty("transportPawn", transportPawn.toString());
         res.addProperty("productionGroup", productionGroup.toString());

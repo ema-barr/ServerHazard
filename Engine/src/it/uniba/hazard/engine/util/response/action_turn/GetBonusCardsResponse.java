@@ -50,6 +50,7 @@ public class GetBonusCardsResponse implements Response {
             bonusCardsArray.add(bonusCard.getObjectID());
         }
         res.addProperty("success", success);
+        res.addProperty("actionName", "ACTION_TURN_GET_BONUS_CARDS");
         res.addProperty("actionGroup", actionGroup.getNameActionGroup());
         res.add("bonusCards", bonusCardsArray);
         res.addProperty("logString", logString);

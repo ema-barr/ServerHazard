@@ -43,6 +43,7 @@ public class RemoveTransportPawnResponse implements Response{
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "PRODUCTION_GROUP_REMOVE_TRANSPORT_PAWN");
         res.addProperty("transportPawn", transportPawn.toString());
         res.addProperty("productionGroup", productionGroup.toString());
         res.addProperty("logString", logString);

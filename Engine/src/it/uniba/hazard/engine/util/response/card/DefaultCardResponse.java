@@ -33,6 +33,7 @@ public class DefaultCardResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "EVENT_CARD_NOTHING_HAPPENS");
         res.addProperty("cardName", cardName);
         res.addProperty("logString", logString);
         return res.toString();

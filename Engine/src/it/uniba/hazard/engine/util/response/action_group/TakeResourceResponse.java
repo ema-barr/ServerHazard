@@ -43,6 +43,7 @@ public class TakeResourceResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "ACTION_GROUP_TAKE_RESOURCES");
         res.addProperty("transportPawn", transportPawn.toString());
         res.addProperty("actionGroup", actionGroup.toString());
         res.addProperty("logString", logString);

@@ -45,6 +45,7 @@ public class DecreaseEmergencyPlaceResponse implements Response{
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "EVENT_CARD_DECREASE_EMERGENCY_PLACE");
         res.addProperty("cardName", cardName);
         res.addProperty("emergency", emergency.toString());
         res.addProperty("location", location.toString());

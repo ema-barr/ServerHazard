@@ -64,6 +64,7 @@ public class SolveEmergencyResponse implements Response{
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "ACTION_GROUP_SOLVE_EMERGENCY");
         res.addProperty("emergencyToSolve", emergencyToSolve.toString());
         res.addProperty("actionGroup", actionGroup.toString());
         res.addProperty("logString", logString);

@@ -39,6 +39,7 @@ public class AddBonusCardResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "ACTION_TURN_ADD_BONUS_CARD");
         res.addProperty("actionGroup", actionGroup.getNameActionGroup());
         res.addProperty("logString", logString);
         return res.toString();

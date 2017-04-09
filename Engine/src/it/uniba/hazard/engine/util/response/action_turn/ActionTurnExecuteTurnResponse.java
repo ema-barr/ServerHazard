@@ -40,6 +40,7 @@ public class ActionTurnExecuteTurnResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "ACTION_TURN_START");
         res.addProperty("actionGroup", actionGroup.getNameActionGroup());
         res.addProperty("logString", logString);
         return res.toString();

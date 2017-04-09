@@ -42,6 +42,7 @@ public class RemoveTransportPawnResponse implements Response{
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "EVENT_CARD_QUARANTINE_PLACE");
         res.addProperty("TransportPawn", tp.toString());
         res.addProperty("location", location.toString());
         res.addProperty("logString", logString);

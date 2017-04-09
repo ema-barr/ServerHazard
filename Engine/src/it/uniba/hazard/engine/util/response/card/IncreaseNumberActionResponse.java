@@ -42,6 +42,7 @@ public class IncreaseNumberActionResponse implements Response{
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "BONUS_CARD_INCREASE_NUMBER_ACTIONS");
         res.addProperty("cardName", cardName);
         res.addProperty("actionGroup", player.toString());
         res.addProperty("newNumberActions", newNumberActions);

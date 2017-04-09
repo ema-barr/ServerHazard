@@ -46,6 +46,7 @@ public class QuarantinePlaceRevertResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "BONUS_CARD_QUARANTINE_PLACE_REVERT");
         res.addProperty("cardName", cardName);
         res.addProperty("emergency", emergency.toString());
         res.addProperty("location", location.toString());

@@ -47,6 +47,7 @@ public class AddBlockadeResponse implements Response{
             array.add(loc.toString());
         }
         res.addProperty("success", success);
+        res.addProperty("actionName", "EVENT_CARD_ADD_BLOCKADE");
         res.addProperty("cardName", cardName);
         res.add("locationsBlockade", array);
         res.addProperty("logString", logString);

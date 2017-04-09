@@ -41,6 +41,7 @@ public class ChooseProductionCardResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "PRODUCTION_TURN_CHOOSE_PRODUCTION_CARD");
         res.addProperty("productionGroup", productionGroup.toString());
         res.addProperty("logString", logString);
         return res.toString();

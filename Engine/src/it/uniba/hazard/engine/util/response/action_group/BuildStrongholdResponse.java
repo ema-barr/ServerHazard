@@ -71,6 +71,7 @@ public class BuildStrongholdResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "ACTION_GROUP_BUILD_STRONGHOLD");
         res.addProperty("emergency", emergency.toString());
         res.addProperty("location", location.toString());
         res.addProperty("actionGroup", actionGroup.getNameActionGroup());

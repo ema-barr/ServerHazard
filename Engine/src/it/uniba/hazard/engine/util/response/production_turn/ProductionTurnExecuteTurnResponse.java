@@ -44,6 +44,7 @@ public class ProductionTurnExecuteTurnResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "PRODUCTION_TURN_START");
         res.addProperty("productionGroup", productionGroup.toString());
         res.addProperty("logString", logString);
         JsonArray cardsJson = new JsonArray();

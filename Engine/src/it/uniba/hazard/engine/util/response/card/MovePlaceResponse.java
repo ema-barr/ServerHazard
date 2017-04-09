@@ -42,6 +42,7 @@ public class MovePlaceResponse implements Response {
     public String toJson() {
         JsonObject res = new JsonObject();
         res.addProperty("success", success);
+        res.addProperty("actionName", "BONUS_CARD_MOVE_PLACE");
         res.addProperty("actionGroup", actionGroup.getNameActionGroup());
         res.addProperty("location", location.toString());
         res.addProperty("logString", logString);

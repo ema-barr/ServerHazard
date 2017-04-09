@@ -43,6 +43,7 @@ public class EventTurnExecuteTurnResponse implements Response {
             responsesArray.add(new JsonParser().parse(resp.toJson()));
         }
         res.addProperty("success", success);
+        res.addProperty("actionName", "EVENT_TURN_START");
         res.add("responses", responsesArray);
         res.addProperty("logString", logString);
         return res.toString();

@@ -47,6 +47,7 @@ public class AddBlockadeRevertResponse implements Response{
             array.add(loc.toString());
         }
         res.addProperty("success", success);
+        res.addProperty("actionName", "EVENT_CARD_ADD_BLOCKADE_REVERT");
         res.add("locationsUnlocked", array);
         res.addProperty("logString", logString);
         return res.toString();
