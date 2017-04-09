@@ -72,6 +72,7 @@ public class EventTurn implements Turn {
             for (EventCardInstance e : activatedCards) {
                 e.revertAction(gameState);
             }
+            activatedCards.removeAll(activatedCards);
         }
     }
 

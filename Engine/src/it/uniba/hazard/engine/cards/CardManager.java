@@ -53,7 +53,7 @@ public class CardManager<C> {
      * @return production cards extracted
      */
     public List<C> getProductionCards(List<Location> locationTransportPawns, int numberCards){
-        resetProductionCards();
+        resetCards();
         List<C> extractedCards = new ArrayList<C>();
         int i = 0;
         while(cards.size() > 0 && i < numberCards){

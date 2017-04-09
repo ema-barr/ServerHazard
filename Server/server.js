@@ -133,10 +133,10 @@ io.on('connection', function (socket) {
         //Request the state to send to the dashboard
         request("getState", {}, function(getStateResponse) {
             //Send the state to the dashboard
-            newResponse = {"prova": "test"};
+            newResponse = {};
             newResponse.state = JSON.parse(getStateResponse);
             newResponse.response = JSON.parse(response);
-            console.log(newResponse)
+            console.log(newResponse);
             //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
             sendMessage(dashboardSocketID, 'update', newResponse);
             
@@ -152,8 +152,6 @@ io.on('connection', function (socket) {
         cardIndex = dataJ.cardIndex;
         handleStandardRequest("chooseProductionCard", data, function(response) {
             responseJ = JSON.parse(response);
-            success = responseJ.success;
-            logString = responseJ.logString;
             request("getState", {}, function(getStateResponse) {
                 stateResponseJ = JSON.parse(getStateResponse);
                 currentTurnJ = stateResponseJ.currentTurn;
@@ -162,8 +160,10 @@ io.on('connection', function (socket) {
                 if (currentTurnJ.state === "MOVE_TRANSPORT_PAWN") {
                     sendMessage(clientSocketID, 'productionStateChanged', {});
                 }
-                newResponse = {"success": success, "logString": logString, "cardIndex":cardIndex};
+                newResponse = {};
                 newResponse.state = stateResponseJ;
+                newResponse.response = responseJ;
+                newResponse.cardIndex = cardIndex;
                 sendMessage(dashboardSocketID, 'chooseProductionCard', newResponse);
             });
             callback(response);
