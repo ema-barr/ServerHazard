@@ -4,7 +4,7 @@ package it.uniba.hazard.engine.main;
 import it.uniba.hazard.engine.cards.*;
 import it.uniba.hazard.engine.endgame.LossCondition;
 import it.uniba.hazard.engine.endgame.VictoryCondition;
-import it.uniba.hazard.engine.exception.InsufficientNumOfLocationsError;
+import it.uniba.hazard.engine.exception.InsufficientNumOfLocationsException;
 import it.uniba.hazard.engine.groups.ActionGroup;
 import it.uniba.hazard.engine.groups.ProductionGroup;
 import it.uniba.hazard.engine.map.Area;
@@ -15,7 +15,6 @@ import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.turn.EmergencyTurn;
 import it.uniba.hazard.engine.turn.EventTurn;
 import it.uniba.hazard.engine.turn.ProductionTurn;
-import it.uniba.hazard.engine.util.response.Response;
 import it.uniba.hazard.engine.util.xml_reader.*;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -218,7 +217,7 @@ public class GameInitialization {
 
 
             } else {
-                throw new InsufficientNumOfLocationsError("The number of location where emergency " +
+                throw new InsufficientNumOfLocationsException("The number of location where emergency " +
                         emergency.getNameEmergency() + " starts is greater than the number of possible locations");
             }
             System.out.println("-- Setup " + emergency.getNameEmergency() +" completato.");
