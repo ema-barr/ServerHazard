@@ -251,7 +251,7 @@ app.get('/get_production_card', function (req, res) {
 
 fs = require('fs');
 try {
-	var xmlConfiguration = fs.readFileSync('./configuration.xml', 'utf8');
+	var xmlConfiguration = fs.readFileSync('../strutturaxml.xml', 'utf8');
 	var DOMParser = require('xmldom').DOMParser;
 } catch(err) {
 	console.log("Configuration file not found.");
