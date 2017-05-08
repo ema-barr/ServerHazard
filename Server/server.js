@@ -244,6 +244,11 @@ app.get('/dashboard', function (req, res) {
     res.end(dashboard);
 });
 
+app.get('/get_production_card', function (req, res) {
+    handleChooseProductionCard(req.query.cardIndex);
+});
+
+
 fs = require('fs');
 try {
 	var xmlConfiguration = fs.readFileSync('./configuration.xml', 'utf8');
@@ -301,7 +306,6 @@ function setupLedEmergencyMap(xmlConfigurationFile) {
             number = leds[j].getElementsByTagName("number")[0].textContent;
             emergency = leds[j].getElementsByTagName("emergency")[0].textContent;
             emergencyArray[emergency] = number;
-            emergencyArray;
         }
         ledEmergencyMap[locationName] = emergencyArray;
     }
