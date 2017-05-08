@@ -56,16 +56,28 @@
         <emergencies>
             <strongholdCost>10</strongholdCost>
             <maxGravityLevel>4</maxGravityLevel>
-            <gravityLevels>
-                <level>
-                    <number>1</number>
-                    <color>#00ff00</color>
-                </level>
-                <level>
-                    <number>2</number>
-                    <color>#00ffff</color>
-                </level>
-            </gravityLevels>
+                <gravityLevels>
+                    <level>
+                        <number>0</number>
+                        <color>#00ff00</color>
+                        <colorCode>2</colorCode>
+                    </level>
+                    <level>
+                        <number>1</number>
+                        <color>#fff600</color>
+                        <colorCode>5</colorCode>
+                    </level>
+                    <level>
+                        <number>2</number>
+                        <color>#ffa200</color>
+                        <colorCode>3</colorCode>
+                    </level>
+                    <level>
+                        <number>3</number>
+                        <color>#ff0000</color>
+                        <colorCode>1</colorCode>
+                    </level>
+                </gravityLevels>
             <emergency>
                 <name>Malattia</name>
                 <resourceNeeded>Risorsa1</resourceNeeded>
@@ -269,5 +281,13 @@
                 </settings>
             </emergencySetup>
         </setup>
+
+        <arduinoBoardSettings>
+            <ip>192.168.4.1</ip>
+            <ledNumber>297</ledNumber>
+            <ledCommandCode>L</ledCommandCode>
+            <soundCommandCode>S</soundCommandCode>
+            <commandCode>-IST-</commandCode>
+        </arduinoBoardSettings>
     </game>
 </xml>
