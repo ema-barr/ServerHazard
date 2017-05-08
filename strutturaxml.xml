@@ -125,7 +125,43 @@
             <eventCards>
                 <eventCard>
                     <name>AddBlockade</name>
-                    <quantity>10</quantity>
+                    <quantity>2</quantity>
+                </eventCard>
+                <eventCard>
+                    <name>BonusProductionCard</name>
+                    <quantity>3</quantity>
+                </eventCard>
+                <eventCard>
+                    <name>DecreaseEmergencyPlace</name>
+                    <quantity>2</quantity>
+                </eventCard>
+                <eventCard>
+                    <name>DecreaseStrongholdPrice</name>
+                    <quantity>2</quantity>
+                </eventCard>
+                <eventCard>
+                    <name>DefaultCard</name>
+                    <quantity>1</quantity>
+                </eventCard>
+                <eventCard>
+                    <name>IncreaseContagionLevel</name>
+                    <quantity>1</quantity>
+                </eventCard>
+                <eventCard>
+                    <name>IncreaseEmergencyPlace</name>
+                    <quantity>2</quantity>
+                </eventCard>
+                <eventCard>
+                    <name>MalusProductionCard</name>
+                    <quantity>3</quantity>
+                </eventCard>
+                <eventCard>
+                    <name>RemoveTransportPawn</name>
+                    <quantity>1</quantity>
+                </eventCard>
+                <eventCard>
+                    <name>TakeBonusCard</name>
+                    <quantity>5</quantity>
                 </eventCard>
             </eventCards>
             <productionCards>
@@ -146,12 +182,20 @@
             </productionCards>
             <bonusCards>
                 <bonusCard>
+                    <name>CurePlace</name>
+                    <quantity>2</quantity>
+                </bonusCard>
+                <bonusCard>
+                    <name>IncreaseNumberAction</name>
+                    <quantity>2</quantity>
+                </bonusCard>
+                <bonusCard>
                     <name>QuarantinePlace</name>
-                    <quantity>1</quantity>
+                    <quantity>2</quantity>
                 </bonusCard>
                 <bonusCard>
                     <name>MovePlace</name>
-                    <quantity>1</quantity>
+                    <quantity>2</quantity>
                 </bonusCard>
             </bonusCards>
         </cards>
