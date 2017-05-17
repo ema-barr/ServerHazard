@@ -5,14 +5,13 @@ var http = require('http'),
     index = fs.readFileSync(__dirname + '/index.html');
     dashboard = fs.readFileSync(__dirname + '/mockdash.html');
 
-
-
 //Server port
 var port = 6882;
 
 //Web server
 var app = express();
 var server = http.createServer(app);
+server.listen(port, "0.0.0.0");
 
 //Game Engine socket
 var gameEngineSocketID;
@@ -106,7 +105,7 @@ io.on('connection', function (socket) {
     socket.on('chooseProductionCard', function(data, callback) {
         handleChooseProductionCard('chooseProductionCard', data, callback);
     });
-    
+
     function handleRequestAndNotifyDashboard(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);
@@ -139,9 +138,14 @@ io.on('connection', function (socket) {
             console.log(newResponse);
             //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
             sendMessage(dashboardSocketID, 'update', newResponse);
-            
-            //var commandToSend = arduinoLedCommand(newResponse.state);
-            //TODO send command to board
+
+            //var ledCommandToSend = arduinoLedCommand(newResponse.state);
+            //TODO send command to board (led and sound)
+            //var soundCommandToSend = arduinoSoundCommand()
+
+            //LEGGI QUA PER I SUONI
+            //dal json state devo fare response.response.actionName
+            //nel caso actionName è un evento (EVENT_TURN_START) occorre fare response.response.responses[0].actionName
 
             callback();
         })
@@ -245,9 +249,9 @@ app.get('/dashboard', function (req, res) {
 });
 
 app.get('/get_production_card', function (req, res) {
+    console.log("Hai premuto il pulsante: " + req.query.cardIndex);
     handleChooseProductionCard(req.query.cardIndex);
 });
-
 
 fs = require('fs');
 try {
@@ -265,6 +269,7 @@ function setupGlobalVariables(xmlConfigurationFile) {
 		console.log("Setting up global game variables...");
 	    gravityLevelsArray = setupGravityLevels(xmlConfigurationFile);
 	    ledEmergencyMap = setupLedEmergencyMap(xmlConfigurationFile);
+	    soundCodeMap = setupSoundCodeMap(xmlConfigurationFile);
 	    setupBoardSettings(xmlConfigurationFile);
 	}
 }
@@ -291,15 +296,15 @@ function setupLedEmergencyMap(xmlConfigurationFile) {
     var locations = [];
 
     for (var i = 0; i < areas.length; i++) {
-        locations.push(areas[i].getElementsByTagName("location")[0]);
+        locations.push.apply(locations, areas[i].getElementsByTagName("location"));
     }
 
-    var ledEmergencyMap = [[]];
+    var ledEmergencyMap = [];
     for (var i = 0; i < locations.length; i++) {
         var locationName = locations[i].getElementsByTagName("name")[0].textContent;
         var emergencyArray = [];
         var leds = locations[i].getElementsByTagName("leds")[0].getElementsByTagName("led");
-        
+
         var number = "";
         var emergency = "";
         for (var j = 0; j < leds.length; j++) {
@@ -311,6 +316,21 @@ function setupLedEmergencyMap(xmlConfigurationFile) {
     }
 
     return ledEmergencyMap;
+}
+
+function setupSoundCodeMap(xmlConfigurationFile) {
+    var parser = new DOMParser();
+    var xmlParser = parser.parseFromString(xmlConfigurationFile, "text/xml");
+    var soundSetting = xmlParser.getElementsByTagName("arduinoSoundSettings")[0];
+    var actions =  soundSetting.getElementsByTagName("action");
+    var soundCodeMap = [];
+
+    for (var i = 0; i < actions.length; i++) {
+        var actionName = actions[i].getElementsByTagName("name")[0].textContent;
+        var soundCode = actions[i].getElementsByTagName("soundCode")[0].textContent;
+        soundCodeMap[actionName] = soundCode;
+    }
+    return soundCodeMap;
 }
 
 function setupBoardSettings(xmlConfigurationFile) {
@@ -352,25 +372,62 @@ function arduinoLedCommand(gameState) {
     }
 
     //initialization string to send at arduino
-    var ledCommandArdino =  commandCode + ledCommandCode;
+    var ledCommandArdino =  "";
     for(var i = 0; i < ledNumber; i++) {
         ledCommandArdino += "0";
     }
-    ledCommandArdino += commandCode;
-
 
     //set led colors using map association and emergency
     for(var loc in mapLocationLedColor){
         for (var emergency in mapLocationLedColor[loc]){
+
             //change default value in the ledCommandArdino if exist the led in the map
-            if(ledMap[loc][emergency]){
-                ledCommandArdino[ledEmergencyMap[loc][emergency]] = mapLocationLedColor[loc][emergency];
+            if(ledEmergencyMap[loc][emergency]){
+                var index = ledEmergencyMap[loc][emergency];
+                var substringLeft = ledCommandArdino.substring(0, index);
+                var substringRight = ledCommandArdino.substring(++index, ledCommandArdino.length);
+                ledCommandArdino = substringLeft + gravityLevelsArray[mapLocationLedColor[loc][emergency]] + substringRight;
             }
         }
     }
 
+    //append instruction type to the led string command
+    ledCommandArdino = commandCode + ledCommandCode + ledCommandArdino;
+    ledCommandArdino += commandCode;
+
     return ledCommandArdino;
+}
+
+function arduinoSoundCommand(gameState) {
+
+    //get the action name
+    var action = gameState.response.response.actionName;
+
+    //if the action is an event
+    if (action == "EVENT_TURN_START") {
+        action = gameState.response.response.responses[0].actionName;
+    }
+
+    var soundCode = soundCodeMap[action];
+    if (soundCode == "") {
+        soundCode = "0";    //default value
+    }
+
+    //create the command to send
+    var soundCommandArdino =  "";
+
+    //need a long string
+    for(var i = 0; i < 99; i++) {
+        soundCommandArdino += "0";
+    }
+
+    soundCommandArdino = commandCode + soundCommandCode + soundCommandArdino;
+    soundCommandArdino += soundCode;
+    soundCommandArdino += commandCode;
+
+    return soundCommandArdino;
 }
 
 server.listen(port);
 console.log('Server is listening on port ' + port);
+
