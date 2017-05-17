@@ -409,7 +409,7 @@ function arduinoSoundCommand(gameState) {
     }
 
     var soundCode = soundCodeMap[action];
-    if (soundCode == "") {
+    if (!soundCode) {
         soundCode = "0";    //default value
     }
 
@@ -431,3 +431,4 @@ function arduinoSoundCommand(gameState) {
 server.listen(port);
 console.log('Server is listening on port ' + port);
 
+arduinoSoundCommand("");
