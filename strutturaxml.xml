@@ -195,11 +195,11 @@
                     <name>Location3</name>
                     <leds>
                         <led>
-                            <number>10</number>
+                            <number>12</number>
                             <emergency>Emergenza1</emergency>
                         </led>
                         <led>
-                            <number>11</number>
+                            <number>13</number>
                             <emergency>Emergenza2</emergency>
                         </led>
                     </leds>
@@ -212,11 +212,11 @@
                     <name>Location2</name>
                     <leds>
                         <led>
-                            <number>10</number>
+                            <number>14</number>
                             <emergency>Emergenza1</emergency>
                         </led>
                         <led>
-                            <number>11</number>
+                            <number>15</number>
                             <emergency>Emergenza2</emergency>
                         </led>
                     </leds>
@@ -289,5 +289,48 @@
             <soundCommandCode>S</soundCommandCode>
             <commandCode>-IST-</commandCode>
         </arduinoBoardSettings>
+
+        <arduinoSoundSettings>
+            <action>
+                <name>ACTION_TURN_START</name><!-- inizio turno -->
+                <soundCode></soundCode>
+            </action>
+            <action>
+                <name>EMERGENCY_TURN_START</name><!-- inizio emergenza -->
+                <soundCode></soundCode>
+            </action>
+            <action>
+                <name>ACTION_GROUP_SOLVE_EMERGENCY</name><!-- guarisci completamente -->
+                <soundCode></soundCode>
+            </action>
+            <action>
+                <name>ACTION_GROUP_TAKE_RESOURCES</name><!-- prendi risorse -->
+                <soundCode></soundCode>
+            </action>
+            <action>
+                <name>ACTION_GROUP_BUILD_STRONGHOLD</name><!-- costruisci -->
+                <soundCode></soundCode>
+            </action>
+            <action>
+                <name>PRODUCTION_GROUP_MOVE_TRANSPORT_PAWN</name><!-- muovi risorse -->
+                <soundCode></soundCode>
+            </action>
+            <action>
+                <name>PRODUCTION_TURN_CHOOSE_PRODUCTION_CARD</name><!-- scegli carta -->
+                <soundCode></soundCode>
+            </action>
+            <action>
+                <name>EVENT_CARD_DECREASE_EMERGENCY_PLACE</name><!-- abbasso contagio -->
+                <soundCode></soundCode>
+            </action>
+            <action>
+                <name>EVENT_CARD_INCREASE_CONTAGION_LEVEL</name><!-- aumenta contagio -->
+                <soundCode></soundCode>
+            </action>
+            <action>
+                <name>EVENT_CARD_TAKE_BONUS_CARD</name><!-- scegli carta  -->
+                <soundCode></soundCode>
+            </action>
+        </arduinoSoundSettings>
     </game>
 </xml>
