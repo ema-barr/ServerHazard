@@ -14,6 +14,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.Map;
  * Created by isz_d on 28/02/2017.
  */
 public class ServerTest {
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws URISyntaxException, MalformedURLException {
         /*Map<String, Object> repMap = new HashMap<String, Object>();
         Repository r = new Repository(repMap);
         List<Integer> steps = new ArrayList<>();

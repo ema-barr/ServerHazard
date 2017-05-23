@@ -20,6 +20,10 @@ import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -39,8 +43,20 @@ public class GameInitialization {
         System.out.println("Avvio inizializzazione.");
         //Language
         Locale currentLocale = LanguageReader.readLanguage(pathXML);
+
+
+        File file = new File("./resources");
+        URL[] urls = new URL[0];
+        try {
+            urls = new URL[]{file.toURI().toURL()};
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        ClassLoader loader = new URLClassLoader(urls);
+
         ResourceBundle messages = ResourceBundle.getBundle("MessageBundle",
-                currentLocale);
+                currentLocale, loader);
+
         MessageFormat formatter = new MessageFormat("");
         formatter.setLocale(currentLocale);
         Repository.insertInRepository("resourceBundle", messages);

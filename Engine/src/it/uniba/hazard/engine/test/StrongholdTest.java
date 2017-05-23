@@ -5,11 +5,13 @@ import it.uniba.hazard.engine.map.Location;
 import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.util.response.Response;
 
+import java.net.MalformedURLException;
+
 /**
  * Created by isz_d on 09/03/2017.
  */
 public class StrongholdTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MalformedURLException {
         GameInitialization gi = new GameInitialization("strutturaxml.xml");
         gi.initialization();
         Game g = gi.getGame();

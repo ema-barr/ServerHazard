@@ -7,13 +7,14 @@ import it.uniba.hazard.engine.main.Turn;
 import it.uniba.hazard.engine.turn.ActionTurn;
 import it.uniba.hazard.engine.util.response.Response;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 /**
  * Created by isz_d on 09/03/2017.
  */
 public class UseBonusCardTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MalformedURLException {
         GameInitialization gi = new GameInitialization("strutturaxml.xml");
         gi.initialization();
         Game g = gi.getGame();
