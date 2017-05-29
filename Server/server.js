@@ -4,6 +4,7 @@ var http = require('http'),
     fs = require('fs'),
     index = fs.readFileSync(__dirname + '/index.html');
     dashboard = fs.readFileSync(__dirname + '/mockdash.html');
+    fakeboard = fs.readFileSync(__dirname + '/fakeboard.html')
 
 
 
@@ -22,6 +23,9 @@ var clientSocketID;
 
 //Dashboard socket
 var dashboardSocketID;
+
+//Fake board socket
+var fakeBoardSocketID;
 
 var io = require('socket.io').listen(server);
 
@@ -43,6 +47,11 @@ io.on('connection', function (socket) {
     socket.on('init_client', function(data) {
         console.log('client is connected');
         clientSocketID = data.id;
+    });
+
+    socket.on('init_fake_board', function(data) {
+        console.log('fake board is connected');
+        fakeBoardSocketID = data.id;
     });
 
     socket.on('request', function(data, callback) {
@@ -242,6 +251,11 @@ app.get('/', function (req, res) {
 app.get('/dashboard', function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.end(dashboard);
+});
+
+app.get('/fakeboard', function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(fakeboard);
 });
 
 fs = require('fs');
