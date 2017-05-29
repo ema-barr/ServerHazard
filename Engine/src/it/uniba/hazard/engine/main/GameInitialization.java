@@ -40,7 +40,6 @@ public class GameInitialization {
     }
 
     public void initialization(){
-        System.out.println("Avvio inizializzazione.");
         //Language
         Locale currentLocale = LanguageReader.readLanguage(pathXML);
 
@@ -61,14 +60,16 @@ public class GameInitialization {
         formatter.setLocale(currentLocale);
         Repository.insertInRepository("resourceBundle", messages);
         Repository.insertInRepository("messageFormat", formatter);
-        System.out.println("- Lingua inizializzata con successo.");
+
+        System.out.println(messages.getString("InitializationStart"));
+        System.out.println(messages.getString("InitializationLanguage"));
 
         //Resources
         ArrayList<Resource> resourcesList = (ArrayList<Resource>) ResourceReader.readResources(pathXML);
         for(Resource res: resourcesList){
             Repository.insertInRepository(res.getObjectID(), res);
         }
-        System.out.println("- Risorse inizializzate con successo.");
+        System.out.println(messages.getString("InitializationResources"));
 
         //Emergencies
         ArrayList<Emergency> emergenciesList = (ArrayList<Emergency>) EmergencyReader.readEmergencies(pathXML);
@@ -80,7 +81,7 @@ public class GameInitialization {
         int strongholdCost = EmergencyReader.readMaxGravityLevel(pathXML);
         int maxGravityLevel = EmergencyReader.readMaxGravityLevel(pathXML);
 
-        System.out.println("- Emergenze inizializzate con successo.");
+        System.out.println(messages.getString("InitializationEmergencies"));
 
         //StrongholdInfos
         ArrayList<StrongholdInfo> strongholdInfosList = (ArrayList<StrongholdInfo>) StrongholdInfosReader.readStrongholdInfos(pathXML);
@@ -88,7 +89,7 @@ public class GameInitialization {
             Repository.insertInRepository("StrongholdInfo_" + strInfo.getEmergency().getNameEmergency(), strInfo);
         }
 
-        System.out.println("- Informazioni sui presidi inizializzate con successo.");
+        System.out.println(messages.getString("InitializationStrongholdInfos"));
 
         //Map
         ArrayList<Location> locationsList = (ArrayList<Location>) MapReader.readLocations(pathXML);
@@ -100,7 +101,7 @@ public class GameInitialization {
         UndirectedGraph<Location, DefaultEdge> graph = createGraph();
 
         ArrayList<Area> areasList = (ArrayList<Area>) MapReader.readAreas(pathXML);
-        System.out.println("- Mappa inizializzata con successo.");
+        System.out.println(messages.getString("InitializationMap"));
 
         //Groups
         ArrayList<ActionGroup> actionGroupsList = (ArrayList<ActionGroup>) GroupReader.readActionGrooups(pathXML);
@@ -115,7 +116,7 @@ public class GameInitialization {
             Repository.insertInRepository(pg.getObjectID(), pg);
         }
 
-        System.out.println("- Gruppi inizializzati con successo.");
+        System.out.println(messages.getString("InitializationGroups"));
 
         //Cards
         CardManager<BonusCard> bonusCardManager = new CardManager<BonusCard>();
@@ -141,7 +142,7 @@ public class GameInitialization {
             productionCardManager.instanceCardsNew(list);
         }
 
-        System.out.println("- Carte inizializzate con successo.");
+        System.out.println(messages.getString("InitializationCards"));
 
         //Turns
         TurnReader.createTurnOrder(pathXML);
@@ -154,14 +155,14 @@ public class GameInitialization {
         TurnSequence ts = new TurnSequence(turnOrder);
         Repository.insertInRepository("turn_order", ts);
 
-        System.out.println("- Turni inizializzati con successo.");
+        System.out.println(messages.getString("InitializationTurns"));
 
         //EndGame
         ArrayList<VictoryCondition> victoryConditionsList = (ArrayList<VictoryCondition>)
         EndGameReader.readVictoryConditions(pathXML);
         ArrayList<LossCondition> lossConditionsList = (ArrayList<LossCondition>) EndGameReader.readLossConditions(pathXML);
 
-        System.out.println("- Condizioni di fine gioco inizializzate con successo.");
+        System.out.println(messages.getString("InitializationEndGameConditions"));
 
         //Creazione del gamestate
         GameMap gm = new GameMap(graph, areasList);
@@ -177,14 +178,14 @@ public class GameInitialization {
         }
 
         //Setup
-        System.out.println("- Avvio setup iniziale.");
+        System.out.println(messages.getString("InitializationSetupStart"));
         Map<Emergency, Map<Integer, Integer>> setup = SetupReader.readSetup(pathXML);
         doSetup(setup);
 
-        System.out.println("- Setup iniziale completato.");
+        System.out.println(messages.getString("InitializationSetupEnd"));
 
         game.nextTurn();
-        System.out.println("Inizializzazione completata");
+        System.out.println(messages.getString("InitializationEnd"));
     }
 
     public Game getGame() {
@@ -204,6 +205,8 @@ public class GameInitialization {
         int numLocations;
         Random random = new Random();
         int randomIndexLoc;
+        MessageFormat formatter= (MessageFormat) Repository.getFromRepository("messageFormat");
+        ResourceBundle messages = (ResourceBundle) Repository.getFromRepository("resourceBundle");
         for (Emergency emergency: emergenciesKeyset){
             ArrayList<Location> locationsList = new ArrayList<Location>((ArrayList<Location>) Repository.getFromRepository("locationsList"));
             Map<Integer, Integer>  setup = settings.get(emergency);
@@ -236,7 +239,10 @@ public class GameInitialization {
                 throw new InsufficientNumOfLocationsException("The number of location where emergency " +
                         emergency.getNameEmergency() + " starts is greater than the number of possible locations");
             }
-            System.out.println("-- Setup " + emergency.getNameEmergency() +" completato.");
+            Object[] messageArgs = {emergency.getNameEmergency()};
+            formatter.applyPattern(messages.getString("InitializationSetupEmergency"));
+
+            System.out.println(formatter.format(messageArgs));
         }
 
 
