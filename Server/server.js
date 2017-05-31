@@ -3,8 +3,8 @@ var express = require("express");
 var http = require('http'),
     fs = require('fs'),
     index = fs.readFileSync(__dirname + '/index.html');
-    dashboard = fs.readFileSync(__dirname + '/mockdash.html');
-    fakeboard = fs.readFileSync(__dirname + '/fakeboard.html')
+dashboard = fs.readFileSync(__dirname + '/mockdash.html');
+fakeboard = fs.readFileSync(__dirname + '/fakeboard.html')
 
 
 
@@ -54,11 +54,11 @@ io.on('connection', function (socket) {
         fakeBoardSocketID = data.id;
     });
 
-    socket.on('request', function(data, callback) {
-        io.sockets.connected[gameEngineSocketID].emit('request', data, function(response) {
-          callback(response);
-       });
-    });
+    /*socket.on('request', function(data, callback) {
+     io.sockets.connected[gameEngineSocketID].emit('request', data, function(response) {
+     callback(response);
+     });
+     });*/
 
     socket.on('getState', function(data, callback) {
         handleStandardRequest('getState', data, callback);
@@ -115,7 +115,7 @@ io.on('connection', function (socket) {
     socket.on('chooseProductionCard', function(data, callback) {
         handleChooseProductionCard('chooseProductionCard', data, callback);
     });
-    
+
     function handleRequestAndNotifyDashboard(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);
@@ -148,7 +148,7 @@ io.on('connection', function (socket) {
             console.log(newResponse);
             //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
             sendMessage(dashboardSocketID, 'update', newResponse);
-            
+
             //var commandToSend = arduinoLedCommand(newResponse.state);
             //TODO send command to board
 
@@ -179,53 +179,51 @@ io.on('connection', function (socket) {
         });
     }
     /*
-    function handleNextTurn(requestName, data, callback) {
-        //Close all pending popup messages
-        closePendingPopups();
-        console.log("Request received. Name: " + requestName + ", \nData:");
-        console.log(data);
-        //Route the next turn request to the appropriate method
-        request(requestName, data, function(response) {
-            responseJ = JSON.parse(response);
-            logString = responseJ.logString;
-            success = responseJ.success;
-            stateRequest = {"requestName": "getState"};
-            //Request the new game state that will be sent to the dashboard
-            request("getState", {}, function(getStateResponse) {
-                currentTurn = JSON.parse(getStateResponse).currentTurn.type;
-                newResponse = {"success": success, "logString": logString, "state": getStateResponse};
-                onNewTurn(currentTurn, newResponse)
-            });
-            callback(response);
-        });
-    }
-
-
-    function onNewTurn(currentTurn, dashboardResponse) {
-        if (currentTurn === "EventTurn") {
-            //If it is an event turn, send a popup message to the dashboard
-            io.sockets.connected[dashboardSocketID].emit('popupMessage', {"logString": logString}, function() {
-                //Send the new state to the dashboard
-                io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
-            })
-        } else if (currentTurn === "ProductionTurn") {
-            //Get the state of the Production Turn
-            request("getCurrentTurn", {}, function(turnResponse) {
-                turnResponseJ = JSON.parse(turnResponse);
-                if (turnResponseJ.state === "CHOOSE_PRODUCTION_CARDS") {
-                    //If the production group must choose the cards, the dashboard must show them in a popup
-                    io.sockets.connected[dashboardSocketID].emit('productionCards', turnResponseJ.cards, function() {
-                        //Send the new state to the dashboard
-                        io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
-                    })
-                }
-            });
-        } else {
-            //Send the new state to the dashboard
-            io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
-        }
-    }
-    */
+     function handleNextTurn(requestName, data, callback) {
+     //Close all pending popup messages
+     closePendingPopups();
+     console.log("Request received. Name: " + requestName + ", \nData:");
+     console.log(data);
+     //Route the next turn request to the appropriate method
+     request(requestName, data, function(response) {
+     responseJ = JSON.parse(response);
+     logString = responseJ.logString;
+     success = responseJ.success;
+     stateRequest = {"requestName": "getState"};
+     //Request the new game state that will be sent to the dashboard
+     request("getState", {}, function(getStateResponse) {
+     currentTurn = JSON.parse(getStateResponse).currentTurn.type;
+     newResponse = {"success": success, "logString": logString, "state": getStateResponse};
+     onNewTurn(currentTurn, newResponse)
+     });
+     callback(response);
+     });
+     }
+     function onNewTurn(currentTurn, dashboardResponse) {
+     if (currentTurn === "EventTurn") {
+     //If it is an event turn, send a popup message to the dashboard
+     io.sockets.connected[dashboardSocketID].emit('popupMessage', {"logString": logString}, function() {
+     //Send the new state to the dashboard
+     io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
+     })
+     } else if (currentTurn === "ProductionTurn") {
+     //Get the state of the Production Turn
+     request("getCurrentTurn", {}, function(turnResponse) {
+     turnResponseJ = JSON.parse(turnResponse);
+     if (turnResponseJ.state === "CHOOSE_PRODUCTION_CARDS") {
+     //If the production group must choose the cards, the dashboard must show them in a popup
+     io.sockets.connected[dashboardSocketID].emit('productionCards', turnResponseJ.cards, function() {
+     //Send the new state to the dashboard
+     io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
+     })
+     }
+     });
+     } else {
+     //Send the new state to the dashboard
+     io.sockets.connected[dashboardSocketID].emit('update', dashboardResponse)
+     }
+     }
+     */
     function handleStandardRequest(requestName, data, callback) {
         console.log("Request received. Name: " + requestName + ", \nData:");
         console.log(data);
@@ -233,10 +231,17 @@ io.on('connection', function (socket) {
     }
 
     function request(requestName, data, callback) {
-        var reqData = data;
+        console.log("requestName " + requestName + ", data " + data);
+        if(typeof data == 'string')
+            var reqData = JSON.parse(data);
+        else {
+            var reqData = {};
+            reqData = data;
+        }
         //Add the request name to the JSON request data
-        reqData.requestName = requestName;
+        reqData["requestName"] = requestName;
         //Send the new request object to the game engine
+        console.log("reqData " + reqData );
         io.sockets.connected[gameEngineSocketID].emit('request', reqData, function(response) {
             callback(response);
         });
@@ -248,6 +253,7 @@ app.get('/', function (req, res) {
     res.end(index);
 });
 
+app.use(express.static(__dirname +'/public'));
 app.get('/dashboard', function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.end(dashboard);
@@ -260,22 +266,22 @@ app.get('/fakeboard', function (req, res) {
 
 fs = require('fs');
 try {
-	var xmlConfiguration = fs.readFileSync('./configuration.xml', 'utf8');
-	var DOMParser = require('xmldom').DOMParser;
+    var xmlConfiguration = fs.readFileSync('./configuration.xml', 'utf8');
+    var DOMParser = require('xmldom').DOMParser;
 } catch(err) {
-	console.log("Configuration file not found.");
-	var xmlConfiguration = null;
+    console.log("Configuration file not found.");
+    var xmlConfiguration = null;
 }
 
 setupGlobalVariables(xmlConfiguration);
 
 function setupGlobalVariables(xmlConfigurationFile) {
-	if (xmlConfiguration != null) {
-		console.log("Setting up global game variables...");
-	    gravityLevelsArray = setupGravityLevels(xmlConfigurationFile);
-	    ledEmergencyMap = setupLedEmergencyMap(xmlConfigurationFile);
-	    setupBoardSettings(xmlConfigurationFile);
-	}
+    if (xmlConfiguration != null) {
+        console.log("Setting up global game variables...");
+        gravityLevelsArray = setupGravityLevels(xmlConfigurationFile);
+        ledEmergencyMap = setupLedEmergencyMap(xmlConfigurationFile);
+        setupBoardSettings(xmlConfigurationFile);
+    }
 }
 
 function setupGravityLevels(xmlConfigurationFile) {
@@ -286,8 +292,8 @@ function setupGravityLevels(xmlConfigurationFile) {
     var levels = gravityLevels.getElementsByTagName("level");
     var gravityLevelsArray = [];
     for (var i = 0; i < levels.length; i++) {
-            var colorCode = levels[i].getElementsByTagName("colorCode")[0].textContent;
-            gravityLevelsArray.push(colorCode);
+        var colorCode = levels[i].getElementsByTagName("colorCode")[0].textContent;
+        gravityLevelsArray.push(colorCode);
     }
 
     return gravityLevelsArray;
@@ -308,7 +314,7 @@ function setupLedEmergencyMap(xmlConfigurationFile) {
         var locationName = locations[i].getElementsByTagName("name")[0].textContent;
         var emergencyArray = [];
         var leds = locations[i].getElementsByTagName("leds")[0].getElementsByTagName("led");
-        
+
         var number = "";
         var emergency = "";
         for (var j = 0; j < leds.length; j++) {
@@ -341,10 +347,10 @@ function arduinoLedCommand(gameState) {
     var locations = gameState['gameState']['gameMap']['locations'];
 
     /*
-    create a dictionary with 2 key:
-    first key is location name (contain a dictionary),
-    second key is emergency name and contain the emergency level
-    */
+     create a dictionary with 2 key:
+     first key is location name (contain a dictionary),
+     second key is emergency name and contain the emergency level
+     */
     var mapLocationLedColor = {};
 
     //extract location list
