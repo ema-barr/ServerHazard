@@ -166,7 +166,7 @@ io.on('connection', function (socket) {
                 currentTurnJ = stateResponseJ.currentTurn;
                 //If the production cards have been selected, notify the device so it can show the production group
                 //interface.
-                if (currentTurnJ.state === "MOVE_TRANSPORT_PAWN") {
+                if (responseJ.success && currentTurnJ.state === "MOVE_TRANSPORT_PAWN") {
                     sendMessage(clientSocketID, 'productionStateChanged', {});
                 }
                 newResponse = {};
