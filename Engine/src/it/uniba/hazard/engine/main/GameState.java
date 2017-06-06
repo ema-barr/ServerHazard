@@ -467,9 +467,14 @@ public class GameState {
      * @return
      */
     public Provisions takeResources(List<Resource> reqResources, ActionPawn ap, TransportPawn tp) {
+        LOGGER.log(Level.INFO, "Called GameState.takeResources");
+        LOGGER.log(Level.INFO, "ActionPawn is in " + gameMap.getLocation(ap) + ", TransportPawn is in " + gameMap.getLocation(tp));
+        LOGGER.log(Level.INFO, "reqResources is " + reqResources.toString());
         if (!gameMap.getLocation(ap).equals(gameMap.getLocation(tp))) {
+            LOGGER.log(Level.INFO, "Cannot take resources. The pawns are not in the same location");
             throw new CannotTakeResourcesException("The action pawn is not in the same location as the transport pawn.");
         }
+        LOGGER.log(Level.INFO, "Proceeding to take resources from the TransportPawn");
         Provisions result = new Provisions();
         Provisions p = tp.getPayload();
         for (Resource r : p.getListResources()) {
@@ -480,6 +485,7 @@ public class GameState {
         }
         //Check if the transport pawn is empty
         if (tp.getPayload().isEmpty()) {
+            LOGGER.log(Level.INFO, "TransportPawn is now empty. Removing...");
             //Remove from the map
             removePawn(tp);
             //Remove from the production group
