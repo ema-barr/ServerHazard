@@ -108,31 +108,40 @@ public class ActionGroup {
     }
 
     public SolveEmergencyResponse solveEmergency(GameState state, Emergency toSolve) {
+        LOGGER.log(Level.INFO, "Called ActionGroup.solveEmergency");
+        LOGGER.log(Level.INFO, "ActionPawn currently is in " + state.getLocationInMap(actionPawn));
         SolveEmergencyResponse solveEmergencyResponse;
 
         //Check if the emergency can be solved by this group
         if (!emergencyToBeSolved.contains(toSolve)) {
             //throw new EmergencyMismatchException("This emergency cannot be solved by this group.");
+            LOGGER.log(Level.SEVERE, "Trying to solve an emergency not managed by the current ActionGroup. This should not happen");
             solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this,
                     new EmergencyMismatchException("This emergency cannot be solved by this group."));
         }
         //Check if there is sufficient resources to solve the emergency
         Resource res = toSolve.getResourceNeeded();
         int resQuantity = provisions.getQuantity(res);
+        LOGGER.log(Level.INFO, "Resource needed is " + res.getObjectID() + ", ActionGroup currently has " + provisions.getQuantity(res));
         if (resQuantity <= 0) {
+            LOGGER.log(Level.INFO, "Cannot solve the emergency, not enough resources");
             //throw new InsufficientResourcesException("Not enough resources to execute the requested action.");
             solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this,
                     new InsufficientResourcesException("Not enough resources to execute the requested action."));
         } else {
+            LOGGER.log(Level.INFO, "Level of " + toSolve.getObjectID() + " in " + state.getLocationInMap(actionPawn).getObjectID() + "is " + state.getLocationInMap(actionPawn).getEmergencyLevel(toSolve));
             //Check if the emergency has a level greater than zero
             if (state.getLocationInMap(actionPawn).getEmergencyLevel(toSolve) > 0) {
                 //If it is, then withdraw the resources and solve the emergency
+                LOGGER.log(Level.INFO, "The emergency has a level greater than zero. Solving...");
                 provisions.withdrawResource(res);
                 provisions.addResource(res, resQuantity - 1);
+                LOGGER.log(Level.INFO, "The ActionGroup now has " + provisions.getQuantity(res) + " " + res.getObjectID());
                 solveEmergencyResponse = new SolveEmergencyResponse(true, toSolve, this);
                 state.solveEmergency(toSolve, state.getLocationInMap(actionPawn));
             } else {
                 //Otherwise, send an error response
+                LOGGER.log(Level.INFO, "Cannot solve the emergency, its level is 0!");
                 solveEmergencyResponse = new SolveEmergencyResponse(false, toSolve, this);
             }
         }

@@ -60,7 +60,10 @@ public class ActionTurn implements PlayerTurn {
     }
 
     private Response solveEmergency (GameState gameState, String emergencyStr) {
+        LOGGER.log(Level.INFO, "Called ActionTurn.solveEmergency");
+        LOGGER.log(Level.INFO, "Emergency to solve is " + emergencyStr);
         Emergency e = (Emergency) Repository.getFromRepository(emergencyStr);
+        LOGGER.log(Level.INFO, "Emergency got from Repository is " + e.getObjectID());
         Response resp = player.solveEmergency(gameState, e);
         if (((SolveEmergencyResponse) resp).success())
             numCurrentActions++;

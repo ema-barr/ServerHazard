@@ -335,17 +335,20 @@ public class GameState {
      * @param l
      */
     public void solveEmergency(Emergency e, Location l) {
+        LOGGER.log(Level.INFO, "Called GameState.solveEmergency");
         int decrease = 1;
         Area a = gameMap.getAreaByLocation(l);
         List<Stronghold> strongholds = a.getStrongholds();
         for (Stronghold s : strongholds) {
             if (s.getEmergency().equals(e)) {
                 //If the stronghold for the emergency exists in the area, decrease the emergency level to 0
+                LOGGER.log(Level.INFO, "There is a stronghold for this emergency in the area. The emergency level will be set to zero");
                 decrease = l.getEmergencyLevel(e);
             }
         }
         int currentLevel = l.getEmergencyLevel(e);
         l.setEmergencyLevel(e, currentLevel - decrease);
+        LOGGER.log(Level.INFO, "The new emergency level is " + l.getEmergencyLevel(e));
     }
 
     /**
