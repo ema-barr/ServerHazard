@@ -166,7 +166,7 @@ public class ActionGroup {
         if (resQuantity - state.getCurrentStrongholdCost() < 0) {
             //throw new InsufficientResourcesException("Not enough resources to execute the requested action.");
             LOGGER.log(Level.INFO, "ActionGroup cannot build the stronghold. Not enough resources");
-            buildStrongholdResponse = new BuildStrongholdResponse(false, this, e , l,
+            buildStrongholdResponse = new BuildStrongholdResponse(false, this, e , l, si,
                     new InsufficientResourcesException("Not enough resources to build the stronghold."));
         } else {
             //If there is, withdraw the resources from the group's deposit
@@ -184,7 +184,7 @@ public class ActionGroup {
                 buildStrongholdResponse = new BuildStrongholdResponse(true, this, e , l, si);
             } catch (StrongholdAlreadyPresentException ex) {
                 LOGGER.log(Level.INFO, "Cannot build the stronghold, there is already a stronghold for the same emergency in the same area.");
-                buildStrongholdResponse = new BuildStrongholdResponse(false, this, e, l, ex);
+                buildStrongholdResponse = new BuildStrongholdResponse(false, this, e, l, si, ex);
             }
         }
         return buildStrongholdResponse;
