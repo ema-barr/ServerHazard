@@ -293,43 +293,54 @@
         <arduinoSoundSettings>
             <action>
                 <name>ACTION_TURN_START</name><!-- inizio turno -->
-                <soundCode></soundCode>
+                <soundCode>9</soundCode>
             </action>
             <action>
                 <name>EMERGENCY_TURN_START</name><!-- inizio emergenza -->
-                <soundCode></soundCode>
+                <soundCode>8</soundCode>
             </action>
             <action>
                 <name>ACTION_GROUP_SOLVE_EMERGENCY</name><!-- guarisci completamente -->
-                <soundCode></soundCode>
+                <soundCode>7</soundCode>
             </action>
             <action>
                 <name>ACTION_GROUP_TAKE_RESOURCES</name><!-- prendi risorse -->
-                <soundCode></soundCode>
+                <soundCode>b</soundCode>
             </action>
             <action>
                 <name>ACTION_GROUP_BUILD_STRONGHOLD</name><!-- costruisci -->
-                <soundCode></soundCode>
+                <soundCode>4</soundCode>
             </action>
             <action>
                 <name>PRODUCTION_GROUP_MOVE_TRANSPORT_PAWN</name><!-- muovi risorse -->
-                <soundCode></soundCode>
+                <soundCode>a</soundCode>
             </action>
             <action>
                 <name>PRODUCTION_TURN_CHOOSE_PRODUCTION_CARD</name><!-- scegli carta -->
-                <soundCode></soundCode>
+                <soundCode>c</soundCode>
             </action>
             <action>
                 <name>EVENT_CARD_DECREASE_EMERGENCY_PLACE</name><!-- abbasso contagio -->
-                <soundCode></soundCode>
+                <soundCode>1</soundCode>
             </action>
             <action>
                 <name>EVENT_CARD_INCREASE_CONTAGION_LEVEL</name><!-- aumenta contagio -->
-                <soundCode></soundCode>
+                <soundCode>2</soundCode>
             </action>
             <action>
                 <name>EVENT_CARD_TAKE_BONUS_CARD</name><!-- scegli carta  -->
-                <soundCode></soundCode>
+                <soundCode>3</soundCode>
+            </action>
+
+
+            <!-- Vittoria e Sconfitta. Da definire lato motore di gioco -->
+            <action>
+                <name>WIN_GAME</name>
+                <soundCode>5</soundCode>
+            </action>
+            <action>
+                <name>LOSE_GAME</name>
+                <soundCode>6</soundCode>
             </action>
         </arduinoSoundSettings>
     </game>
