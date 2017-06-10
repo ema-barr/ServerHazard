@@ -139,13 +139,16 @@ io.on('connection', function (socket) {
             //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
             sendMessage(dashboardSocketID, 'update', newResponse);
 
-            //var ledCommandToSend = arduinoLedCommand(newResponse.state);
-            //TODO send command to board (led and sound)
-            //var soundCommandToSend = arduinoSoundCommand()
+            //create led command code
+            var ledCommandToSend = arduinoLedCommand(newResponse.state);
+            sendCommandToArduino(ledCommandToSend);
 
-            //LEGGI QUA PER I SUONI
-            //dal json state devo fare response.response.actionName
-            //nel caso actionName è un evento (EVENT_TURN_START) occorre fare response.response.responses[0].actionName
+            //4 seconds delay
+            sleep(4000);
+
+            //create sound command code
+            var soundCommandToSend = arduinoSoundCommand(newResponse.state);
+            sendCommandToArduino(soundCommandToSend);
 
             callback();
         })
@@ -251,9 +254,12 @@ app.get('/dashboard', function (req, res) {
 app.get('/get_production_card', function (req, res) {
     console.log("Hai premuto il pulsante: " + req.query.cardIndex);
     handleChooseProductionCard(req.query.cardIndex);
+    res.end("");    //return empty string to Arduino
 });
 
 fs = require('fs');
+requestArduino = require('request');
+
 try {
 	var xmlConfiguration = fs.readFileSync('../strutturaxml.xml', 'utf8');
 	var DOMParser = require('xmldom').DOMParser;
@@ -428,7 +434,25 @@ function arduinoSoundCommand(gameState) {
     return soundCommandArdino;
 }
 
+function sendCommandToArduino(command) {
+    var url = "http://localhost:6883/command/" + command;
+    console.log(url);
+    requestArduino.get(
+        url,
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log("Command sent: " + command);
+            }
+        }
+    );
+}
+
+function sleep(time) {
+    var stop = new Date().getTime();
+    while(new Date().getTime() < stop + time) {
+        continue;
+    }
+}
+
 server.listen(port);
 console.log('Server is listening on port ' + port);
-
-arduinoSoundCommand("");
