@@ -115,76 +115,6 @@ io.on('connection', function (socket) {
         handleChooseProductionCard('chooseProductionCard', data, callback);
     });
 
-    function handleRequestAndNotifyDashboard(requestName, data, callback) {
-        console.log("Request received. Name: " + requestName + ", \nData:");
-        console.log(data);
-        //Route the request to the appropriate method
-        request(requestName, data, function(response) {
-            responseJ = JSON.parse(response);
-            logString = responseJ.logString;
-            success = responseJ.success;
-            stateRequest = {"requestName": "getState"};
-            //Request the state to send to the dashboard
-            sendUpdateToDashboard(response, function() {
-                callback(response);
-            });
-        });
-    }
-
-    function sendMessage(socketID, messageName, data) {
-        if (io.sockets.connected[socketID] != undefined) {
-            io.sockets.connected[socketID].emit(messageName, data);
-        }
-    }
-
-    function sendUpdateToDashboard(response, callback) {
-        //Request the state to send to the dashboard
-        request("getState", {}, function(getStateResponse) {
-            //Send the state to the dashboard
-            newResponse = {};
-            newResponse.state = JSON.parse(getStateResponse);
-            newResponse.response = JSON.parse(response);
-            console.log(newResponse);
-            //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
-            sendMessage(dashboardSocketID, 'update', newResponse);
-
-            //create led command code
-            var ledCommandToSend = arduinoLedCommand(newResponse.state);
-            sendCommandToArduino(ledCommandToSend);
-
-            //4 seconds delay
-            sleep(4000);
-
-            //create sound command code
-            var soundCommandToSend = arduinoSoundCommand(newResponse.state);
-            sendCommandToArduino(soundCommandToSend);
-
-            callback();
-        })
-    }
-
-    function handleChooseProductionCard(requestName, data, callback) {
-        dataJ = data;
-        cardIndex = dataJ.cardIndex;
-        handleStandardRequest("chooseProductionCard", data, function(response) {
-            responseJ = JSON.parse(response);
-            request("getState", {}, function(getStateResponse) {
-                stateResponseJ = JSON.parse(getStateResponse);
-                currentTurnJ = stateResponseJ.currentTurn;
-                //If the production cards have been selected, notify the device so it can show the production group
-                //interface.
-                if (responseJ.success && currentTurnJ.state === "MOVE_TRANSPORT_PAWN") {
-                    sendMessage(clientSocketID, 'productionStateChanged', {});
-                }
-                newResponse = {};
-                newResponse.state = stateResponseJ;
-                newResponse.response = responseJ;
-                newResponse.cardIndex = cardIndex;
-                sendMessage(dashboardSocketID, 'chooseProductionCard', newResponse);
-            });
-            callback(response);
-        });
-    }
     /*
      function handleNextTurn(requestName, data, callback) {
      //Close all pending popup messages
@@ -231,29 +161,102 @@ io.on('connection', function (socket) {
      }
      }
      */
-    function handleStandardRequest(requestName, data, callback) {
-        console.log("Request received. Name: " + requestName + ", \nData:");
-        console.log(data);
-        request(requestName, data, callback);
-    }
 
-    function request(requestName, data, callback) {
-        console.log("requestName " + requestName + ", data " + data);
-        if(typeof data == 'string')
-            var reqData = JSON.parse(data);
-        else {
-            var reqData = {};
-            reqData = data;
-        }
-        //Add the request name to the JSON request data
-        reqData["requestName"] = requestName;
-        //Send the new request object to the game engine
-        console.log("reqData " + reqData );
-        io.sockets.connected[gameEngineSocketID].emit('request', reqData, function(response) {
+});
+
+function handleRequestAndNotifyDashboard(requestName, data, callback) {
+    console.log("Request received. Name: " + requestName + ", \nData:");
+    console.log(data);
+    //Route the request to the appropriate method
+    request(requestName, data, function(response) {
+        responseJ = JSON.parse(response);
+        logString = responseJ.logString;
+        success = responseJ.success;
+        stateRequest = {"requestName": "getState"};
+        //Request the state to send to the dashboard
+        sendUpdateToDashboard(response, function() {
             callback(response);
         });
+    });
+}
+
+function sendMessage(socketID, messageName, data) {
+    if (io.sockets.connected[socketID] != undefined) {
+        io.sockets.connected[socketID].emit(messageName, data);
     }
-});
+}
+
+function sendUpdateToDashboard(response, callback) {
+    //Request the state to send to the dashboard
+    request("getState", {}, function(getStateResponse) {
+        //Send the state to the dashboard
+        newResponse = {};
+        newResponse.state = JSON.parse(getStateResponse);
+        newResponse.response = JSON.parse(response);
+        console.log(newResponse);
+        //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
+        sendMessage(dashboardSocketID, 'update', newResponse);
+
+        //create led command code
+        var ledCommandToSend = arduinoLedCommand(newResponse.state);
+        sendCommandToArduino(ledCommandToSend);
+
+        //4 seconds delay
+        sleep(4000);
+
+        //create sound command code
+        var soundCommandToSend = arduinoSoundCommand(newResponse.state);
+        sendCommandToArduino(soundCommandToSend);
+
+        callback();
+    })
+}
+
+function handleStandardRequest(requestName, data, callback) {
+    console.log("Request received. Name: " + requestName + ", \nData:");
+    console.log(data);
+    request(requestName, data, callback);
+}
+
+function request(requestName, data, callback) {
+    console.log("requestName " + requestName + ", data " + data);
+    if(typeof data == 'string')
+        var reqData = JSON.parse(data);
+    else {
+        var reqData = {};
+        reqData = data;
+    }
+    //Add the request name to the JSON request data
+    reqData["requestName"] = requestName;
+    //Send the new request object to the game engine
+    console.log("reqData " + reqData );
+    io.sockets.connected[gameEngineSocketID].emit('request', reqData, function(response) {
+        callback(response);
+    });
+}
+
+function handleChooseProductionCard(requestName, data, callback) {
+    dataJ = data;
+    cardIndex = dataJ.cardIndex;
+    handleStandardRequest("chooseProductionCard", data, function(response) {
+        responseJ = JSON.parse(response);
+        request("getState", {}, function(getStateResponse) {
+            stateResponseJ = JSON.parse(getStateResponse);
+            currentTurnJ = stateResponseJ.currentTurn;
+            //If the production cards have been selected, notify the device so it can show the production group
+            //interface.
+            if (responseJ.success && currentTurnJ.state === "MOVE_TRANSPORT_PAWN") {
+                sendMessage(clientSocketID, 'productionStateChanged', {});
+            }
+            newResponse = {};
+            newResponse.state = stateResponseJ;
+            newResponse.response = responseJ;
+            newResponse.cardIndex = cardIndex;
+            sendMessage(dashboardSocketID, 'chooseProductionCard', newResponse);
+        });
+        callback(response);
+    });
+}
 
 app.get('/', function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -273,7 +276,7 @@ app.get('/fakeboard', function (req, res) {
 
 app.get('/get_production_card', function (req, res) {
     console.log("Hai premuto il pulsante: " + req.query.cardIndex);
-    handleChooseProductionCard(req.query.cardIndex);
+    handleChooseProductionCard("chooseProductionCard", {cardIndex: req.query.cardIndex}, null);
     res.end("");    //return empty string to Arduino
 });
 
