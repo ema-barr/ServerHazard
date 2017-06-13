@@ -6,14 +6,13 @@ var http = require('http'),
 dashboard = fs.readFileSync(__dirname + '/mockdash.html');
 fakeboard = fs.readFileSync(__dirname + '/fakeboard.html')
 
-
-
 //Server port
 var port = 6882;
 
 //Web server
 var app = express();
 var server = http.createServer(app);
+server.listen(port, "0.0.0.0");
 
 //Game Engine socket
 var gameEngineSocketID;
@@ -149,8 +148,16 @@ io.on('connection', function (socket) {
             //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
             sendMessage(dashboardSocketID, 'update', newResponse);
 
-            //var commandToSend = arduinoLedCommand(newResponse.state);
-            //TODO send command to board
+            //create led command code
+            var ledCommandToSend = arduinoLedCommand(newResponse.state);
+            sendCommandToArduino(ledCommandToSend);
+
+            //4 seconds delay
+            sleep(4000);
+
+            //create sound command code
+            var soundCommandToSend = arduinoSoundCommand(newResponse.state);
+            sendCommandToArduino(soundCommandToSend);
 
             callback();
         })
@@ -264,24 +271,33 @@ app.get('/fakeboard', function (req, res) {
     res.end(fakeboard);
 });
 
+app.get('/get_production_card', function (req, res) {
+    console.log("Hai premuto il pulsante: " + req.query.cardIndex);
+    handleChooseProductionCard(req.query.cardIndex);
+    res.end("");    //return empty string to Arduino
+});
+
 fs = require('fs');
+requestArduino = require('request');
+
 try {
-    var xmlConfiguration = fs.readFileSync('./configuration.xml', 'utf8');
-    var DOMParser = require('xmldom').DOMParser;
+	var xmlConfiguration = fs.readFileSync('../strutturaxml.xml', 'utf8');
+	var DOMParser = require('xmldom').DOMParser;
 } catch(err) {
-    console.log("Configuration file not found.");
-    var xmlConfiguration = null;
+	console.log("Configuration file not found.");
+	var xmlConfiguration = null;
 }
 
 setupGlobalVariables(xmlConfiguration);
 
 function setupGlobalVariables(xmlConfigurationFile) {
-    if (xmlConfiguration != null) {
-        console.log("Setting up global game variables...");
-        gravityLevelsArray = setupGravityLevels(xmlConfigurationFile);
-        ledEmergencyMap = setupLedEmergencyMap(xmlConfigurationFile);
-        setupBoardSettings(xmlConfigurationFile);
-    }
+	if (xmlConfiguration != null) {
+		console.log("Setting up global game variables...");
+	    gravityLevelsArray = setupGravityLevels(xmlConfigurationFile);
+	    ledEmergencyMap = setupLedEmergencyMap(xmlConfigurationFile);
+	    soundCodeMap = setupSoundCodeMap(xmlConfigurationFile);
+	    setupBoardSettings(xmlConfigurationFile);
+	}
 }
 
 function setupGravityLevels(xmlConfigurationFile) {
@@ -306,10 +322,10 @@ function setupLedEmergencyMap(xmlConfigurationFile) {
     var locations = [];
 
     for (var i = 0; i < areas.length; i++) {
-        locations.push(areas[i].getElementsByTagName("location")[0]);
+        locations.push.apply(locations, areas[i].getElementsByTagName("location"));
     }
 
-    var ledEmergencyMap = [[]];
+    var ledEmergencyMap = [];
     for (var i = 0; i < locations.length; i++) {
         var locationName = locations[i].getElementsByTagName("name")[0].textContent;
         var emergencyArray = [];
@@ -321,12 +337,26 @@ function setupLedEmergencyMap(xmlConfigurationFile) {
             number = leds[j].getElementsByTagName("number")[0].textContent;
             emergency = leds[j].getElementsByTagName("emergency")[0].textContent;
             emergencyArray[emergency] = number;
-            emergencyArray;
         }
         ledEmergencyMap[locationName] = emergencyArray;
     }
 
     return ledEmergencyMap;
+}
+
+function setupSoundCodeMap(xmlConfigurationFile) {
+    var parser = new DOMParser();
+    var xmlParser = parser.parseFromString(xmlConfigurationFile, "text/xml");
+    var soundSetting = xmlParser.getElementsByTagName("arduinoSoundSettings")[0];
+    var actions =  soundSetting.getElementsByTagName("action");
+    var soundCodeMap = [];
+
+    for (var i = 0; i < actions.length; i++) {
+        var actionName = actions[i].getElementsByTagName("name")[0].textContent;
+        var soundCode = actions[i].getElementsByTagName("soundCode")[0].textContent;
+        soundCodeMap[actionName] = soundCode;
+    }
+    return soundCodeMap;
 }
 
 function setupBoardSettings(xmlConfigurationFile) {
@@ -347,10 +377,10 @@ function arduinoLedCommand(gameState) {
     var locations = gameState['gameState']['gameMap']['locations'];
 
     /*
-     create a dictionary with 2 key:
-     first key is location name (contain a dictionary),
-     second key is emergency name and contain the emergency level
-     */
+    create a dictionary with 2 key:
+    first key is location name (contain a dictionary),
+    second key is emergency name and contain the emergency level
+    */
     var mapLocationLedColor = {};
 
     //extract location list
@@ -368,24 +398,80 @@ function arduinoLedCommand(gameState) {
     }
 
     //initialization string to send at arduino
-    var ledCommandArdino =  commandCode + ledCommandCode;
+    var ledCommandArdino =  "";
     for(var i = 0; i < ledNumber; i++) {
         ledCommandArdino += "0";
     }
-    ledCommandArdino += commandCode;
-
 
     //set led colors using map association and emergency
     for(var loc in mapLocationLedColor){
         for (var emergency in mapLocationLedColor[loc]){
+
             //change default value in the ledCommandArdino if exist the led in the map
-            if(ledMap[loc][emergency]){
-                ledCommandArdino[ledEmergencyMap[loc][emergency]] = mapLocationLedColor[loc][emergency];
+            if(ledEmergencyMap[loc][emergency]){
+                var index = ledEmergencyMap[loc][emergency];
+                var substringLeft = ledCommandArdino.substring(0, index);
+                var substringRight = ledCommandArdino.substring(++index, ledCommandArdino.length);
+                ledCommandArdino = substringLeft + gravityLevelsArray[mapLocationLedColor[loc][emergency]] + substringRight;
             }
         }
     }
 
+    //append instruction type to the led string command
+    ledCommandArdino = commandCode + ledCommandCode + ledCommandArdino;
+    ledCommandArdino += commandCode;
+
     return ledCommandArdino;
+}
+
+function arduinoSoundCommand(gameState) {
+
+    //get the action name
+    var action = gameState.response.response.actionName;
+
+    //if the action is an event
+    if (action == "EVENT_TURN_START") {
+        action = gameState.response.response.responses[0].actionName;
+    }
+
+    var soundCode = soundCodeMap[action];
+    if (!soundCode) {
+        soundCode = "0";    //default value
+    }
+
+    //create the command to send
+    var soundCommandArdino =  "";
+
+    //need a long string
+    for(var i = 0; i < 99; i++) {
+        soundCommandArdino += "0";
+    }
+
+    soundCommandArdino = commandCode + soundCommandCode + soundCommandArdino;
+    soundCommandArdino += soundCode;
+    soundCommandArdino += commandCode;
+
+    return soundCommandArdino;
+}
+
+function sendCommandToArduino(command) {
+    var url = "http://localhost:6883/command/" + command;
+    console.log(url);
+    requestArduino.get(
+        url,
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log("Command sent: " + command);
+            }
+        }
+    );
+}
+
+function sleep(time) {
+    var stop = new Date().getTime();
+    while(new Date().getTime() < stop + time) {
+        continue;
+    }
 }
 
 server.listen(port);

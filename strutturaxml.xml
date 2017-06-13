@@ -56,16 +56,28 @@
         <emergencies>
             <strongholdCost>10</strongholdCost>
             <maxGravityLevel>4</maxGravityLevel>
-            <gravityLevels>
-                <level>
-                    <number>1</number>
-                    <color>#00ff00</color>
-                </level>
-                <level>
-                    <number>2</number>
-                    <color>#00ffff</color>
-                </level>
-            </gravityLevels>
+                <gravityLevels>
+                    <level>
+                        <number>0</number>
+                        <color>#00ff00</color>
+                        <colorCode>2</colorCode>
+                    </level>
+                    <level>
+                        <number>1</number>
+                        <color>#fff600</color>
+                        <colorCode>5</colorCode>
+                    </level>
+                    <level>
+                        <number>2</number>
+                        <color>#ffa200</color>
+                        <colorCode>3</colorCode>
+                    </level>
+                    <level>
+                        <number>3</number>
+                        <color>#ff0000</color>
+                        <colorCode>1</colorCode>
+                    </level>
+                </gravityLevels>
             <emergency>
                 <name>Malattia</name>
                 <resourceNeeded>Risorsa1</resourceNeeded>
@@ -227,11 +239,11 @@
                     <name>Location3</name>
                     <leds>
                         <led>
-                            <number>10</number>
+                            <number>12</number>
                             <emergency>Emergenza1</emergency>
                         </led>
                         <led>
-                            <number>11</number>
+                            <number>13</number>
                             <emergency>Emergenza2</emergency>
                         </led>
                     </leds>
@@ -244,11 +256,11 @@
                     <name>Location2</name>
                     <leds>
                         <led>
-                            <number>10</number>
+                            <number>14</number>
                             <emergency>Emergenza1</emergency>
                         </led>
                         <led>
-                            <number>11</number>
+                            <number>15</number>
                             <emergency>Emergenza2</emergency>
                         </led>
                     </leds>
@@ -313,5 +325,67 @@
                 </settings>
             </emergencySetup>
         </setup>
+
+        <arduinoBoardSettings>
+            <ip>192.168.4.1</ip>
+            <ledNumber>297</ledNumber>
+            <ledCommandCode>L</ledCommandCode>
+            <soundCommandCode>S</soundCommandCode>
+            <commandCode>-IST-</commandCode>
+        </arduinoBoardSettings>
+
+        <arduinoSoundSettings>
+            <action>
+                <name>ACTION_TURN_START</name><!-- inizio turno -->
+                <soundCode>9</soundCode>
+            </action>
+            <action>
+                <name>EMERGENCY_TURN_START</name><!-- inizio emergenza -->
+                <soundCode>8</soundCode>
+            </action>
+            <action>
+                <name>ACTION_GROUP_SOLVE_EMERGENCY</name><!-- guarisci completamente -->
+                <soundCode>7</soundCode>
+            </action>
+            <action>
+                <name>ACTION_GROUP_TAKE_RESOURCES</name><!-- prendi risorse -->
+                <soundCode>b</soundCode>
+            </action>
+            <action>
+                <name>ACTION_GROUP_BUILD_STRONGHOLD</name><!-- costruisci -->
+                <soundCode>4</soundCode>
+            </action>
+            <action>
+                <name>PRODUCTION_GROUP_MOVE_TRANSPORT_PAWN</name><!-- muovi risorse -->
+                <soundCode>a</soundCode>
+            </action>
+            <action>
+                <name>PRODUCTION_TURN_CHOOSE_PRODUCTION_CARD</name><!-- scegli carta -->
+                <soundCode>c</soundCode>
+            </action>
+            <action>
+                <name>EVENT_CARD_DECREASE_EMERGENCY_PLACE</name><!-- abbasso contagio -->
+                <soundCode>1</soundCode>
+            </action>
+            <action>
+                <name>EVENT_CARD_INCREASE_CONTAGION_LEVEL</name><!-- aumenta contagio -->
+                <soundCode>2</soundCode>
+            </action>
+            <action>
+                <name>EVENT_CARD_TAKE_BONUS_CARD</name><!-- scegli carta  -->
+                <soundCode>3</soundCode>
+            </action>
+
+
+            <!-- Vittoria e Sconfitta. Da definire lato motore di gioco -->
+            <action>
+                <name>WIN_GAME</name>
+                <soundCode>5</soundCode>
+            </action>
+            <action>
+                <name>LOSE_GAME</name>
+                <soundCode>6</soundCode>
+            </action>
+        </arduinoSoundSettings>
     </game>
 </xml>
