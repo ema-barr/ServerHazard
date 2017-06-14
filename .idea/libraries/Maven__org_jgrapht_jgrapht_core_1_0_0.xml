@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/jgrapht/jgrapht-core/1.0.0/jgrapht-core-1.0.0.jar!/" />
     </CLASSES>
+    <JAVADOC />
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/org/jgrapht/jgrapht-core/1.0.0/jgrapht-core-1.0.0-sources.jar!/" />
     </SOURCES>

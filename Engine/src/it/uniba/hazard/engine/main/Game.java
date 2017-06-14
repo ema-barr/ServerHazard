@@ -30,6 +30,7 @@ public class Game {
         turns.setNextTurn();
         Turn currentTurn = turns.getCurrentTurn();
         Response response = currentTurn.executeTurn(state);
+        System.out.println(response.toJson());
         state.evaluateEndConditions();
         return response;
     }

@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="file://$PROJECT_DIR$/Engine/src/resources" />
     </CLASSES>
+    <JAVADOC />
     <SOURCES />
   </library>
 </component>
