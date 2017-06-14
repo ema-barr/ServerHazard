@@ -36,6 +36,7 @@ io.on('connection', function (socket) {
         console.log(data);
         gameEngineSocketID = data.id;
         callback();
+        initializeBoardState();
     });
 
     socket.on('init_dashboard', function(data) {
@@ -164,6 +165,10 @@ io.on('connection', function (socket) {
 
 });
 
+function initializeBoardState() {
+    sendUpdateToDashboard("{}", () => {});
+}
+
 function handleRequestAndNotifyDashboard(requestName, data, callback) {
     console.log("Request received. Name: " + requestName + ", \nData:");
     console.log(data);
@@ -197,20 +202,28 @@ function sendUpdateToDashboard(response, callback) {
         //io.sockets.connected[dashboardSocketID].emit('update', newResponse);
         sendMessage(dashboardSocketID, 'update', newResponse);
 
-        //create led command code
-        var ledCommandToSend = arduinoLedCommand(newResponse.state);
-        sendCommandToArduino(ledCommandToSend);
-
-        //4 seconds delay
-        sleep(4000);
-
-        //create sound command code
-        var soundCommandToSend = arduinoSoundCommand(newResponse.state);
-        sendCommandToArduino(soundCommandToSend);
+        setTimeout(() => {prepareArduinoLedCommand(newResponse);}, 0);
 
         callback();
     })
 }
+
+function prepareArduinoLedCommand(newResponse) {
+    //create led command code
+    var ledCommandToSend = arduinoLedCommand(newResponse.state);
+    sendCommandToArduino(ledCommandToSend);
+
+    setTimeout(() => {
+        prepareArduinoSoundCommand(newResponse);
+}, 3500);
+}
+
+function prepareArduinoSoundCommand(newResponse) {
+    //create sound command code
+    var soundCommandToSend = arduinoSoundCommand(newResponse);
+    sendCommandToArduino(soundCommandToSend);
+}
+
 
 function handleStandardRequest(requestName, data, callback) {
     console.log("Request received. Name: " + requestName + ", \nData:");
@@ -276,7 +289,7 @@ app.get('/fakeboard', function (req, res) {
 
 app.get('/get_production_card', function (req, res) {
     console.log("Hai premuto il pulsante: " + req.query.cardIndex);
-    handleChooseProductionCard("chooseProductionCard", {cardIndex: req.query.cardIndex}, null);
+    handleChooseProductionCard("chooseProductionCard", {cardIndex: req.query.cardIndex}, function() {});
     res.end("");    //return empty string to Arduino
 });
 
@@ -284,23 +297,24 @@ fs = require('fs');
 requestArduino = require('request');
 
 try {
-	var xmlConfiguration = fs.readFileSync('../strutturaxml.xml', 'utf8');
-	var DOMParser = require('xmldom').DOMParser;
+    var xmlConfiguration = fs.readFileSync('../strutturaxml.xml', 'utf8');
+    var DOMParser = require('xmldom').DOMParser;
 } catch(err) {
-	console.log("Configuration file not found.");
-	var xmlConfiguration = null;
+    console.log("Configuration file not found.");
+    var xmlConfiguration = null;
 }
 
 setupGlobalVariables(xmlConfiguration);
 
 function setupGlobalVariables(xmlConfigurationFile) {
-	if (xmlConfiguration != null) {
-		console.log("Setting up global game variables...");
-	    gravityLevelsArray = setupGravityLevels(xmlConfigurationFile);
-	    ledEmergencyMap = setupLedEmergencyMap(xmlConfigurationFile);
-	    soundCodeMap = setupSoundCodeMap(xmlConfigurationFile);
-	    setupBoardSettings(xmlConfigurationFile);
-	}
+    if (xmlConfiguration != null) {
+        console.log("Setting up global game variables...");
+        gravityLevelsArray = setupGravityLevels(xmlConfigurationFile);
+        ledEmergencyMap = setupLedEmergencyMap(xmlConfigurationFile);
+        soundCodeMap = setupSoundCodeMap(xmlConfigurationFile);
+        colorStepsMap = setupLedIndicatorMap(xmlConfigurationFile);
+        setupBoardSettings(xmlConfigurationFile);
+    }
 }
 
 function setupGravityLevels(xmlConfigurationFile) {
@@ -362,6 +376,28 @@ function setupSoundCodeMap(xmlConfigurationFile) {
     return soundCodeMap;
 }
 
+function setupLedIndicatorMap(xmlConfigurationFile) {
+    var parser = new DOMParser();
+    var xmlParser = parser.parseFromString(xmlConfigurationFile, "text/xml");
+    var generalIndicator = xmlParser.getElementsByTagName("generalHazardIndicator")[0];
+    var steps = generalIndicator.getElementsByTagName("steps")[0].getElementsByTagName("step");
+    var colorStepsMap = {};
+
+    var ledColorArray = [];
+    var ledNumberArray = [];
+    for (var i = 0; i < steps.length; i++) {
+        var color = steps[i].getElementsByTagName("colorCode")[0].textContent;
+        var ledNumber = steps[i].getElementsByTagName("led")[0].textContent;
+
+        ledColorArray[i] = color;
+        colorStepsMap["ledColor"] = ledColorArray;
+
+        ledNumberArray[i] = ledNumber;
+        colorStepsMap["ledNumber"] = ledNumberArray;
+    }
+    return colorStepsMap;
+}
+
 function setupBoardSettings(xmlConfigurationFile) {
     var parser = new DOMParser();
     var xmlParser = parser.parseFromString(xmlConfigurationFile, "text/xml");
@@ -378,12 +414,13 @@ function arduinoLedCommand(gameState) {
 
     //get the location list from JSON
     var locations = gameState['gameState']['gameMap']['locations'];
+    var indicator = gameState['gameState']['emergencies'][0]['generalHazardIndicator'];
 
     /*
-    create a dictionary with 2 key:
-    first key is location name (contain a dictionary),
-    second key is emergency name and contain the emergency level
-    */
+     create a dictionary with 2 key:
+     first key is location name (contain a dictionary),
+     second key is emergency name and contain the emergency level
+     */
     var mapLocationLedColor = {};
 
     //extract location list
@@ -420,6 +457,15 @@ function arduinoLedCommand(gameState) {
         }
     }
 
+    //update hazard indicator
+    var currentStepIndex = indicator["currentStepIndex"];
+    for (var i = 0; i <= currentStepIndex; i++) {
+        var index = colorStepsMap["ledNumber"][i];
+        var substringLeft = ledCommandArdino.substring(0, index);
+        var substringRight = ledCommandArdino.substring(++index, ledCommandArdino.length);
+        ledCommandArdino = substringLeft + colorStepsMap["ledColor"][i] + substringRight;
+    }
+
     //append instruction type to the led string command
     ledCommandArdino = commandCode + ledCommandCode + ledCommandArdino;
     ledCommandArdino += commandCode;
@@ -430,13 +476,14 @@ function arduinoLedCommand(gameState) {
 function arduinoSoundCommand(gameState) {
 
     //get the action name
-    var action = gameState.response.response.actionName;
+    var action = gameState.response.actionName;
 
     //if the action is an event
     if (action == "EVENT_TURN_START") {
-        action = gameState.response.response.responses[0].actionName;
+        action = gameState.response.responses[0].actionName;
     }
 
+    console.log("ACTION: " + action);
     var soundCode = soundCodeMap[action];
     if (!soundCode) {
         soundCode = "0";    //default value
@@ -450,8 +497,7 @@ function arduinoSoundCommand(gameState) {
         soundCommandArdino += "0";
     }
 
-    soundCommandArdino = commandCode + soundCommandCode + soundCommandArdino;
-    soundCommandArdino += soundCode;
+    soundCommandArdino = commandCode + soundCommandCode + soundCode + soundCommandArdino;
     soundCommandArdino += commandCode;
 
     return soundCommandArdino;
