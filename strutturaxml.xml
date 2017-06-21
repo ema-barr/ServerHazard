@@ -59,7 +59,7 @@
                 <generalHazardIndicator>
                     <steps>
                         <step>
-                            <level>2</level>
+                            <level>3</level>
                             <colorCode>5</colorCode>
                             <led>296</led>
                         </step>
@@ -69,7 +69,7 @@
                             <led>295</led>
                         </step>
                         <step>
-                            <level>3</level>
+                            <level>4</level>
                             <colorCode>1</colorCode>
                             <led>294</led>
                         </step>
@@ -79,14 +79,9 @@
                             <led>293</led>
                         </step>
                         <step>
-                            <level>4</level>
-                            <colorCode>1</colorCode>
-                            <led>292</led>
-                        </step>
-                        <step>
                             <level>5</level>
                             <colorCode>1</colorCode>
-                            <led>291</led>
+                            <led>292</led>
                         </step>
                     </steps>
                 </generalHazardIndicator>
@@ -108,7 +103,7 @@
             <productionTurn>
                 <group>Pharma</group>
                 <ordNum>1</ordNum>
-                <numMovesPerTransportPawn>2</numMovesPerTransportPawn>
+                <numMovesPerTransportPawn>1</numMovesPerTransportPawn>
             </productionTurn>
             <eventTurn>
                 <numCardsToDraw>1</numCardsToDraw>
@@ -165,7 +160,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>6</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -176,7 +171,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>4</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -198,7 +193,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>8</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -209,7 +204,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>4</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -220,7 +215,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>4</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -242,7 +237,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>3</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -253,7 +248,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>6</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -275,7 +270,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>4</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -297,7 +292,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>3</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -308,7 +303,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>4</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -319,7 +314,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>4</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -330,7 +325,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>3</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -341,7 +336,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>3</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -352,7 +347,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>4</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -363,7 +358,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>6</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -374,7 +369,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>2</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -385,7 +380,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>8</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -396,7 +391,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>4</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -407,7 +402,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>4</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -418,7 +413,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>6</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -429,7 +424,7 @@
                     <resourcesProd>
                         <resourceProd>
                             <resource>Medicinale</resource>
-                            <quantity>5</quantity>
+                            <quantity>4</quantity>
                         </resourceProd>
                     </resourcesProd>
                 </productionCard>
@@ -463,6 +458,8 @@
                 <name>Europe</name>
                 <location>
                     <name>EuWest</name>
+                    <color>#6699FF</color>
+                    <visualName>Eu Ovest</visualName>
                     <value>0</value>
                     <longitude>178</longitude>
                     <latitude>131</latitude>
@@ -480,6 +477,8 @@
                 </location>
                 <location>
                     <name>EuEast</name>
+                    <color>#00C0F8</color>
+                    <visualName>Eu Est</visualName>
                     <value>0</value>
                     <longitude>205</longitude>
                     <latitude>141</latitude>
@@ -498,6 +497,8 @@
                 </location>
                 <location>
                     <name>UK</name>
+                    <color>#0074E4</color>
+                    <visualName>UK</visualName>
                     <value>0</value>
                     <longitude>176</longitude>
                     <latitude>147</latitude>
@@ -515,6 +516,8 @@
                 </location>
                 <location>
                     <name>Iceland</name>
+                    <visualName>Islanda</visualName>
+                  	<color>#5BDAFC</color>
                     <value>0</value>
                     <longitude>161</longitude>
                     <latitude>155</latitude>
@@ -533,6 +536,8 @@
 
                 <location>
                     <name>Scandinavia</name>
+                    <visualName>Scandinavia</visualName>
+                    <color>#000080</color>
                     <value>0</value>
                     <longitude>196</longitude>
                     <latitude>155</latitude>
@@ -555,6 +560,7 @@
                 <location>
                     <name>Russia</name>
                     <visualName>Russia</visualName>
+                    <color>#FFFF00</color>
                     <value>0</value>
                     <longitude>278</longitude>
                     <latitude>150</latitude>
@@ -572,6 +578,7 @@
                 </location>
                 <location>
                     <name>ChinaArea</name>
+                    <color>#E4D82C</color>
                     <visualName>Area Cinese</visualName>
                     <value>0</value>
                     <longitude>285</longitude>
@@ -592,6 +599,8 @@
                 </location>
                 <location>
                     <name>CentralAsia</name>
+                    <color>#DFD055</color>
+                    <visualName>Asia Centrale</visualName>
                     <value>0</value>
                     <longitude>250</longitude>
                     <latitude>140</latitude>
@@ -611,6 +620,8 @@
                 </location>
                 <location>
                     <name>India</name>
+                    <color>#FCF463</color>
+                    <visualName>India</visualName>
                     <value>0</value>
                     <longitude>259</longitude>
                     <latitude>113</latitude>
@@ -628,6 +639,8 @@
                 </location>
                 <location>
                     <name>SouthEastAsia</name>
+                    <visualName>SudEst Asiatico</visualName>
+                    <color>#F6F62F</color>
                     <value>0</value>
                     <longitude>300</longitude>
                     <latitude>91</latitude>
@@ -644,6 +657,8 @@
                 </location>
                 <location>
                     <name>MiddleEast</name>
+                    <color>#FCC95F</color>
+                    <visualName>Medio Oriente</visualName>
                     <value>0</value>
                     <longitude>226</longitude>
                     <latitude>123</latitude>
@@ -662,6 +677,8 @@
                 </location>
                 <location>
                     <name>Japan</name>
+                    <color>#F1FB51</color>
+                    <visualName>Giappone</visualName>
                     <value>0</value>
                     <longitude>321</longitude>
                     <latitude>129</latitude>
@@ -683,6 +700,7 @@
                 <location>
                     <name>Australia</name>
                     <visualName>Australia</visualName>
+                    <color>#69B628</color>
                     <value>0</value>
                     <longitude>316</longitude>
                     <latitude>65</latitude>
@@ -700,6 +718,7 @@
                 <location>
                     <name>NewZeland</name>
                     <visualName>Nuova Zelanda</visualName>
+                    <color>#9DDE67</color>
                     <value>0</value>
                     <longitude>354</longitude>
                     <latitude>50</latitude>
@@ -719,6 +738,8 @@
                 <name>Africa</name>
                 <location>
                     <name>NorthAfrica</name>
+                    <visualName>Nord Africa</visualName>
+                    <color>#53565A</color>
                     <value>0</value>
                     <longitude>186</longitude>
                     <latitude>119</latitude>
@@ -735,6 +756,8 @@
                 </location>
                 <location>
                     <name>CentralAfrica</name>
+                    <visualName>Africa Centrale</visualName>
+                    <color>#000000</color>
                     <value>0</value>
                     <longitude>202</longitude>
                     <latitude>99</latitude>
@@ -752,6 +775,8 @@
                 </location>
                 <location>
                     <name>SouthAfrica</name>
+                    <color>#828282</color>
+                    <visualName>Sud Africa</visualName>
                     <value>0</value>
                     <longitude>204</longitude>
                     <latitude>70</latitude>
@@ -769,6 +794,8 @@
                 </location>
                 <location>
                     <name>Madagascar</name>
+                    <visualName>Madagascar</visualName>
+                    <color>#CCCCCC</color>
                     <value>0</value>
                     <longitude>227</longitude>
                     <latitude>71</latitude>
@@ -788,7 +815,9 @@
                 <name>Americas</name>
                 <location>
                     <name>Greenland</name>
+                    <visualName>Groenlandia</visualName>
                     <value>0</value>
+                    <color>#FC0044</color>
                     <longitude>138</longitude>
                     <latitude>170</latitude>
                     <leds>
@@ -805,6 +834,7 @@
                 <location>
                     <name>Canada</name>
                     <value>0</value>
+                    <color>#900808</color>
                     <longitude>77</longitude>
                     <latitude>155</latitude>
                     <leds>
@@ -820,6 +850,8 @@
                 </location>
                 <location>
                     <name>USA</name>
+                    <visualName>Stati Uniti</visualName>
+                    <color>#FF0000</color>
                     <value>0</value>
                     <longitude>95</longitude>
                     <latitude>130</latitude>
@@ -837,6 +869,8 @@
                 </location>
                 <location>
                     <name>CentralAmerica</name>
+                    <visualName>America Centrale</visualName>
+                    <color>#CC0000</color>
                     <value>0</value>
                     <longitude>75</longitude>
                     <latitude>110</latitude>
@@ -853,6 +887,8 @@
                 </location>
                 <location>
                     <name>SouthAmericaCB</name>
+                    <color>#E2004F</color>
+                    <visualName>Sud America (CB)</visualName>
                     <value>0</value>
                     <longitude>110</longitude>
                     <latitude>95</latitude>
@@ -869,6 +905,8 @@
                 </location>
                 <location>
                     <name>SouthAmericaBR</name>
+                    <visualName>Sud America (BR)</visualName>
+                    <color>#FF525F</color>
                     <value>0</value>
                     <longitude>131</longitude>
                     <latitude>79</latitude>
@@ -886,6 +924,8 @@
                 </location>
                 <location>
                     <name>SouthAmericaUR</name>
+                    <color>#C61800</color>
+                    <visualName>Sud America (UR)</visualName>
                     <value>0</value>
                     <longitude>110</longitude>
                     <latitude>50</latitude>
@@ -925,11 +965,11 @@
                 <settings>
                     <setting>
                         <gravityLevel>3</gravityLevel>
-                        <numLocation>1</numLocation>
+                        <numLocation>2</numLocation>
                     </setting>
                     <setting>
                         <gravityLevel>2</gravityLevel>
-                        <numLocation>2</numLocation>
+                        <numLocation>3</numLocation>
                     </setting>
                     <setting>
                         <gravityLevel>1</gravityLevel>

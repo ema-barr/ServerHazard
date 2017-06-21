@@ -59,6 +59,10 @@ public class ActionTurn implements PlayerTurn {
         return player;
     }
 
+    public int getNumActions(){
+        return numActions;
+    }
+
     private Response solveEmergency (GameState gameState, String emergencyStr) {
         LOGGER.log(Level.INFO, "Called ActionTurn.solveEmergency");
         LOGGER.log(Level.INFO, "Emergency to solve is " + emergencyStr);
